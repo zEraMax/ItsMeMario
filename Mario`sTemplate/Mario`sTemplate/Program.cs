@@ -15,16 +15,22 @@ namespace Mario_sTemplate
         {
             try
             {
-                Spells.Init();
+                Spells.Intitialize();
                 MenuSettings.LoadMenu();
-                Modes.Initialize.Init();
-                EventsManager.Init();
+                ModeManager.Intitialize();
+                EventsManager.Intitialize();
+
+                Ultilities.DamageIndicator.Init();
             }
             catch (Exception exp)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(exp);
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
     }

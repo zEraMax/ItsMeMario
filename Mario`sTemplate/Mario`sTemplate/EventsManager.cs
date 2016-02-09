@@ -8,7 +8,7 @@ namespace Mario_sTemplate
 {
     internal class EventsManager
     {
-        public static void Init()
+        public static void Intitialize()
         {
             
         }

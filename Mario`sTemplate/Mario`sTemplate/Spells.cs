@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using EloBuddy;
 using EloBuddy.SDK;
+
 // ReSharper disable SwitchStatementMissingSomeCases
 
 namespace Mario_sTemplate
@@ -9,9 +10,10 @@ namespace Mario_sTemplate
     {
         #region Consts
         public const DamageType dmgType = DamageType.Mixed;
+        public const int highestRange = 500;
         #endregion Consts
 
-        public static void Init()
+        public static void Intitialize()
         {
             SpellsSettings();
         }
@@ -19,13 +21,18 @@ namespace Mario_sTemplate
         public static Spell.Active W;
         public static Spell.Active E;
         public static Spell.Active R;
+        public static List<Spell.SpellBase> SpellList = new List<Spell.SpellBase>(); 
 
         private static void SpellsSettings()
         {
             Q =  new Spell.Active(SpellSlot.Q, 500);
+            SpellList.Add(Q);
             W =  new Spell.Active(SpellSlot.W, 500);
+            SpellList.Add(W);
             E =  new Spell.Active(SpellSlot.E, 500);
+            SpellList.Add(E);
             R =  new Spell.Active(SpellSlot.R, 500);
+            SpellList.Add(R);
         }
 
         #region Damages

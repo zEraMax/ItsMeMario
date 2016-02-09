@@ -9,22 +9,33 @@ using static Mario_sTemplate.Spells;
 
 namespace Mario_sTemplate
 {
-    internal class Helpers
+    public static class Helpers
     {
+        public static bool IsNotNull(this Obj_AI_Base target)
+        {
+            return target != null;
+        }
 
         #region GettingEnemies
-        public static Obj_AI_Base GetLaneMinion(int range, float spellDMG, int spellDelay)
+
+        public static Obj_AI_Base GetLaneMinion(SpellSlot slot)
         {
+            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
+            if (spell == null)return null;
+
             var minion =
                 EntityManager.MinionsAndMonsters.GetLaneMinions()
                     .OrderBy(m => m.Health)
-                    .FirstOrDefault(mi => mi.IsValidTarget(range) && Prediction.Health.GetPrediction(mi, spellDelay) <= spellDMG &&
-                    Prediction.Health.GetPrediction(mi, spellDelay) > 20);
+                    .FirstOrDefault(
+                        mi =>
+                            mi.IsValidTarget(spell.Range) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
         }
 
-        public static Obj_AI_Base GetJungleMinion(int range)
+        public static Obj_AI_Base GetJungleMinion(uint range)
         {
             var minion =
                 EntityManager.MinionsAndMonsters.GetJungleMonsters()
@@ -34,25 +45,31 @@ namespace Mario_sTemplate
             return minion;
         }
 
-        public static Obj_AI_Base GetJungleMinionToKS(int range, float spellDMG, int spellDelay)
+        public static Obj_AI_Base GetJungleMinionToKS(SpellSlot slot)
         {
+            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
+            if (spell == null) return null;
+
             var minion =
-                EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                EntityManager.MinionsAndMonsters.GetLaneMinions()
                     .OrderBy(m => m.Health)
-                    .FirstOrDefault(mi => mi.IsValidTarget(range) && Prediction.Health.GetPrediction(mi, spellDelay) <= spellDMG &&
-                    Prediction.Health.GetPrediction(mi, spellDelay) > 20);
+                    .FirstOrDefault(
+                        mi =>
+                            mi.IsValidTarget(spell.Range) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
         }
         #endregion GettingEnemies
 
         #region KS
-        public static AIHeroClient GetBestKSHero(int range, float spellDMG, int spellDelay)
+        public static AIHeroClient GetBestKSHero(uint range, float spellDMG, int spellDelay)
         {
             var hero =
                 EntityManager.Heroes.Enemies.OrderBy(x => x.Health)
                     .FirstOrDefault(
-                        e => e.IsValidTarget(range) && Prediction.Health.GetPrediction(e, spellDelay) <= spellDMG &&
+                        e => e.IsValidTarget(range) && Prediction.Health.GetPrediction(e, spellDelay) + e.TotalShield() <= spellDMG &&
                              Prediction.Health.GetPrediction(e, spellDelay) > 20);
 
             return hero;
