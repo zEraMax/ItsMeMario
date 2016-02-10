@@ -1,8 +1,5 @@
 ﻿using EloBuddy;
 
-using static Mario_sWukong.Spells;
-using static Mario_sWukong.Helpers;
-
 namespace Mario_sWukong.Logics
 {
     internal class FarmLogics

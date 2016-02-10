@@ -5,9 +5,6 @@ using EloBuddy.SDK;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-using static Mario_sWukong.Spells;
-using static Mario_sWukong.Helpers;
-
 using Color = System.Drawing.Color;
 
 namespace Mario_sWukong.Ultilities

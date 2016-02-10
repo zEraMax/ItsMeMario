@@ -4,7 +4,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
-using static Mario_sWukong.Spells;
 // ReSharper disable SwitchStatementMissingSomeCases
 
 namespace Mario_sWukong

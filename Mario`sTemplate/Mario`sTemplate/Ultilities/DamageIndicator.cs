@@ -4,15 +4,11 @@ using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
 using SharpDX.Direct3D9;
-
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-
 using Color = System.Drawing.Color;
 
 namespace Mario_sTemplate.Ultilities
 {
-    internal class DamageIndicator
+    internal class DamageIndicator : Spells
     {
         //Offsets
         private const float YOff = 9.8f;

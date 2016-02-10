@@ -17,10 +17,11 @@ namespace Mario_sWukong
         {
             SpellsSettings();
         }
-        public static Spell.Active Q;
-        public static Spell.Active W;
-        public static Spell.Targeted E;
-        public static Spell.Active R;
+        public static Spell.Active Q { get; private set; }
+        public static Spell.Active W { get; private set; }
+        public static Spell.Targeted E { get; private set; }
+        public static Spell.Active R { get; private set; }
+
         public static List<Spell.SpellBase> SpellList = new List<Spell.SpellBase>(); 
 
         private static void SpellsSettings()

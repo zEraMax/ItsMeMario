@@ -2,15 +2,12 @@
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-
 namespace Mario_sTemplate
 {
     internal class EventsManager
     {
         public static bool CanPreAttack;
-        public static bool CanPostAttack;
+        public static bool CanPostAttack { get; private set; }
 
         public static void Intitialize()
         {
@@ -24,9 +21,9 @@ namespace Mario_sTemplate
         {
             if (sender == null || sender.IsAlly) return;
 
-            if (W.IsReady() && sender.IsValidTarget(200) && GetCheckBoxValue(MenuTypes.Settings, "spellGapcloser"))
+            if (Spells.W.IsReady() && sender.IsValidTarget(200) && Helpers.GetCheckBoxValue(Helpers.MenuTypes.Settings, "spellGapcloser"))
             {
-                W.Cast();
+                Spells.W.Cast();
             }
         }
 
@@ -35,9 +32,9 @@ namespace Mario_sTemplate
             var hero = sender as AIHeroClient;
             if (hero == null || hero.IsAlly) return;
 
-            if (R.IsReady() && hero.IsValidTarget(R.Range) && GetCheckBoxValue(MenuTypes.Settings, "spellInterrupt"))
+            if (Spells.R.IsReady() && hero.IsValidTarget(Spells.R.Range) && Helpers.GetCheckBoxValue(Helpers.MenuTypes.Settings, "spellInterrupt"))
             {
-                R.Cast();
+                Spells.R.Cast();
             }
         }
 

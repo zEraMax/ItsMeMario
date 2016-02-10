@@ -1,10 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 
-using static Mario_sWukong.Spells;
-using static Mario_sWukong.Helpers;
-using static Mario_sWukong.EventsManager;
-
 namespace Mario_sWukong.Logics
 {
     internal class ComboLogics

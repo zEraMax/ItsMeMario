@@ -4,14 +4,54 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
-using static Mario_sTemplate.Spells;
 // ReSharper disable SwitchStatementMissingSomeCases
 
 namespace Mario_sTemplate
 {
-    public static class Helpers
+    internal class Helpers
     {
-        public static bool IsNotNull(this Obj_AI_Base target)
+        #region
+        //Spaghetti code because EB doesnt support C# 6 :(
+        //Spells
+        protected static Spell.Active Q
+        {
+            get { return Spells.Q; }
+        }
+        protected static Spell.Active W
+        {
+            get { return Spells.W; }
+        }
+        protected static Spell.Active E
+        {
+            get { return Spells.E; }
+        }
+        protected static Spell.Active R
+        {
+            get { return Spells.R; }
+        }
+        protected static int HighestRange
+        {
+            get { return Spells.highestRange; }
+        }
+
+        protected static DamageType DmgType
+        {
+            get { return Spells.dmgType; }
+        }
+
+        //EventsManager
+        protected static bool CanPostAttack
+        {
+            get { return EventsManager.CanPostAttack; }
+        }
+
+        protected static bool CanPreAttack
+        {
+            get { return EventsManager.CanPreAttack; }
+        }
+        #endregion
+
+        public static bool IsNotNull(Obj_AI_Base target)
         {
             return target != null;
         }
@@ -20,7 +60,7 @@ namespace Mario_sTemplate
 
         public static Obj_AI_Base GetLastMinion(SpellSlot slot)
         {
-            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
+            var spell = Spells.SpellList.FirstOrDefault(s => s.Slot == slot);
             if (spell == null)return null;
 
             var minion =
@@ -29,7 +69,7 @@ namespace Mario_sTemplate
                     .FirstOrDefault(
                         mi =>
                             mi.IsValidTarget(spell.Range) &&
-                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= Spells.GetDamage(slot, mi) &&
                             Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
@@ -59,7 +99,7 @@ namespace Mario_sTemplate
 
         public static Obj_AI_Base GetJungleMinionToKS(SpellSlot slot)
         {
-            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
+            var spell = Spells.SpellList.FirstOrDefault(s => s.Slot == slot);
             if (spell == null) return null;
 
             var minion =
@@ -68,7 +108,7 @@ namespace Mario_sTemplate
                     .FirstOrDefault(
                         mi =>
                             mi.IsValidTarget(spell.Range) &&
-                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= Spells.GetDamage(slot, mi) &&
                             Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
@@ -96,27 +136,27 @@ namespace Mario_sTemplate
             var dmg = 0f;
             var spells = new List<SpellSlot>();
 
-            if (Q.IsReady())
+            if (Spells.Q.IsReady())
             {
-                dmg += GetDamage(SpellSlot.Q, target);
+                dmg += Spells.GetDamage(SpellSlot.Q, target);
                 spells.Add(SpellSlot.Q);
             }
 
-            if (W.IsReady())
+            if (Spells.W.IsReady())
             {
-                dmg += GetDamage(SpellSlot.W, target);
+                dmg += Spells.GetDamage(SpellSlot.W, target);
                 spells.Add(SpellSlot.W);
             }
 
-            if (E.IsReady())
+            if (Spells.E.IsReady())
             {
-                dmg += GetDamage(SpellSlot.E, target);
+                dmg += Spells.GetDamage(SpellSlot.E, target);
                 spells.Add(SpellSlot.E);
             }
 
-            if (R.IsReady())
+            if (Spells.R.IsReady())
             {
-                dmg += GetDamage(SpellSlot.R, target);
+                dmg += Spells.GetDamage(SpellSlot.R, target);
                 spells.Add(SpellSlot.R);
             }
 

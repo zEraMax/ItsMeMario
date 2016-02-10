@@ -1,13 +1,9 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-using static Mario_sTemplate.EventsManager;
-
 namespace Mario_sTemplate.Logics
 {
-    internal class ComboLogics
+    class ComboLogics : Helpers
     {
         #region Agressive
         public static void castQ(Obj_AI_Base target)

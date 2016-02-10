@@ -3,11 +3,6 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
 
-using static Mario_sWukong.Spells;
-using static Mario_sWukong.Helpers;
-using static Mario_sWukong.Logics.ComboLogics;
-using static Mario_sWukong.Logics.FarmLogics;
-
 namespace Mario_sWukong
 {
     internal class ModeManager

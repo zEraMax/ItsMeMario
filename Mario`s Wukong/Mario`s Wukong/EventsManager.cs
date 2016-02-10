@@ -1,8 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using static Mario_sWukong.Spells;
-using static Mario_sWukong.Helpers;
 
 namespace Mario_sWukong
 {

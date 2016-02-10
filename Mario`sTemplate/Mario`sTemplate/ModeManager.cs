@@ -2,15 +2,13 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-using static Mario_sTemplate.Logics.ComboLogics;
+using Mario_sTemplate.Logics;
 
 namespace Mario_sTemplate
 {
-    internal class ModeManager
+    internal class ModeManager : Helpers
     {
-        internal class Modes
+        internal class Modes : Helpers
         {
             public static void Active()
             {
@@ -18,7 +16,7 @@ namespace Mario_sTemplate
             }
             public static void Combo()
             {
-                var target = TargetSelector.GetTarget(highestRange, dmgType);
+                var target = TargetSelector.GetTarget(HighestRange, DmgType);
                 if (target != null && !target.IsZombie && !target.HasUndyingBuff())
                 {
                     //Offensive
@@ -26,7 +24,7 @@ namespace Mario_sTemplate
                     {
                         if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                         {
-                            castQ(target);
+                            ComboLogics.castQ(target);
                         }
                     }
                     //Defensive
@@ -34,7 +32,7 @@ namespace Mario_sTemplate
                     {
                         if(GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                         {
-                            castQ(target);
+                            ComboLogics.castQ(target);
                         }
                     }
                 }

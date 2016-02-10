@@ -1,18 +1,15 @@
 ﻿using EloBuddy;
 
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-
 namespace Mario_sTemplate.Logics
 {
-    internal class FarmLogics
+    internal class FarmLogics : Helpers
     {
         #region LastHit
 
         public static void lastQ()
         {
             var minionQ = GetLaneMinion(Q.Range);
-            if (minionQ.IsNotNull())
+            if (IsNotNull(minionQ))
             {
                 Q.Cast(minionQ);
             }
