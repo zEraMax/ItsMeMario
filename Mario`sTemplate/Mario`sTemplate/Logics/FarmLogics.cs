@@ -11,7 +11,7 @@ namespace Mario_sTemplate.Logics
 
         public static void lastQ()
         {
-            var minionQ = GetLaneMinion(SpellSlot.Q);
+            var minionQ = GetLaneMinion(Q.Range);
             if (minionQ.IsNotNull())
             {
                 Q.Cast(minionQ);

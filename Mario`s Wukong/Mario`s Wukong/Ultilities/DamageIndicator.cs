@@ -5,12 +5,12 @@ using EloBuddy.SDK;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
+using static Mario_sWukong.Spells;
+using static Mario_sWukong.Helpers;
 
 using Color = System.Drawing.Color;
 
-namespace Mario_sTemplate.Ultilities
+namespace Mario_sWukong.Ultilities
 {
     internal class DamageIndicator
     {

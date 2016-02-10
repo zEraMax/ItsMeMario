@@ -4,10 +4,10 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
-using static Mario_sTemplate.Spells;
+using static Mario_sWukong.Spells;
 // ReSharper disable SwitchStatementMissingSomeCases
 
-namespace Mario_sTemplate
+namespace Mario_sWukong
 {
     public static class Helpers
     {
@@ -21,7 +21,7 @@ namespace Mario_sTemplate
         public static Obj_AI_Base GetLastMinion(SpellSlot slot)
         {
             var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
-            if (spell == null)return null;
+            if (spell == null) return null;
 
             var minion =
                 EntityManager.MinionsAndMonsters.GetLaneMinions()
@@ -130,7 +130,6 @@ namespace Mario_sTemplate
         {
             Combo,Harass,LaneClear,JungleClear,LastHit, Settings, Drawings
         }
-
 
         public static bool GetCheckBoxValue(MenuTypes type, string checkName)
         {

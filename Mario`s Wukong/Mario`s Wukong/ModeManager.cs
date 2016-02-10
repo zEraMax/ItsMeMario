@@ -2,11 +2,13 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-using static Mario_sTemplate.Logics.ComboLogics;
 
-namespace Mario_sTemplate
+using static Mario_sWukong.Spells;
+using static Mario_sWukong.Helpers;
+using static Mario_sWukong.Logics.ComboLogics;
+using static Mario_sWukong.Logics.FarmLogics;
+
+namespace Mario_sWukong
 {
     internal class ModeManager
     {
@@ -21,20 +23,54 @@ namespace Mario_sTemplate
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target != null && !target.IsZombie && !target.HasUndyingBuff())
                 {
-                    //Offensive
+                    //Agressive
                     if (GetComboBoxValue(MenuTypes.Combo, "comboBoxComboMode") == 0)
                     {
                         if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                         {
                             castQ(target);
                         }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "wCombo"))
+                        {
+                            castW();
+                        }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
+                        {
+                            castE(target);
+                        }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
+                        {
+                            var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
+
+                            castR(target, minEne);
+                        }
                     }
-                    //Defensive
+                    //Safe
                     else
                     {
-                        if(GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
+                        if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                         {
                             castQ(target);
+                        }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "wCombo"))
+                        {
+                            castW();
+                        }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
+                        {
+                            castSafeE(target);
+                        }
+
+                        if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
+                        {
+                            var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
+
+                            castR(target, minEne);
                         }
                     }
                 }
@@ -42,27 +78,63 @@ namespace Mario_sTemplate
 
             public static void Harass()
             {
+                var target = TargetSelector.GetTarget(highestRange, dmgType);
+                if (target != null && !target.IsZombie && !target.HasUndyingBuff())
+                {
+                    if (GetCheckBoxValue(MenuTypes.Harass, "qHarass"))
+                    {
+                        castQ(target);
+                    }
 
+                    if (GetCheckBoxValue(MenuTypes.Harass, "eHarass"))
+                    {
+                        castE(target);
+                    }
+                }
             }
 
             public static void Flee()
             {
-
+                castW();
             }
 
             public static void LaneClear()
             {
+                if (GetCheckBoxValue(MenuTypes.LaneClear, "qLane"))
+                {
+                    laneQ();
+                }
 
+                if (GetCheckBoxValue(MenuTypes.LaneClear, "eLane"))
+                {
+                    laneE();
+                }
             }
 
             public static void LastHit()
             {
+                if (GetCheckBoxValue(MenuTypes.LastHit, "qLast"))
+                {
+                    lastQ();
+                }
 
+                if (GetCheckBoxValue(MenuTypes.LastHit, "eLast"))
+                {
+                    lastE();
+                }
             }
 
             public static void JungleClear()
             {
+                if (GetCheckBoxValue(MenuTypes.JungleClear, "qJungle"))
+                {
+                    jungleQ();
+                }
 
+                if (GetCheckBoxValue(MenuTypes.JungleClear, "eJungle"))
+                {
+                    jungleE();
+                }
             }
         }
 

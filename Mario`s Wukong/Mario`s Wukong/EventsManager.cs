@@ -1,11 +1,10 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using static Mario_sWukong.Spells;
+using static Mario_sWukong.Helpers;
 
-using static Mario_sTemplate.Spells;
-using static Mario_sTemplate.Helpers;
-
-namespace Mario_sTemplate
+namespace Mario_sWukong
 {
     internal class EventsManager
     {
