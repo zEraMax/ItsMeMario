@@ -1,4 +1,0 @@
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`sTemplate.exe.config
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`sTemplate.exe
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`sTemplate.pdb
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`s Gangplank.exe.config
