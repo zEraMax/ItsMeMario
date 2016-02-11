@@ -1,9 +1,9 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 
-namespace Mario_sWukong.Logics
+namespace Mario_sTemplate.Logics
 {
-    internal class ComboLogics
+    internal class ComboLogics : Helpers
     {
         #region Agressive
         public static void castQ(Obj_AI_Base target)
@@ -11,14 +11,6 @@ namespace Mario_sWukong.Logics
             if (target.IsValidTarget(Q.Range) && Q.IsReady() && CanPostAttack)
             {
                 Q.Cast();
-            }
-        }
-
-        public static void castW()
-        {
-            if (Player.Instance.CountEnemiesInRange(1000) >= 2 && W.IsReady() && Player.Instance.ManaPercent >= 35)
-            {
-                W.Cast();
             }
         }
 
@@ -44,12 +36,11 @@ namespace Mario_sWukong.Logics
         #region Safe
         public static void castSafeE(Obj_AI_Base target)
         {
-            if (target.IsValidTarget(E.Range) && E.IsReady() && target.CountEnemiesInRange(800) < 3)
+            if (target.IsValidTarget(E.Range) && E.IsReady() && target.CountEnemiesInRange(800) <= 2)
             {
                 E.Cast(target);
             }
         }
         #endregion Safe
-
     }
 }

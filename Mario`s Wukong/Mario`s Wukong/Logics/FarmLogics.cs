@@ -1,15 +1,15 @@
 ﻿using EloBuddy;
 
-namespace Mario_sWukong.Logics
+namespace Mario_sTemplate.Logics
 {
-    internal class FarmLogics
+    internal class FarmLogics : Helpers
     {
         #region LastHit
 
         public static void lastQ()
         {
             var minionQ = GetLastMinion(SpellSlot.Q);
-            if (minionQ.IsNotNull())
+            if (IsNotNull(minionQ))
             {
                 Q.Cast();
             }
@@ -18,7 +18,7 @@ namespace Mario_sWukong.Logics
         public static void lastE()
         {
             var minionE = GetLastMinion(SpellSlot.E);
-            if (minionE.IsNotNull())
+            if (IsNotNull(minionE))
             {
                 E.Cast(minionE);
             }
@@ -31,7 +31,7 @@ namespace Mario_sWukong.Logics
         public static void laneQ()
         {
             var minionQ = GetLaneMinion(Q.Range);
-            if (minionQ.IsNotNull())
+            if (IsNotNull(minionQ))
             {
                 Q.Cast();
             }
@@ -40,7 +40,7 @@ namespace Mario_sWukong.Logics
         public static void laneE()
         {
             var minionE = GetLaneMinion(E.Range);
-            if (minionE.IsNotNull())
+            if (IsNotNull(minionE))
             {
                 E.Cast(minionE);
             }
@@ -53,7 +53,7 @@ namespace Mario_sWukong.Logics
         public static void jungleQ()
         {
             var minionJungle = GetJungleMinion(Q.Range);
-            if (minionJungle.IsNotNull())
+            if (IsNotNull(minionJungle))
             {
                 Q.Cast();
             }
@@ -62,7 +62,7 @@ namespace Mario_sWukong.Logics
         public static void jungleE()
         {
             var minionJungle = GetJungleMinion(E.Range);
-            if (minionJungle.IsNotNull())
+            if (IsNotNull(minionJungle))
             {
                 E.Cast(minionJungle);
             }

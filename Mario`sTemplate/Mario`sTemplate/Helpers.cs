@@ -8,37 +8,10 @@ using EloBuddy.SDK.Menu.Values;
 
 namespace Mario_sTemplate
 {
-    internal class Helpers
+    internal class Helpers : Spells
     {
         #region
         //Spaghetti code because EB doesnt support C# 6 :(
-        //Spells
-        protected static Spell.Active Q
-        {
-            get { return Spells.Q; }
-        }
-        protected static Spell.Active W
-        {
-            get { return Spells.W; }
-        }
-        protected static Spell.Active E
-        {
-            get { return Spells.E; }
-        }
-        protected static Spell.Active R
-        {
-            get { return Spells.R; }
-        }
-        protected static int HighestRange
-        {
-            get { return Spells.highestRange; }
-        }
-
-        protected static DamageType DmgType
-        {
-            get { return Spells.dmgType; }
-        }
-
         //EventsManager
         protected static bool CanPostAttack
         {
@@ -49,18 +22,18 @@ namespace Mario_sTemplate
         {
             get { return EventsManager.CanPreAttack; }
         }
-        #endregion
 
         public static bool IsNotNull(Obj_AI_Base target)
         {
             return target != null;
         }
+        #endregion
 
         #region GettingEnemies
 
         public static Obj_AI_Base GetLastMinion(SpellSlot slot)
         {
-            var spell = Spells.SpellList.FirstOrDefault(s => s.Slot == slot);
+            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
             if (spell == null)return null;
 
             var minion =
@@ -69,7 +42,7 @@ namespace Mario_sTemplate
                     .FirstOrDefault(
                         mi =>
                             mi.IsValidTarget(spell.Range) &&
-                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= Spells.GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
                             Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
@@ -99,16 +72,16 @@ namespace Mario_sTemplate
 
         public static Obj_AI_Base GetJungleMinionToKS(SpellSlot slot)
         {
-            var spell = Spells.SpellList.FirstOrDefault(s => s.Slot == slot);
+            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
             if (spell == null) return null;
 
             var minion =
-                EntityManager.MinionsAndMonsters.GetLaneMinions()
+                EntityManager.MinionsAndMonsters.GetJungleMonsters()
                     .OrderBy(m => m.Health)
                     .FirstOrDefault(
                         mi =>
                             mi.IsValidTarget(spell.Range) &&
-                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= Spells.GetDamage(slot, mi) &&
+                            Prediction.Health.GetPrediction(mi, spell.CastDelay) <= GetDamage(slot, mi) &&
                             Prediction.Health.GetPrediction(mi, spell.CastDelay) > 20);
 
             return minion;
@@ -130,37 +103,21 @@ namespace Mario_sTemplate
             return hero;
         }
 
-        //TODO FIX THIS SHIT LATER
-        public static List<SpellSlot> GetBestSpellsToKS(int range, Obj_AI_Base target)
+        public static List<SpellSlot> GetBestSpellsToKS(Obj_AI_Base target, List<Spell.SpellBase> availableSpells)
         {
             var dmg = 0f;
+            var delay = 0;
             var spells = new List<SpellSlot>();
 
-            if (Spells.Q.IsReady())
+            foreach (var spell in from spell in availableSpells let spellInfo = Player.GetSpell(spell.Slot) where spellInfo.IsReady select spell)
             {
-                dmg += Spells.GetDamage(SpellSlot.Q, target);
-                spells.Add(SpellSlot.Q);
+                dmg += GetDamage(spell.Slot, target);
+                delay += spell.CastDelay;
+                spells.Add(spell.Slot);
+                if (Prediction.Health.GetPrediction(target, delay) <= dmg) return spells;
             }
 
-            if (Spells.W.IsReady())
-            {
-                dmg += Spells.GetDamage(SpellSlot.W, target);
-                spells.Add(SpellSlot.W);
-            }
-
-            if (Spells.E.IsReady())
-            {
-                dmg += Spells.GetDamage(SpellSlot.E, target);
-                spells.Add(SpellSlot.E);
-            }
-
-            if (Spells.R.IsReady())
-            {
-                dmg += Spells.GetDamage(SpellSlot.R, target);
-                spells.Add(SpellSlot.R);
-            }
-
-            return spells;
+            return null;
         }
         #endregion KS
 
@@ -204,7 +161,13 @@ namespace Mario_sTemplate
             }
             catch (Exception)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Menu name is wrong please fix it = " + checkName);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
 
             return value;
@@ -242,7 +205,13 @@ namespace Mario_sTemplate
             }
             catch (Exception)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Menu name is wrong please fix it = " + sliderName);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
 
 
@@ -281,7 +250,13 @@ namespace Mario_sTemplate
             }
             catch (Exception)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Menu name is wrong please fix it = " + keyName);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
 
             return value;
@@ -319,7 +294,13 @@ namespace Mario_sTemplate
             }
             catch (Exception)
             {
-                Console.WriteLine("Menu name is wrong please fix it = " + comboBoxName);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Menu name is wrong please fix it = " + comboBoxName );
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("============================= ERROR =============================");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
 
             return value;

@@ -1,72 +1,72 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK;
-using EloBuddy.SDK.Rendering;
+using Mario_sTemplate.Logics;
 
-namespace Mario_sWukong
+namespace Mario_sTemplate
 {
-    internal class ModeManager
+    internal class ModeManager : Helpers
     {
-        internal class Modes
+        internal class Modes : Helpers
         {
             public static void Active()
             {
-                
+                var target = TargetSelector.GetTarget(highestRange, dmgType);
+                if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
+
+                if (GetCheckBoxValue(MenuTypes.Harass, "qAutoHarass") && GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
+                {
+                    ComboLogics.castQ(target);
+                }
+
+                if (GetCheckBoxValue(MenuTypes.Harass, "eAutoHarass") && GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
+                {
+                    ComboLogics.castE(target);
+                }
             }
             public static void Combo()
             {
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
-                if (target != null && !target.IsZombie && !target.HasUndyingBuff())
+
+                if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
+                //Agressive
+                if (GetComboBoxValue(MenuTypes.Combo, "comboBoxComboMode") == 0)
                 {
-                    //Agressive
-                    if (GetComboBoxValue(MenuTypes.Combo, "comboBoxComboMode") == 0)
+                    if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                     {
-                        if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
-                        {
-                            castQ(target);
-                        }
-
-                        if (GetCheckBoxValue(MenuTypes.Combo, "wCombo"))
-                        {
-                            castW();
-                        }
-
-                        if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
-                        {
-                            castE(target);
-                        }
-
-                        if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
-                        {
-                            var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
-
-                            castR(target, minEne);
-                        }
+                        ComboLogics.castQ(target);
                     }
-                    //Safe
-                    else
+
+                    if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
                     {
-                        if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
-                        {
-                            castQ(target);
-                        }
+                        ComboLogics.castE(target);
+                    }
 
-                        if (GetCheckBoxValue(MenuTypes.Combo, "wCombo"))
-                        {
-                            castW();
-                        }
+                    if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
+                    {
+                        var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
 
-                        if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
-                        {
-                            castSafeE(target);
-                        }
+                        ComboLogics.castR(target, minEne);
+                    }
+                }
+                //Safe
+                else
+                {
+                    if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
+                    {
+                        ComboLogics.castQ(target);
+                    }
 
-                        if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
-                        {
-                            var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
+                    if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
+                    {
+                        ComboLogics.castSafeE(target);
+                    }
 
-                            castR(target, minEne);
-                        }
+                    if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
+                    {
+                        var minEne = GetSliderValue(MenuTypes.Combo, "rComboCount");
+
+                        ComboLogics.castR(target, minEne);
                     }
                 }
             }
@@ -74,35 +74,33 @@ namespace Mario_sWukong
             public static void Harass()
             {
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
-                if (target != null && !target.IsZombie && !target.HasUndyingBuff())
-                {
-                    if (GetCheckBoxValue(MenuTypes.Harass, "qHarass"))
-                    {
-                        castQ(target);
-                    }
 
-                    if (GetCheckBoxValue(MenuTypes.Harass, "eHarass"))
-                    {
-                        castE(target);
-                    }
+                if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
+                if (GetCheckBoxValue(MenuTypes.Harass, "qHarass") && GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
+                {
+                    ComboLogics.castQ(target);
+                }
+
+                if (GetCheckBoxValue(MenuTypes.Harass, "eHarass") && GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
+                {
+                    ComboLogics.castE(target);
                 }
             }
 
             public static void Flee()
             {
-                castW();
             }
 
             public static void LaneClear()
             {
                 if (GetCheckBoxValue(MenuTypes.LaneClear, "qLane"))
                 {
-                    laneQ();
+                    FarmLogics.laneQ();
                 }
 
                 if (GetCheckBoxValue(MenuTypes.LaneClear, "eLane"))
                 {
-                    laneE();
+                    FarmLogics.laneE();
                 }
             }
 
@@ -110,12 +108,12 @@ namespace Mario_sWukong
             {
                 if (GetCheckBoxValue(MenuTypes.LastHit, "qLast"))
                 {
-                    lastQ();
+                    FarmLogics.lastQ();
                 }
 
                 if (GetCheckBoxValue(MenuTypes.LastHit, "eLast"))
                 {
-                    lastE();
+                    FarmLogics.lastE();
                 }
             }
 
@@ -123,20 +121,19 @@ namespace Mario_sWukong
             {
                 if (GetCheckBoxValue(MenuTypes.JungleClear, "qJungle"))
                 {
-                    jungleQ();
+                    FarmLogics.jungleQ();
                 }
 
                 if (GetCheckBoxValue(MenuTypes.JungleClear, "eJungle"))
                 {
-                    jungleE();
+                    FarmLogics.jungleE();
                 }
             }
         }
 
-        public static void Intitialize()
+        public static void InitModeManager()
         {
             Game.OnTick += Game_OnTick;
-            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void Game_OnTick(EventArgs args)
@@ -162,7 +159,7 @@ namespace Mario_sWukong
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
                 {
-                    Modes.JungleClear();
+                    Modes.LaneClear();
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
@@ -184,31 +181,6 @@ namespace Mario_sWukong
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("============================= ERROR IN MODE =============================");
                 Console.ForegroundColor = ConsoleColor.Gray;
-            }
-        }
-
-        private static void Drawing_OnDraw(EventArgs args)
-        {
-            var ready = GetCheckBoxValue(MenuTypes.Drawings, "readyDraw");
-
-            if (GetCheckBoxValue(MenuTypes.Drawings, "qDraw") && (ready ? Q.IsReady() : Q.IsLearned))
-            {
-                Circle.Draw(SharpDX.Color.Red, Q.Range, 1f, Player.Instance);
-            }
-
-            if (GetCheckBoxValue(MenuTypes.Drawings, "wDraw") && (ready ? W.IsReady() : W.IsLearned))
-            {
-                Circle.Draw(SharpDX.Color.Blue, W.Range, 1f, Player.Instance);
-            }
-
-            if (GetCheckBoxValue(MenuTypes.Drawings, "eDraw") && (ready ? E.IsReady() : E.IsLearned))
-            {
-                Circle.Draw(SharpDX.Color.Purple, E.Range, 1f, Player.Instance);
-            }
-
-            if (GetCheckBoxValue(MenuTypes.Drawings, "rDraw") && (ready ? R.IsReady() : R.IsLearned))
-            {
-                Circle.Draw(SharpDX.Color.Orange, R.Range, 1f, Player.Instance);
             }
         }
     }

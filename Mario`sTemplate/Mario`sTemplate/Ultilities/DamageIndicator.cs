@@ -8,7 +8,7 @@ using Color = System.Drawing.Color;
 
 namespace Mario_sTemplate.Ultilities
 {
-    internal class DamageIndicator : Spells
+    internal class DamageIndicator : Helpers
     {
         //Offsets
         private const float YOff = 9.8f;

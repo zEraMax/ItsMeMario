@@ -15,10 +15,10 @@ namespace Mario_sTemplate
         {
             try
             {
-                Spells.Intitialize();
+                Spells.InitSpells();
                 MenuSettings.LoadMenu();
-                ModeManager.Intitialize();
-                EventsManager.Intitialize();
+                ModeManager.InitModeManager();
+                EventsManager.InitEventManagers();
 
                 Ultilities.DamageIndicator.Init();
             }
