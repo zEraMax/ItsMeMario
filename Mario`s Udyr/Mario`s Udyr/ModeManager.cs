@@ -21,10 +21,7 @@ namespace Mario_sTemplate
                     //Offensive
                     if (GetComboBoxValue(MenuTypes.Combo, "comboBoxComboMode") == 0)
                     {
-                        if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
-                        {
-                            ComboLogics.castQ(target);
-                        }
+                        ComboLogics.CastSpells();
                     }
                     //Defensive
                     else

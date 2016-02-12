@@ -1,5 +1,6 @@
 ﻿using System;
 using EloBuddy.SDK.Events;
+using Mario_sTemplate.Logics;
 
 namespace Mario_sTemplate
 {
@@ -19,6 +20,7 @@ namespace Mario_sTemplate
                 MenuSettings.LoadMenu();
                 ModeManager.InitModeManager();
                 EventsManager.InitEventManagers();
+                ComboLogics.InitiateSpellsPriority();
 
                 Ultilities.DamageIndicator.Init();
             }
