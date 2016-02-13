@@ -7,7 +7,7 @@ namespace Mario_sTemplate
 {
     internal class MenuSettings
     {
-        public static readonly string MenuName = "Mario`s Wukong";
+        public static readonly string MenuName = "Mario`s Gangplank";
         #region Variables
         public static Menu ComboMenu, HarassMenu, LaneClearMenu, JungleClearMenu, LastHitMenu, DrawingsMenu, SettingsMenu;
         #endregion Variables
@@ -16,7 +16,7 @@ namespace Mario_sTemplate
         {
             var startMenu = MainMenu.AddMenu(MenuName, MenuName.ToLower());
 
-            var notStart = new SimpleNotification("Mario`s Wukong Loaded", "Mario`s Wukong sucessfully loaded.");
+            var notStart = new SimpleNotification("Mario`s Gangplank Loaded", "Mario`s Gangplank sucessfully loaded.");
             Notifications.Show(notStart, 2500);
 
             #region Combo
@@ -37,21 +37,25 @@ namespace Mario_sTemplate
             ComboMenu.AddSeparator(5);
             ComboMenu.AddGroupLabel("-:Combo Spells:-");
             ComboMenu.Add("qCombo", new CheckBox("• Use Q."));
+            ComboMenu.Add("wCombo", new CheckBox("• Use W."));
             ComboMenu.Add("eCombo", new CheckBox("• Use E."));
             ComboMenu.Add("rCombo", new CheckBox("• Use R."));
-            ComboMenu.Add("rComboCount", new Slider("Only use R if there are ({0}) near.", 2, 0, 5));
             #endregion Combo
 
             #region Harass
             HarassMenu = startMenu.AddSubMenu(":-Harass Menu-:");
             HarassMenu.AddGroupLabel("-:Harass Spells:-");
             HarassMenu.Add("qHarass", new CheckBox("• Use Q."));
+            HarassMenu.Add("wHarass", new CheckBox("• Use W."));
             HarassMenu.Add("eHarass", new CheckBox("• Use E."));
+            HarassMenu.Add("rHarass", new CheckBox("• Use R."));
             HarassMenu.AddGroupLabel("-:Harass Settings:-");
             HarassMenu.Add("manaHarass", new Slider("Mana must be greater than ({0}) to use harass spells.", 30));
             HarassMenu.AddGroupLabel("-:AutoHarass Spells:-");
             HarassMenu.Add("qAutoHarass", new CheckBox("• Use Q."));
+            HarassMenu.Add("wAutoHarass", new CheckBox("• Use W."));
             HarassMenu.Add("eAutoHarass", new CheckBox("• Use E."));
+            HarassMenu.Add("rAutoHarass", new CheckBox("• Use R."));
             HarassMenu.AddGroupLabel("-:AutoHarass Settings:-");
             var keyAutoHarass = HarassMenu.Add("keyAutoHarass",
                 new KeyBind("KeyBind to change on/off AutoHarass", false, KeyBind.BindTypes.PressToggle, 'T'));
@@ -100,8 +104,6 @@ namespace Mario_sTemplate
 
             #region Settings
             SettingsMenu = startMenu.AddSubMenu(":-Settings Menu-:");
-            SettingsMenu.AddGroupLabel("-:Auto R:-");
-            SettingsMenu.Add("rAutoCount", new Slider("Auto use R if there are ({0}) near.(0 = Off)", 3, 0, 5));
             SettingsMenu.AddGroupLabel("-:Interrupt/Gapcloser:-");
             SettingsMenu.Add("spellInterrupt", new CheckBox("• Use X, on interruptables spells."));
             SettingsMenu.Add("spellGapcloser", new CheckBox("• Use X, on gapcloser."));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_sTemplate.Logics;
@@ -14,16 +15,27 @@ namespace Mario_sTemplate
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
 
-                if (GetCheckBoxValue(MenuTypes.Harass, "qAutoHarass") && GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
+
+
+                if (GetCheckBoxValue(MenuTypes.Harass, "qAutoHarass") &&
+                    GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
                 {
                     ComboLogics.castQ(target);
                 }
 
-                if (GetCheckBoxValue(MenuTypes.Harass, "eAutoHarass") && GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
+                if (GetCheckBoxValue(MenuTypes.Harass, "eAutoHarass") &&
+                    GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
                 {
-                    ComboLogics.castE(target);
+                    if (!target.IsUnderHisturret())
+                    {
+                        ComboLogics.castE(target);
+                    }
                 }
+                var minEne = GetSliderValue(MenuTypes.Combo, "rAutoCount");
+
+                ComboLogics.castR(target, minEne);
             }
+
             public static void Combo()
             {
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
@@ -76,12 +88,14 @@ namespace Mario_sTemplate
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
 
                 if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
-                if (GetCheckBoxValue(MenuTypes.Harass, "qHarass") && GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
+                if (GetCheckBoxValue(MenuTypes.Harass, "qHarass") &&
+                    GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
                 {
                     ComboLogics.castQ(target);
                 }
 
-                if (GetCheckBoxValue(MenuTypes.Harass, "eHarass") && GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
+                if (GetCheckBoxValue(MenuTypes.Harass, "eHarass") &&
+                    GetSliderValue(MenuTypes.Harass, "manaHarass") < Player.Instance.ManaPercent)
                 {
                     ComboLogics.castE(target);
                 }
@@ -138,7 +152,7 @@ namespace Mario_sTemplate
 
         private static void Game_OnTick(EventArgs args)
         {
-                        try
+            try
             {
                 Modes.Active();
 
