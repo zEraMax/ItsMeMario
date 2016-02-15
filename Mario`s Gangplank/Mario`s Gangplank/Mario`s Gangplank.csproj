@@ -7,8 +7,8 @@
     <ProjectGuid>{C957B4DD-934B-4F17-A5BC-7599585A97D2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mario_sTemplate</RootNamespace>
-    <AssemblyName>Mario`sTemplate</AssemblyName>
+    <RootNamespace>Mario_sGangplank</RootNamespace>
+    <AssemblyName>Mario`s Gangplank</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

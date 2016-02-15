@@ -11,8 +11,9 @@ namespace Mario_sTemplate
         {
             public static void Active()
             {
-                
+
             }
+
             public static void Combo()
             {
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
@@ -29,7 +30,7 @@ namespace Mario_sTemplate
                     //Defensive
                     else
                     {
-                        if(GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
+                        if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                         {
                             ComboLogics.castQ(target);
                         }
@@ -70,7 +71,7 @@ namespace Mario_sTemplate
 
         private static void Game_OnTick(EventArgs args)
         {
-                        try
+            try
             {
                 Modes.Active();
 

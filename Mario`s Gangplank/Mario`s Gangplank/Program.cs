@@ -1,7 +1,7 @@
 ﻿using System;
 using EloBuddy.SDK.Events;
 
-namespace Mario_sTemplate
+namespace Mario_sGangplank
 {
     internal class Program
     {

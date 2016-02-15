@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using EloBuddy.SDK.Menu;
+﻿using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Notifications;
 
-namespace Mario_sTemplate
+namespace Mario_sGangplank
 {
     internal class MenuSettings
     {
@@ -21,41 +20,23 @@ namespace Mario_sTemplate
 
             #region Combo
             ComboMenu = startMenu.AddSubMenu(":-Combo Menu-:");
-            ComboMenu.AddGroupLabel("-:Combo Settings:-");
-            var list = new List<string> {"Agressive", "Safe"};
-            var comboBox = ComboMenu.Add("comboBoxComboMode", new ComboBox("Type of combos:", list));
-            var key = ComboMenu.Add("keyBindModeCombo",
-                new KeyBind("Key to change the mode", true, KeyBind.BindTypes.PressToggle, 'Z'));
-            key.OnValueChange += delegate
-            {
-                comboBox.SelectedIndex = comboBox.SelectedIndex == 1 ? 0 : 1;
-               
-                var notModeChange = new SimpleNotification("Combo Mode Change", "Combo Mode changed to " + comboBox.SelectedText);
-                Notifications.Show(notModeChange, 1000);
-            };
-            //
-            ComboMenu.AddSeparator(5);
             ComboMenu.AddGroupLabel("-:Combo Spells:-");
             ComboMenu.Add("qCombo", new CheckBox("• Use Q."));
-            ComboMenu.Add("wCombo", new CheckBox("• Use W."));
             ComboMenu.Add("eCombo", new CheckBox("• Use E."));
             ComboMenu.Add("rCombo", new CheckBox("• Use R."));
+            ComboMenu.Add("rComboCount", new Slider("Minimun enemies to use R.(0 = Off)", 2, 0, 5));
             #endregion Combo
 
             #region Harass
             HarassMenu = startMenu.AddSubMenu(":-Harass Menu-:");
             HarassMenu.AddGroupLabel("-:Harass Spells:-");
             HarassMenu.Add("qHarass", new CheckBox("• Use Q."));
-            HarassMenu.Add("wHarass", new CheckBox("• Use W."));
             HarassMenu.Add("eHarass", new CheckBox("• Use E."));
-            HarassMenu.Add("rHarass", new CheckBox("• Use R."));
             HarassMenu.AddGroupLabel("-:Harass Settings:-");
             HarassMenu.Add("manaHarass", new Slider("Mana must be greater than ({0}) to use harass spells.", 30));
             HarassMenu.AddGroupLabel("-:AutoHarass Spells:-");
             HarassMenu.Add("qAutoHarass", new CheckBox("• Use Q."));
-            HarassMenu.Add("wAutoHarass", new CheckBox("• Use W."));
             HarassMenu.Add("eAutoHarass", new CheckBox("• Use E."));
-            HarassMenu.Add("rAutoHarass", new CheckBox("• Use R."));
             HarassMenu.AddGroupLabel("-:AutoHarass Settings:-");
             var keyAutoHarass = HarassMenu.Add("keyAutoHarass",
                 new KeyBind("KeyBind to change on/off AutoHarass", false, KeyBind.BindTypes.PressToggle, 'T'));
@@ -72,21 +53,22 @@ namespace Mario_sTemplate
             #region LaneClear
             LaneClearMenu = startMenu.AddSubMenu(":-LaneClear Menu-:");
             LaneClearMenu.AddGroupLabel("-:LaneClear Spells:-");
-            LaneClearMenu.Add("qLane", new CheckBox("• Use Q."));
-            LaneClearMenu.Add("wLane", new CheckBox("• Use W."));
+            LaneClearMenu.Add("qLane", new CheckBox("• Use Q on Barrel."));
+            LaneClearMenu.Add("qLaneLast", new CheckBox("• Use Q to last hit."));
             LaneClearMenu.Add("eLane", new CheckBox("• Use E."));
-            LaneClearMenu.Add("rLane", new CheckBox("• Use R."));
+            LaneClearMenu.Add("eKeep", new Slider("• Keep ({0}) barrels.", 1, 0, 4));
             LaneClearMenu.AddGroupLabel("-:LaneClear Settings:-");
+            LaneClearMenu.Add("qLaneCount", new Slider("How many minions must be in range of the barrel.", 2,0,6));
+            LaneClearMenu.Add("eLaneCount", new Slider("Minimun minions to place E.", 3,0,6));
             LaneClearMenu.Add("manaLane", new Slider("Mana must be greater than ({0}) to use laneclear spells", 30));
             #endregion LaneClear
 
             #region JungleClear
             JungleClearMenu = startMenu.AddSubMenu(":-JungleClear Menu-:");
             JungleClearMenu.AddGroupLabel("-:JungleClear Spells:-");
-            JungleClearMenu.Add("qJungle", new CheckBox("• Use Q."));
-            JungleClearMenu.Add("wJungle", new CheckBox("• Use W."));
+            JungleClearMenu.Add("qJungle", new CheckBox("• Use Q Barrel."));
+            JungleClearMenu.Add("qJungleLast", new CheckBox("• Use Q to kill the minion."));
             JungleClearMenu.Add("eJungle", new CheckBox("• Use E."));
-            JungleClearMenu.Add("rJungle", new CheckBox("• Use R."));
             JungleClearMenu.AddGroupLabel("-:JungleClear Settings:-");
             JungleClearMenu.Add("manaJungle", new Slider("Mana must be greater than ({0}) to use jungleclear spells.", 30));
             #endregion JungleClear
@@ -95,18 +77,20 @@ namespace Mario_sTemplate
             LastHitMenu = startMenu.AddSubMenu(":-LastHit Menu-:");
             LastHitMenu.AddGroupLabel("-:LastHit Spells:-");
             LastHitMenu.Add("qLast", new CheckBox("• Use Q."));
-            LastHitMenu.Add("wLast", new CheckBox("• Use W."));
-            LastHitMenu.Add("eLast", new CheckBox("• Use E."));
-            LastHitMenu.Add("rLast", new CheckBox("• Use R."));
             LastHitMenu.AddGroupLabel("-:LastHit Settings:-");
-            LastHitMenu.Add("manaLast", new Slider("Mana must be greater than ({0}) to use jungleclear spells.", 30));
+            LastHitMenu.Add("manaLast", new Slider("Mana must be greater than ({0}) to use lasthit spells.", 30));
             #endregion Lasthit
 
             #region Settings
             SettingsMenu = startMenu.AddSubMenu(":-Settings Menu-:");
-            SettingsMenu.AddGroupLabel("-:Interrupt/Gapcloser:-");
-            SettingsMenu.Add("spellInterrupt", new CheckBox("• Use X, on interruptables spells."));
-            SettingsMenu.Add("spellGapcloser", new CheckBox("• Use X, on gapcloser."));
+            SettingsMenu.AddGroupLabel("-:R Settings:-");
+            SettingsMenu.Add("rKS", new CheckBox("• Use R to ks."));
+            SettingsMenu.AddGroupLabel("-:W Settings:-"); 
+            SettingsMenu.Add("wBuffStun", new CheckBox("• Stun"));
+            SettingsMenu.Add("wBuffSlow", new CheckBox("• Slow", false));
+            SettingsMenu.Add("wBuffBlind", new CheckBox("• Blind"));
+            SettingsMenu.Add("wBuffSupression", new CheckBox("• Supression"));
+            SettingsMenu.Add("wBuffSnare", new CheckBox("• Snare"));
             SettingsMenu.AddGroupLabel("-:Settings:-");
             LastHitMenu.Add("manaSettings", new Slider("Mana must be greater than ({0}) to use any spell in this menu.", 30));
             #endregion Settings
@@ -114,11 +98,13 @@ namespace Mario_sTemplate
             #region Drawings
             DrawingsMenu = startMenu.AddSubMenu(":-Drawings Menu-:");
             DrawingsMenu.Add("readyDraw", new CheckBox("• Draw Spell`s range only if they are ready."));
+            DrawingsMenu.Add("damageDraw", new CheckBox("• Draw damage indicator."));
+            DrawingsMenu.Add("perDraw", new CheckBox("• Draw damage indicator percent."));
+            DrawingsMenu.Add("statDraw", new CheckBox("• Draw damage indicator statistics"));
             DrawingsMenu.AddGroupLabel("-:Spells:-");
             DrawingsMenu.Add("qDraw", new CheckBox("• Draw Q."));
             DrawingsMenu.Add("wDraw", new CheckBox("• Draw W."));
             DrawingsMenu.Add("eDraw", new CheckBox("• Draw E."));
-            DrawingsMenu.Add("rDraw", new CheckBox("• Draw R."));
             #endregion Drawings
         }
     }

@@ -1,8 +1,3 @@
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`sTemplate.exe.config
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`sTemplate.exe
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`sTemplate.pdb
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`sTemplate.exe
-C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`sTemplate.pdb
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\EloBuddy.dll
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\EloBuddy.Sandbox.dll
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\EloBuddy.SDK.dll
@@ -10,3 +5,8 @@ C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\b
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\SharpDX.dll
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.csprojResolveAssemblyReference.cache
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`s Gangplank.exe.config
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`s Gangplank.exe
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\bin\Debug\Mario`s Gangplank.pdb
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.exe
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.pdb

@@ -6,7 +6,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 // ReSharper disable SwitchStatementMissingSomeCases
 
-namespace Mario_sTemplate
+namespace Mario_sGangplank
 {
     internal class Helpers : Spells
     {
@@ -90,15 +90,18 @@ namespace Mario_sTemplate
 
         #region KS
 
-        public static AIHeroClient GetBestKSHero(uint range, float spellDMG, int spellDelay)
+        public static AIHeroClient GetBestKSHero(SpellSlot slot)
         {
+            var spell = SpellList.FirstOrDefault(s => s.Slot == slot);
+            if (spell == null) return null;
+
             var hero =
                 EntityManager.Heroes.Enemies.OrderBy(x => x.Health).ThenBy(TargetSelector.GetPriority)
                     .FirstOrDefault(
                         e =>
-                            e.IsValidTarget(range) &&
-                            Prediction.Health.GetPrediction(e, spellDelay) + e.TotalShield() <= spellDMG &&
-                            Prediction.Health.GetPrediction(e, spellDelay) > 20);
+                            e.IsValidTarget(spell.Range) &&
+                            Prediction.Health.GetPrediction(e, spell.CastDelay) + e.TotalShield() <= GetRKSDamage(e) &&
+                            Prediction.Health.GetPrediction(e, spell.CastDelay) > 20);
 
             return hero;
         }

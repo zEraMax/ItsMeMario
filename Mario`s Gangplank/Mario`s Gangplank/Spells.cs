@@ -1,37 +1,44 @@
 ﻿using System.Collections.Generic;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 
 // ReSharper disable SwitchStatementMissingSomeCases
 
-namespace Mario_sTemplate
+namespace Mario_sGangplank
 {
     internal class Spells
     {
         #region Consts
-        public const DamageType dmgType = DamageType.Mixed;
-        public const int highestRange = 500;
+        public const DamageType dmgType = DamageType.Physical;
+        public const int highestRange = 625;
         #endregion Consts
 
         public static void InitSpells()
         {
             SpellsSettings();
         }
-        public static Spell.Active Q;
+        public static Spell.Targeted Q;
         public static Spell.Active W;
-        public static Spell.Active E;
-        public static Spell.Active R;
+        public static Spell.Skillshot E;
+        public static Spell.Skillshot R;
         public static List<Spell.SpellBase> SpellList = new List<Spell.SpellBase>(); 
 
         private static void SpellsSettings()
         {
-            Q =  new Spell.Active(SpellSlot.Q, 500);
+            Q =  new Spell.Targeted(SpellSlot.Q, 625);
             SpellList.Add(Q);
-            W =  new Spell.Active(SpellSlot.W, 500);
+            W =  new Spell.Active(SpellSlot.W);
             SpellList.Add(W);
-            E =  new Spell.Active(SpellSlot.E, 500);
+            E =  new Spell.Skillshot(SpellSlot.E, 1150, SkillShotType.Circular, 450, 2200, 400)
+            {
+                AllowedCollisionCount = int.MaxValue
+            };
             SpellList.Add(E);
-            R =  new Spell.Active(SpellSlot.R, 500);
+            R =  new Spell.Skillshot(SpellSlot.R, int.MaxValue, SkillShotType.Circular, 250, int.MaxValue, 600)
+            {
+                AllowedCollisionCount = int.MaxValue
+            };
             SpellList.Add(R);
         }
 
@@ -40,6 +47,7 @@ namespace Mario_sTemplate
         {
             var lvl = Player.Instance.Spellbook.GetSpell(slot).Level - 1;
             var AD = Player.Instance.FlatPhysicalDamageMod;
+            var TotalAD = Player.Instance.TotalAttackDamage;
             var AP = Player.Instance.FlatMagicDamageMod;
             var dmg = 0f;
 
@@ -48,27 +56,40 @@ namespace Mario_sTemplate
                 case SpellSlot.Q:
                     if (Q.IsReady())
                     {
-                        dmg += new float[] { 10, 20, 30, 40, 50 }[lvl] * AD;
+                        dmg += new float[] { 20, 45, 70, 95, 120 }[lvl] +1f * TotalAD;
                     }
                     break;
                 case SpellSlot.W:
                     if (W.IsReady())
                     {
-                        dmg += new float[] { 10, 20, 30, 40, 50 }[lvl] * AD;
+                        dmg += new float[] { 0, 0, 0, 0, 0 }[lvl] + 1f * AD;
                     }
                     break;
                 case SpellSlot.E:
                     if (E.IsReady())
                     {
-                        dmg += new float[] { 10, 20, 30, 40, 50 }[lvl] * AD;
+                        dmg += new float[] {80, 110, 140, 170, 200}[lvl];
                     }
                     break;
                 case SpellSlot.R:
                     if (R.IsReady())
                     {
-                        dmg += new float[] { 10, 20, 30, 40, 50 }[lvl] * AD;
+                        dmg += new float[] { 600, 840, 1080 }[lvl] * 0.6f + 1.2f * AP;
                     }
                     break;
+            }
+            return Player.Instance.CalculateDamageOnUnit(target, dmgType, dmg - 10);
+        }
+
+        public static float GetRKSDamage(Obj_AI_Base target)
+        {
+            var lvl = Player.Instance.Spellbook.GetSpell(SpellSlot.R).Level - 1;
+            var AP = Player.Instance.FlatMagicDamageMod;
+            var dmg = 0f;
+
+            if (R.IsReady())
+            {
+                dmg += new float[] { 120, 240, 380 }[lvl] + 1.2f * AP;
             }
             return Player.Instance.CalculateDamageOnUnit(target, dmgType, dmg - 10);
         }

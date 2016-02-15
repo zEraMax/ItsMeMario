@@ -3,10 +3,20 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
-namespace Mario_sTemplate
+namespace Mario_sGangplank
 {
     internal class Barrrels
     {
+        public static void InitBarrrels()
+        {
+            GameObject.OnCreate += GameObject_OnCreate;
+        }
+
+        private static void GameObject_OnCreate(GameObject sender, System.EventArgs args)
+        {
+                Chat.Print(sender.Name);
+        }
+
         public static Obj_AI_Base GetKillBarrel()
         {
             var barrel =
@@ -14,7 +24,7 @@ namespace Mario_sTemplate
                     .OrderBy(b => b.Health)
                     .FirstOrDefault(
                         o =>
-                            o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(350) > 1 && o.Health <= 1);
+                            o.Name.ToLower().Equals("barrel") && o.Health <= 1 && o.Health != 0);
             return barrel;
         }
 
@@ -23,7 +33,7 @@ namespace Mario_sTemplate
             var barrel =
                 ObjectManager.Get<Obj_AI_Base>()
                     .OrderBy(b => b.Health)
-                    .FirstOrDefault(o => o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(350) > 1);
+                    .FirstOrDefault(o => o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(350) > 1 && o.Health != 0);
             return barrel;
         }
 
@@ -31,7 +41,8 @@ namespace Mario_sTemplate
         {
             var barrel =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .Where(o => o.Name.ToLower().Equals("barrel"));
+                    .Where(o => o.Name.ToLower().Equals("barrel") && o.Health != 0);
+                
             return barrel;
         }
     }
