@@ -93,9 +93,9 @@ namespace Mario_sGangplank.Logics
 
         public static void castRKS(Obj_AI_Base target)
         {
-            if (R.IsReady() && target.Health <= GetRKSDamage(target))
+            if (R.IsReady() && target.Health <= GetRKSDamage(target) && !Player.Instance.IsInRange(target, 1000))
             {
-                Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position.Extend(target.Direction.To2D().Perpendicular(), target.MoveSpeed - 100).To3D());
+                Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.ServerPosition);
             }
         }
 
@@ -107,7 +107,7 @@ namespace Mario_sGangplank.Logics
             if (enemy == null) return;
             if (R.IsReady() && enemy.HealthPercent + 10 > ally.HealthPercent)
             {
-                Player.Instance.Spellbook.CastSpell(SpellSlot.R, ally.Position.Extend(ally.Direction.To2D().Perpendicular(), ally.MoveSpeed - 100).To3D());
+                Player.Instance.Spellbook.CastSpell(SpellSlot.R, ally.ServerPosition.Extend(ally.Direction.To2D().Perpendicular(), ally.MoveSpeed - 100).To3D());
             }
         }
 

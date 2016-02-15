@@ -22,7 +22,7 @@ namespace Mario_sGangplank
 
         private static void Orbwalker_OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
-            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.LastHit, "qLastt") && Spells.Q.IsReady() && Prediction.Health.GetPrediction(target, Spells.Q.CastDelay) <= target.Health &&
+            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.LastHit, "qLast") && Spells.Q.IsReady() && Prediction.Health.GetPrediction(target, Spells.Q.CastDelay) <= target.Health &&
                 target.Health <= Player.Instance.GetAutoAttackDamage(target))
             {
                 Spells.Q.Cast(target);
