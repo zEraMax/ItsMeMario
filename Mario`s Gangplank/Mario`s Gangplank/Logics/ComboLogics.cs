@@ -49,7 +49,7 @@ namespace Mario_sGangplank.Logics
             {
                 if (R.IsReady() && target.CountEnemiesInRange(520) >= count -1)
                 {
-                    R.Cast(target);
+                    Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Mario_sGangplank.Logics
         {
             if (R.IsReady() && target.Health <= GetRKSDamage(target))
             {
-                R.Cast(R.GetPrediction(target).CastPosition);
+                Player.Instance.Spellbook.CastSpell(SpellSlot.R,target.Position.Extend(target.Direction.To2D().Perpendicular(), target.MoveSpeed).To3D());
             }
         }
 
