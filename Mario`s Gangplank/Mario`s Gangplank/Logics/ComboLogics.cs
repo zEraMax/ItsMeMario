@@ -10,7 +10,7 @@ namespace Mario_sGangplank.Logics
 
         public static void castQ(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 1)
+            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 2)
             {
                 castQBarrel(target);
             }
