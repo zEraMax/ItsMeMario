@@ -10,12 +10,21 @@ namespace Mario_sGangplank.Logics
 
         public static void castQ(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 2)
+            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 1)
             {
                 castQBarrel(target);
             }
             else
             {
+                var barrel = Barrrels.GetKillBarrelWithEemyInside();
+                if (barrel != null)
+                {
+                    if (barrel.IsValidTarget(Q.Range) && Q.IsReady())
+                    {
+                        Q.Cast(barrel);
+                    }
+                }
+
                 castQAlone(target);
             }
         }
@@ -101,7 +110,7 @@ namespace Mario_sGangplank.Logics
 
         public static void castRSaveAlly(int allyHPPercent)
         {
-            var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.HealthPercent <= allyHPPercent);
+            var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.HealthPercent <= allyHPPercent && !a.IsMe);
             if (ally == null) return;
             var enemy = EntityManager.Heroes.Enemies.OrderBy(e => e.HealthPercent).FirstOrDefault(a => a.IsInRange(ally, 500));
             if (enemy == null) return;

@@ -11,7 +11,7 @@ namespace Mario_sGangplank.Logics
         public static void lastQ()
         {
             var minionQ = GetLastMinion(SpellSlot.Q);
-            if (IsNotNull(minionQ) && minionQ.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+            if (IsNotNull(minionQ) && !minionQ.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
             {
                 Q.Cast(minionQ);
             }

@@ -1,7 +1,6 @@
-﻿using System.Security.AccessControl;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
-using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Rendering;
 
 namespace Mario_sGangplank
@@ -22,8 +21,10 @@ namespace Mario_sGangplank
 
         private static void Orbwalker_OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
-            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.LastHit, "qLast") && Spells.Q.IsReady() && Prediction.Health.GetPrediction(target, Spells.Q.CastDelay) <= target.Health &&
-                target.Health <= Player.Instance.GetAutoAttackDamage(target))
+            var dmg = Prediction.Health.GetPrediction(target, Spells.Q.CastDelay) - 30 <= target.Health;
+            var count = EntityManager.MinionsAndMonsters.GetLaneMinions().Count(m => m.IsEnemy && m.IsInRange(target, 600) && dmg);
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) && Helpers.GetCheckBoxValue(Helpers.MenuTypes.LastHit, "qLast") && Spells.Q.IsReady() && dmg &&
+                target.Health <= Player.Instance.GetAutoAttackDamage(target) && count >= 2)
             {
                 Spells.Q.Cast(target);
             }
