@@ -56,12 +56,12 @@ namespace Mario_sGangplank.Logics
         {
             if (target.IsValidTarget(E.Range + 400) && E.IsReady())
             {
-                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range +50));
+                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range + 50));
                 if (barrelNearPlayer == null)
                 {
                     E.Cast(!target.IsInRange(Player.Instance, 500) ? Player.Instance.Position.Extend(target, 500).To3D() : Player.Instance.Position.Extend(target, 250).To3D());
                 }
-                else if(barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health > 0)
+                else if (barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health > 0)
                 {
                     var pred = E.GetPrediction(target);
                     var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pred.CastPosition) <= 380);
@@ -95,15 +95,16 @@ namespace Mario_sGangplank.Logics
         {
             if (R.IsReady() && target.Health <= GetRKSDamage(target))
             {
-                Player.Instance.Spellbook.CastSpell(SpellSlot.R,target.Position.Extend(target.Direction.To2D().Perpendicular(), target.MoveSpeed -100).To3D());
+                Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position.Extend(target.Direction.To2D().Perpendicular(), target.MoveSpeed - 100).To3D());
             }
         }
 
         public static void castRSaveAlly(int allyHPPercent)
         {
             var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.HealthPercent <= allyHPPercent);
-            var enemy = EntityManager.Heroes.Enemies.OrderBy(e =>e.HealthPercent).FirstOrDefault(a => a.IsInRange(ally, 500));
-            if(ally ==  null || enemy == null)return;
+            if (ally == null) return;
+            var enemy = EntityManager.Heroes.Enemies.OrderBy(e => e.HealthPercent).FirstOrDefault(a => a.IsInRange(ally, 500));
+            if (enemy == null) return;
             if (R.IsReady() && enemy.HealthPercent + 10 > ally.HealthPercent)
             {
                 Player.Instance.Spellbook.CastSpell(SpellSlot.R, ally.Position.Extend(ally.Direction.To2D().Perpendicular(), ally.MoveSpeed - 100).To3D());
