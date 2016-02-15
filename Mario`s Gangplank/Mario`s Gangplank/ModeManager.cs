@@ -11,6 +11,11 @@ namespace Mario_sGangplank
         {
             public static void Active()
             {
+                if (Player.Instance.HasBuffOfType(BuffType.Taunt) && GetCheckBoxValue(MenuTypes.Settings, "wBuffTaunt"))
+                {
+                    W.Cast();
+                }
+
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target != null && !target.IsZombie && !target.HasUndyingBuff())
                 {
@@ -46,6 +51,11 @@ namespace Mario_sGangplank
                         ComboLogics.castR(count);
                     }
 
+                    if (GetCheckBoxValue(MenuTypes.Combo, "qECombo"))
+                    {
+                        ComboLogics.castQBarrel(target);
+                    }
+
                     if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
                     {
                         ComboLogics.castQ(target);
@@ -58,12 +68,12 @@ namespace Mario_sGangplank
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target != null && !target.IsZombie && !target.HasUndyingBuff())
                 {
-                    if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))
+                    if (GetCheckBoxValue(MenuTypes.Harass, "qHarass"))
                     {
                         ComboLogics.castQ(target);
                     }
 
-                    if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
+                    if (GetCheckBoxValue(MenuTypes.Harass, "eHarass"))
                     {
                         ComboLogics.castE(target);
                     }
@@ -77,7 +87,7 @@ namespace Mario_sGangplank
 
             public static void LaneClear()
             {
-                if (GetCheckBoxValue(MenuTypes.LaneClear, "qLane"))
+                if (GetCheckBoxValue(MenuTypes.LaneClear, "qLane") && Player.Instance.ManaPercent >= GetSliderValue(MenuTypes.LaneClear, "manaLane"))
                 {
                     var count = GetSliderValue(MenuTypes.LaneClear, "qLaneCount");
                     FarmLogics.laneQBarrel(count);
@@ -90,7 +100,7 @@ namespace Mario_sGangplank
                     FarmLogics.laneE(count, ecount);
                 }
 
-                if (GetCheckBoxValue(MenuTypes.LaneClear, "qLaneLast"))
+                if (GetCheckBoxValue(MenuTypes.LaneClear, "qLaneLast") && Player.Instance.ManaPercent >= GetSliderValue(MenuTypes.LaneClear, "manaLane"))
                 {
                     FarmLogics.laneLastQ();
                 }
@@ -98,7 +108,7 @@ namespace Mario_sGangplank
 
             public static void LastHit()
             {
-                if (GetCheckBoxValue(MenuTypes.LastHit, "qLast"))
+                if (GetCheckBoxValue(MenuTypes.LastHit, "qLast") && Player.Instance.ManaPercent >= GetSliderValue(MenuTypes.LastHit, "manaLast"))
                 {
                     FarmLogics.lastQ();
                 }

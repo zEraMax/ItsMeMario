@@ -47,6 +47,7 @@ namespace Mario_sGangplank
             {
                 Spells.W.Cast();
             }
+
         }
 
         //Dont need to change

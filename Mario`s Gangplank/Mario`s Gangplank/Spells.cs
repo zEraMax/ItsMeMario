@@ -30,7 +30,7 @@ namespace Mario_sGangplank
             SpellList.Add(Q);
             W =  new Spell.Active(SpellSlot.W);
             SpellList.Add(W);
-            E =  new Spell.Skillshot(SpellSlot.E, 1150, SkillShotType.Circular, 450, 2200, 400)
+            E =  new Spell.Skillshot(SpellSlot.E, 1150, SkillShotType.Circular, 450, 2000, 390)
             {
                 AllowedCollisionCount = int.MaxValue
             };

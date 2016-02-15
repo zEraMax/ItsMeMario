@@ -50,7 +50,7 @@ namespace Mario_sGangplank.Logics
 
         public static void laneQBarrel(int count)
         {
-            var barrel = Barrrels.GetKillBarrel();
+            var barrel = Barrrels.GetKillBarrelClosest();
             if (IsNotNull(barrel) && Q.IsReady() && barrel.IsValidTarget(Q.Range))
             {
                 var minion = EntityManager.MinionsAndMonsters.GetLaneMinions().Count(m => m.IsInRange(barrel, 350) && m.IsEnemy);
@@ -93,7 +93,7 @@ namespace Mario_sGangplank.Logics
 
         public static void jungleQBarrel(int count)
         {
-            var barrel = Barrrels.GetKillBarrel();
+            var barrel = Barrrels.GetKillBarrelClosest();
             if (IsNotNull(barrel) && Q.IsReady() && barrel.IsValidTarget(Q.Range))
             {
                 var minion = EntityManager.MinionsAndMonsters.GetJungleMonsters().Count(m => m.IsInRange(barrel, 350) && m.IsEnemy);

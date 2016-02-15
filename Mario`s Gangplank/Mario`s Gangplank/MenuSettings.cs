@@ -91,6 +91,7 @@ namespace Mario_sGangplank
             SettingsMenu.Add("wBuffBlind", new CheckBox("• Blind"));
             SettingsMenu.Add("wBuffSupression", new CheckBox("• Supression"));
             SettingsMenu.Add("wBuffSnare", new CheckBox("• Snare"));
+            SettingsMenu.Add("wBuffTaunt", new CheckBox("• Taunt"));
             SettingsMenu.AddGroupLabel("-:Settings:-");
             LastHitMenu.Add("manaSettings", new Slider("Mana must be greater than ({0}) to use any spell in this menu.", 30));
             #endregion Settings

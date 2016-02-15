@@ -10,34 +10,73 @@ namespace Mario_sGangplank.Logics
 
         public static void castQ(Obj_AI_Base target)
         {
-            var barrel = Barrrels.GetKillBarrel();
-            if (barrel != null && barrel.CountEnemiesInRange(380) >= 1)
+            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 1)
             {
-                if (barrel.IsValidTarget(Q.Range) && Q.IsReady() && barrel.CountEnemiesInRange(380) >= 1)
+                castQBarrel(target);
+            }
+            else
+            {
+                castQAlone(target);
+            }
+        }
+
+        public static void castQAlone(Obj_AI_Base target)
+        {
+            if (target.IsValidTarget(Q.Range) && Q.IsReady())
+            {
+                Q.Cast(target);
+            }
+        }
+
+        public static void castQBarrel(Obj_AI_Base target)
+        {
+            var barrel = Barrrels.GetKillBarrelWithEemyInside();
+            if (barrel != null)
+            {
+                if (barrel.IsValidTarget(Q.Range) && Q.IsReady())
                 {
                     Q.Cast(barrel);
                 }
             }
-            
             else
             {
-                if (target.IsValidTarget(Q.Range) && Q.IsReady())
+                var barrelwithenemy = Barrrels.GetBarrelWithEemyInside();
+                var ClosestkillBarrel = Barrrels.GetKillBarrelClosest();
+                if (barrelwithenemy != null && ClosestkillBarrel != null)
                 {
-                    Q.Cast(target);
+                    //var linkWithEnemy = barrelwithenemy.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                    //var linkWithCloses = ClosestkillBarrel.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                    if (ClosestkillBarrel.IsInRange(barrelwithenemy, 850))
+                    {
+                        Q.Cast(ClosestkillBarrel);
+                    }
                 }
             }
         }
 
         public static void castE(Obj_AI_Base target)
         {
-            if (target.IsValidTarget(E.Range) && E.IsReady())
+            if (target.IsValidTarget(E.Range + 400) && E.IsReady())
             {
-                var pred = E.GetPrediction(target);
-                var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pred.CastPosition) <= 380);
-                
-                if (barrel == null)
+                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range +50));
+                if (barrelNearPlayer == null)
                 {
-                    E.Cast(pred.CastPosition);
+                    E.Cast(Player.Instance.Position.Extend(target, 350).To3D());
+                }
+                else if(barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health > 0)
+                {
+                    var pred = E.GetPrediction(target);
+                    var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pred.CastPosition) <= 380);
+
+                    if (barrel == null)
+                    {
+                        var predpos = pred.CastPosition;
+                        if (predpos.IsInRange(barrelNearPlayer, 850) && Q.IsReady())
+                        {
+                            E.Cast(predpos);
+                            Q.Cast(Barrrels.GetKillBarrelClosest());
+                        }
+                    }
                 }
             }
         }
@@ -47,7 +86,7 @@ namespace Mario_sGangplank.Logics
             var target = TargetSelector.GetTarget(int.MaxValue, dmgType);
             if (target != null && !target.IsZombie && !target.HasUndyingBuff())
             {
-                if (R.IsReady() && target.CountEnemiesInRange(520) >= count -1)
+                if (R.IsReady() && target.CountEnemiesInRange(520) >= count)
                 {
                     Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position);
                 }
