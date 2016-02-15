@@ -66,7 +66,7 @@ namespace Mario_sGangplank.Logics
         #region JungleClear
         public static void jungleLastQ()
         {
-            var minionQ = GetJungleMinionToKS(SpellSlot.Q);
+            var minionQ = GetJungleMinion(Q.Range);
             var barrels = Barrrels.GetBarrels();
             if (!barrels.Any())
             {
@@ -82,7 +82,7 @@ namespace Mario_sGangplank.Logics
             var minions = EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(m => m.IsValidTarget(E.Range)).ToArray();
             if (minions.Length == 0) return;
             var pos = EntityManager.MinionsAndMonsters.GetCircularFarmLocation(minions, E.Width, (int)E.Range);
-            var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pos.CastPosition) <= 350);
+            var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pos.CastPosition) <= 380);
 
             if (pos.HitNumber >= count && barrel == null)
             {
@@ -96,7 +96,7 @@ namespace Mario_sGangplank.Logics
             var barrel = Barrrels.GetKillBarrelClosest();
             if (IsNotNull(barrel) && Q.IsReady() && barrel.IsValidTarget(Q.Range))
             {
-                var minion = EntityManager.MinionsAndMonsters.GetJungleMonsters().Count(m => m.IsInRange(barrel, 350) && m.IsEnemy);
+                var minion = EntityManager.MinionsAndMonsters.GetJungleMonsters().Count(m => m.IsInRange(barrel, 380) && m.IsEnemy);
                 if (minion >= count)
                 {
                     Q.Cast(barrel);
