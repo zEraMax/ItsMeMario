@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Barrrels.cs" />
     <Compile Include="EventsManager.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Logics\FarmLogics.cs" />
     <Compile Include="Logics\ComboLogics.cs" />

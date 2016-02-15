@@ -11,14 +11,32 @@ namespace Mario_sGangplank
         {
             public static void Active()
             {
-                if (Player.Instance.HasBuffOfType(BuffType.Taunt) && GetCheckBoxValue(MenuTypes.Settings, "wBuffTaunt"))
+                Functions.castW();
+
+                if (GetCheckBoxValue(MenuTypes.Settings, "rToSaveAlly"))
                 {
-                    W.Cast();
+                    var value = GetSliderValue(MenuTypes.Settings, "rToSaveAllyPercent");
+                    ComboLogics.castRSaveAlly(value);
                 }
+
+                var targeR = TargetSelector.GetTarget(int.MaxValue, dmgType);
+                if (targeR != null && !targeR.IsZombie && !targeR.HasUndyingBuff())
+                {
+                    if (GetCheckBoxValue(MenuTypes.Settings, "rKS"))
+                    {
+                        ComboLogics.castRKS(targeR);
+                    }
+                }
+
 
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target != null && !target.IsZombie && !target.HasUndyingBuff())
                 {
+                    if (GetCheckBoxValue(MenuTypes.Settings, "qKS") && Prediction.Health.GetPrediction(target, Q.CastDelay) <= GetDamage(SpellSlot.Q, target))
+                    {
+                        ComboLogics.castQAlone(target);
+                    }
+
                     if (GetKeyBindValue(MenuTypes.Harass, "keyAutoHarass"))
                     {
                         if (GetCheckBoxValue(MenuTypes.Harass, "qAutoHarass"))
@@ -49,11 +67,6 @@ namespace Mario_sGangplank
                     {
                         var count = GetSliderValue(MenuTypes.Combo, "rComboCount");
                         ComboLogics.castR(count);
-                    }
-
-                    if (GetCheckBoxValue(MenuTypes.Combo, "qECombo"))
-                    {
-                        ComboLogics.castQBarrel(target);
                     }
 
                     if (GetCheckBoxValue(MenuTypes.Combo, "qCombo"))

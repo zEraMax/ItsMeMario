@@ -7,6 +7,7 @@ namespace Mario_sGangplank
     internal class MenuSettings
     {
         public static readonly string MenuName = "Mario`s Gangplank";
+
         #region Variables
         public static Menu ComboMenu, HarassMenu, LaneClearMenu, JungleClearMenu, LastHitMenu, DrawingsMenu, SettingsMenu;
         #endregion Variables
@@ -31,7 +32,7 @@ namespace Mario_sGangplank
             HarassMenu = startMenu.AddSubMenu(":-Harass Menu-:");
             HarassMenu.AddGroupLabel("-:Harass Spells:-");
             HarassMenu.Add("qHarass", new CheckBox("• Use Q."));
-            HarassMenu.Add("eHarass", new CheckBox("• Use E."));
+            HarassMenu.Add("eHarass", new CheckBox("• Use E.", false));
             HarassMenu.AddGroupLabel("-:Harass Settings:-");
             HarassMenu.Add("manaHarass", new Slider("Mana must be greater than ({0}) to use harass spells.", 30));
             HarassMenu.AddGroupLabel("-:AutoHarass Spells:-");
@@ -83,9 +84,15 @@ namespace Mario_sGangplank
 
             #region Settings
             SettingsMenu = startMenu.AddSubMenu(":-Settings Menu-:");
+            SettingsMenu.AddGroupLabel("-:Q KS Settings:-");
+            SettingsMenu.Add("qKS", new CheckBox("• Use Q to ks."));
             SettingsMenu.AddGroupLabel("-:R Settings:-");
             SettingsMenu.Add("rKS", new CheckBox("• Use R to ks."));
+            SettingsMenu.Add("rToSaveAlly", new CheckBox("• Use R to save ally."));
+            SettingsMenu.Add("rToSaveAllyPercent", new Slider("• Ally health to save him msut be less than ({0}).", 15, 0, 100));
             SettingsMenu.AddGroupLabel("-:W Settings:-"); 
+            SettingsMenu.Add("wUsePercent", new Slider("• Use W if health is lower than ({0}).", 20));
+            SettingsMenu.AddSeparator(1);
             SettingsMenu.Add("wBuffStun", new CheckBox("• Stun"));
             SettingsMenu.Add("wBuffSlow", new CheckBox("• Slow", false));
             SettingsMenu.Add("wBuffBlind", new CheckBox("• Blind"));

@@ -1,4 +1,5 @@
-﻿using EloBuddy;
+﻿using System.Security.AccessControl;
+using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Rendering;
@@ -16,6 +17,16 @@ namespace Mario_sGangplank
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             Drawing.OnDraw += Drawing_OnDraw;
             Obj_AI_Base.OnBuffGain += Obj_AI_Base_OnBuffGain;
+            Orbwalker.OnUnkillableMinion += Orbwalker_OnUnkillableMinion;
+        }
+
+        private static void Orbwalker_OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
+        {
+            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.LastHit, "qLastt") && Spells.Q.IsReady() && Prediction.Health.GetPrediction(target, Spells.Q.CastDelay) <= target.Health &&
+                target.Health <= Player.Instance.GetAutoAttackDamage(target))
+            {
+                Spells.Q.Cast(target);
+            }
         }
 
         private static void Obj_AI_Base_OnBuffGain(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
