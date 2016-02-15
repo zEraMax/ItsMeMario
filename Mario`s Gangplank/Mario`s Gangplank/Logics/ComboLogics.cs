@@ -102,7 +102,7 @@ namespace Mario_sGangplank.Logics
 
         public static void castRKS(Obj_AI_Base target)
         {
-            if (R.IsReady() && target.Health <= GetRKSDamage(target) && !Player.Instance.IsInRange(target, 1000))
+            if (R.IsReady() && Prediction.Health.GetPrediction(target, 350) <= GetRKSDamage(target) && !Player.Instance.IsInRange(target, 900))
             {
                 Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.ServerPosition);
             }
