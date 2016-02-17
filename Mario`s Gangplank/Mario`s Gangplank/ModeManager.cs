@@ -12,6 +12,7 @@ namespace Mario_sGangplank
             public static void Active()
             {
                 ComboLogics.CastQMultipleBarrels();
+                ComboLogics.CastEBetween();
 
                 Functions.castW();
 
