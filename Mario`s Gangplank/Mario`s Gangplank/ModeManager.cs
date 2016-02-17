@@ -83,7 +83,7 @@ namespace Mario_sGangplank
                 {
                     if (GetCheckBoxValue(MenuTypes.Harass, "qHarass"))
                     {
-                        ComboLogics.castQ(target);
+                        ComboLogics.castQAlone(target);
                     }
 
                     if (GetCheckBoxValue(MenuTypes.Harass, "eHarass"))

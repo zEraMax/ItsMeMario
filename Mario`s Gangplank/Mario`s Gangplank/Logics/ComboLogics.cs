@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
@@ -63,7 +64,7 @@ namespace Mario_sGangplank.Logics
 
         public static void castE(Obj_AI_Base target)
         {
-            if (target.IsValidTarget(E.Range + 400) && E.IsReady())
+            if (target.IsValidTarget(E.Range + 200) && E.IsReady())
             {
                 var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range + 50));
                 if (barrelNearPlayer == null)
@@ -78,10 +79,21 @@ namespace Mario_sGangplank.Logics
                     if (barrel == null)
                     {
                         var predpos = pred.CastPosition;
-                        if (predpos.IsInRange(barrelNearPlayer, 850) && Q.IsReady())
+                        if (Q.IsReady())
                         {
                             E.Cast(predpos);
-                            Q.Cast(Barrrels.GetKillBarrelClosest());
+                            var killBC = Barrrels.GetKillBarrelClosest();
+                            var buffKillableLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                            var barrelWithEnemy = Barrrels.GetBarrelWithEemyInside();
+                            var buffWithEnemyLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                            if (buffKillableLink != null && killBC != null)
+                            {
+                                Q.Cast(killBC);
+                            }
+                            else if(barrelWithEnemy != null && buffWithEnemyLink == null && E.IsReady())
+                            {
+                                E.Cast(killBC.Position.Extend(barrelWithEnemy, 500).To3D());
+                            }
                         }
                     }
                 }
@@ -93,9 +105,9 @@ namespace Mario_sGangplank.Logics
             var target = TargetSelector.GetTarget(int.MaxValue, dmgType);
             if (target != null && !target.IsZombie && !target.HasUndyingBuff())
             {
-                if (R.IsReady() && target.CountEnemiesInRange(520) >= count)
+                if (R.IsReady() && target.CountEnemiesInRange(490) >= count)
                 {
-                    Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position);
+                    Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.Position, target.Position);
                 }
             }
         }
