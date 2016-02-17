@@ -12,6 +12,7 @@ namespace Mario_sGangplank
             public static void Active()
             {
                 ComboLogics.CastQMultipleBarrels();
+
                 Functions.castW();
 
                 if (GetCheckBoxValue(MenuTypes.Settings, "rToSaveAlly"))

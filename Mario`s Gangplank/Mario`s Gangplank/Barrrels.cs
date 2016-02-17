@@ -54,7 +54,7 @@ namespace Mario_sGangplank
         {
             var barrel =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .OrderBy(b => b.Health)
+                    .OrderBy(b => b.Health).ThenBy(b => b.Distance(Player.Instance))
                     .FirstOrDefault(o => o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(390) > 1 && o.Health != 0);
             return barrel;
         }
