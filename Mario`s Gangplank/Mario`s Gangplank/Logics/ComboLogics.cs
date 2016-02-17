@@ -13,7 +13,7 @@ namespace Mario_sGangplank.Logics
         {
             if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Ammo >= 1)
             {
-                castQBarrel(target);
+                castQBarrel();
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Mario_sGangplank.Logics
             }
         }
 
-        public static void castQBarrel(Obj_AI_Base target)
+        public static void castQBarrel()
         {
             var barrel = Barrrels.GetKillBarrelWithEemyInside();
             if (barrel != null)
@@ -64,12 +64,12 @@ namespace Mario_sGangplank.Logics
 
         public static void castE(Obj_AI_Base target)
         {
-            if (target.IsValidTarget(E.Range + 200) && E.IsReady())
+            if (target.IsValidTarget(E.Range + 50) && E.IsReady())
             {
                 var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range +50));
                 if (barrelNearPlayer == null)
                 {
-                    E.Cast(!target.IsInRange(Player.Instance, 500) ? Player.Instance.Position.Extend(target, 500).To3D() : Player.Instance.Position.Extend(target, 250).To3D());
+                    E.Cast(target.IsInRange(Player.Instance, 500) ? Player.Instance.Position.Extend(target, 120).To3D() : Player.Instance.Position.Extend(target, 250).To3D());
                 }
                 else if (barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health >= 1)
                 {
@@ -82,9 +82,10 @@ namespace Mario_sGangplank.Logics
                         if (Q.IsReady())
                         {
                             E.Cast(predpos);
+                            CastEBetween();
                             var killBC = Barrrels.GetKillBarrelClosest();
-                            var buffKillableLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
-                            if (buffKillableLink != null && killBC != null)
+                            var barrelWithENemy = Barrrels.GetBarrelWithEemyInside();
+                            if (killBC != null && barrelWithENemy != null && killBC.Distance(barrelWithENemy) < 750)
                             {
                                 Q.Cast(killBC);
                             }

@@ -35,7 +35,7 @@ namespace Mario_sGangplank
                     .OrderBy(b => b.Health)
                     .FirstOrDefault(
                         o =>
-                            o.Name.ToLower().Equals("barrel") && o.Health <= 1 && o.Health != 0 && o.CountEnemiesInRange(380) >= 1);
+                            o.Name.ToLower().Equals("barrel") && o.Health <= 1 && o.Health != 0 && o.CountEnemiesInRange(390) >= 1);
             return barrel;
         }
 
@@ -46,7 +46,7 @@ namespace Mario_sGangplank
                     .OrderBy(b => b.Health)
                     .FirstOrDefault(
                         o =>
-                            o.Name.ToLower().Equals("barrel") && o.Health != 0 && o.CountEnemiesInRange(380) >= 1);
+                            o.Name.ToLower().Equals("barrel") && o.Health != 0 && o.CountEnemiesInRange(390) >= 1);
             return barrel;
         }
 
@@ -55,7 +55,7 @@ namespace Mario_sGangplank
             var barrel =
                 ObjectManager.Get<Obj_AI_Base>()
                     .OrderBy(b => b.Health)
-                    .FirstOrDefault(o => o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(350) > 1 && o.Health != 0);
+                    .FirstOrDefault(o => o.Name.ToLower().Equals("barrel") && o.CountEnemiesInRange(390) > 1 && o.Health != 0);
             return barrel;
         }
 

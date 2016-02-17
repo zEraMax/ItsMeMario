@@ -11,7 +11,7 @@ namespace Mario_sGangplank
     {
         #region Consts
         public const DamageType dmgType = DamageType.Physical;
-        public const int highestRange = 625;
+        public const int highestRange = 1150;
         #endregion Consts
 
         public static void InitSpells()
