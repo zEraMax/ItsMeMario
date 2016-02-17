@@ -66,12 +66,12 @@ namespace Mario_sGangplank.Logics
         {
             if (target.IsValidTarget(E.Range + 200) && E.IsReady())
             {
-                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range));
+                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range +50));
                 if (barrelNearPlayer == null)
                 {
                     E.Cast(!target.IsInRange(Player.Instance, 500) ? Player.Instance.Position.Extend(target, 500).To3D() : Player.Instance.Position.Extend(target, 250).To3D());
                 }
-                else if (barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health > 0)
+                else if (barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health >= 1)
                 {
                     var pred = E.GetPrediction(target);
                     var barrel = Barrrels.GetBarrels().FirstOrDefault(b => b.Distance(pred.CastPosition) <= 380);
