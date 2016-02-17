@@ -66,7 +66,7 @@ namespace Mario_sGangplank.Logics
         {
             if (target.IsValidTarget(E.Range + 200) && E.IsReady())
             {
-                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range + 50));
+                var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range));
                 if (barrelNearPlayer == null)
                 {
                     E.Cast(!target.IsInRange(Player.Instance, 500) ? Player.Instance.Position.Extend(target, 500).To3D() : Player.Instance.Position.Extend(target, 250).To3D());
@@ -84,17 +84,51 @@ namespace Mario_sGangplank.Logics
                             E.Cast(predpos);
                             var killBC = Barrrels.GetKillBarrelClosest();
                             var buffKillableLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
-                            var barrelWithEnemy = Barrrels.GetBarrelWithEemyInside();
-                            var buffWithEnemyLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
                             if (buffKillableLink != null && killBC != null)
                             {
                                 Q.Cast(killBC);
                             }
-                            else if(barrelWithEnemy != null && buffWithEnemyLink == null && E.IsReady())
-                            {
-                                E.Cast(killBC.Position.Extend(barrelWithEnemy, 500).To3D());
-                            }
                         }
+                    }
+                }
+            }
+        }
+
+        public static void CastEBetween()
+        {
+            var killBC = Barrrels.GetKillBarrelClosest();
+            if (killBC != null)
+            {
+                var buffKillableLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                var barrelWithEnemy = Barrrels.GetBarrelWithEemyInside();
+                if (barrelWithEnemy != null && barrelWithEnemy.Health > 1)
+                {
+                    var buffWithEnemyLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                    if (barrelWithEnemy != null && buffWithEnemyLink == null && buffKillableLink == null && E.IsReady())
+                    {
+                        var pos = killBC.Position.Extend(barrelWithEnemy, 500).To3D();
+                        if (pos.Distance(barrelWithEnemy) <= 700)
+                        {
+                            E.Cast(pos);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void CastQMultipleBarrels()
+        {
+            var killBC = Barrrels.GetKillBarrelClosest();
+            if (killBC != null)
+            {
+                var buffKillableLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                var barrelWithEnemy = Barrrels.GetBarrelWithEemyInside();
+                if (barrelWithEnemy != null && barrelWithEnemy.Health >= 1)
+                {
+                    var buffWithEnemyLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
+                    if (barrelWithEnemy != null && buffWithEnemyLink != null && buffKillableLink != null && Q.IsReady())
+                    {
+                        Q.Cast(killBC);
                     }
                 }
             }

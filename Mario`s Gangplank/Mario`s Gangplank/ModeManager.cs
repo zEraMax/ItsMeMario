@@ -11,6 +11,8 @@ namespace Mario_sGangplank
         {
             public static void Active()
             {
+                ComboLogics.CastQMultipleBarrels();
+                ComboLogics.CastEBetween();
                 Functions.castW();
 
                 if (GetCheckBoxValue(MenuTypes.Settings, "rToSaveAlly"))
@@ -61,6 +63,7 @@ namespace Mario_sGangplank
                     if (GetCheckBoxValue(MenuTypes.Combo, "eCombo"))
                     {
                         ComboLogics.castE(target);
+                        ComboLogics.CastEBetween();
                     }
 
                     if (GetCheckBoxValue(MenuTypes.Combo, "rCombo"))
