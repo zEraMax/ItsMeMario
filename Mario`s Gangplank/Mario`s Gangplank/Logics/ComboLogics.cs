@@ -79,7 +79,7 @@ namespace Mario_sGangplank.Logics
                     if (barrel == null)
                     {
                         var predpos = pred.CastPosition;
-                        if (Q.IsReady())
+                        if (Q.IsReady() && predpos.Distance(barrelNearPlayer) <= 750)
                         {
                             E.Cast(predpos);
                             CastEBetween();
