@@ -79,9 +79,12 @@ namespace Mario_sGangplank
 
         private static void Drawing_OnDraw(System.EventArgs args)
         {
-            foreach (var barrel in Barrrels.GetBarrels())
+            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.Drawings, "barrelDraw"))
             {
-                Circle.Draw(barrel.Health <= 1 ? SharpDX.Color.YellowGreen : SharpDX.Color.DarkRed, 350, 3f, barrel);
+                foreach (var barrel in Barrrels.GetBarrels())
+                {
+                    Circle.Draw(barrel.Health <= 1 ? SharpDX.Color.YellowGreen : SharpDX.Color.DarkRed, 350, 3f, barrel);
+                }
             }
 
             var ready = Helpers.GetCheckBoxValue(Helpers.MenuTypes.Drawings, "readyDraw");

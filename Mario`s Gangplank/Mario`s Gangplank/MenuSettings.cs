@@ -113,6 +113,7 @@ namespace Mario_sGangplank
             DrawingsMenu.Add("qDraw", new CheckBox("• Draw Q."));
             DrawingsMenu.Add("wDraw", new CheckBox("• Draw W."));
             DrawingsMenu.Add("eDraw", new CheckBox("• Draw E."));
+            DrawingsMenu.Add("barrelDraw", new CheckBox("• Draw Barrels."));
             #endregion Drawings
         }
     }

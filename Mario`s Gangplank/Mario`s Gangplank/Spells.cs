@@ -89,7 +89,7 @@ namespace Mario_sGangplank
 
             if (R.IsReady())
             {
-                dmg += new float[] { 100, 140, 180 }[lvl] + 1.2f * AP;
+                dmg += new float[] { 150, 210, 270 }[lvl] + 1.2f * AP;
             }
             return Player.Instance.CalculateDamageOnUnit(target, dmgType, dmg - 10);
         }
