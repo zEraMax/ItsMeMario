@@ -152,24 +152,28 @@ namespace Mario_s_Activator
 
         public static void Cast(Obj_AI_Base target)
         {
-            foreach (var i in CleansersItems)
+            if (target.HasBuffOfType(BuffType.Stun) || target.HasBuffOfType(BuffType.Snare) ||
+                target.HasBuffOfType(BuffType.Blind))
             {
-                var item = new Item(i.ItemID, i.Range);
-
-                if (item.IsReady() && item.IsOwned())
+                foreach (var i in CleansersItems)
                 {
-                    if (i.RequireTarget)
+                    var item = new Item(i.ItemID, i.Range);
+
+                    if (item.IsReady() && item.IsOwned())
                     {
-                        if (target.IsValidTarget(item.Range))
+                        if (i.RequireTarget)
+                        {
+                            if (target.IsValidTarget(item.Range))
+                            {
+                                Chat.Print("Casting a cleanse item");
+                                item.Cast(target);
+                            }
+                        }
+                        else
                         {
                             Chat.Print("Casting a cleanse item");
-                            item.Cast(target);
+                            item.Cast();
                         }
-                    }
-                    else
-                    {
-                        Chat.Print("Casting a cleanse item");
-                        item.Cast();
                     }
                 }
             }

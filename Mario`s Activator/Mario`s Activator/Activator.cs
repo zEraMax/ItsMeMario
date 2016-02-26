@@ -29,6 +29,7 @@ namespace Mario_s_Activator
 
         private static void Game_OnUpdate(EventArgs args)
         {
+            Cleansers.Cast(Player.Instance);
             Defensive.Cast(Player.Instance, 20);
             SummonerSpells.SmiteCast(false);
         }
