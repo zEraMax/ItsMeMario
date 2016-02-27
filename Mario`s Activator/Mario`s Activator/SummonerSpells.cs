@@ -42,15 +42,18 @@ namespace Mario_s_Activator
             var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersnowball"));
             if (poro != null)
             {
-                PoroThrower = new Spell.Skillshot(poro.Slot, 000, SkillShotType.Linear, 250, (int)poro.SData.MissileSpeed, (int)poro.SData.LineWidth);
+                PoroThrower = new Spell.Skillshot(poro.Slot, 000, SkillShotType.Linear, 250,
+                    (int) poro.SData.MissileSpeed, (int) poro.SData.LineWidth);
                 PlayerHasPoroThrower = true;
                 Chat.Print("Player has Poro thrower");
             }
         }
 
         #region Mark 
+
         public static Spell.Skillshot PoroThrower;
         public static bool PlayerHasPoroThrower;
+
         #endregion Mark
 
         #region Smite
@@ -111,12 +114,14 @@ namespace Mario_s_Activator
 
         private static float SmiteDamage()
         {
-            return 370 + 20*Player.Instance.Level;
+            return
+                new float[] {390, 410, 430, 450, 480, 510, 540, 570, 600, 640, 680, 720, 760, 800, 850, 900, 950, 1000}[
+                    Player.Instance.Level];
         }
 
         private static float SmiteKSDamage()
         {
-            return 12 + 8*Player.Instance.Level;
+            return 20 + 8*Player.Instance.Level;
         }
 
         #endregion Smite
