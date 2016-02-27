@@ -62,6 +62,7 @@
     <Compile Include="Activator.cs" />
     <Compile Include="DamageHandler.cs" />
     <Compile Include="DangerousSpells.cs" />
+    <Compile Include="Drawings.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Items.cs" />

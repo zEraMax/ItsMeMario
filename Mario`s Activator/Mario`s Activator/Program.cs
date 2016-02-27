@@ -15,12 +15,12 @@ namespace Mario_s_Activator
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             Chat.Print("Loaded!");
-            
+            /*
             foreach (var s in Player.Spells)
             {
                 Chat.Print(s.Name);
             }
-            
+            */
             DamageHandler.Init();
             Activator.Init();
         }

@@ -13,6 +13,10 @@ namespace Mario_s_Activator
             Game.OnTick += Game_OnTick;
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             Game.OnUpdate += Game_OnUpdate;
+
+            MyMenu.InitializeMenu();
+
+            Drawings.InitializeDrawings();
         }
 
         private static void Game_OnTick(EventArgs args)

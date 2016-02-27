@@ -12,30 +12,36 @@ namespace Mario_s_Activator
             return target != null;
         }
 
+        //Add
         //Checbkox
-        public static CheckBox CreateCheckBox(this Menu m, string checkboxName, int uniqueId,
+        public static CheckBox CreateCheckBox(this Menu m, string checkboxName, string uniqueId,
             bool defaultValuecheck = true)
         {
             return m.Add("idAct" + uniqueId, new CheckBox(checkboxName, defaultValuecheck));
         }
 
         //Slider
-        public static Slider CreateSlider(this Menu m, string sliderName, int uniqueId, int defaulValueslider = 0,
+        public static Slider CreateSlider(this Menu m, string sliderName, string uniqueId, int defaulValueslider = 0,
             int minValue = 0, int maxValue = 100)
         {
-            return m.Add("idAct" + uniqueId, new Slider(sliderName));
+            return m.Add("idAct" + uniqueId, new Slider(sliderName, defaulValueslider, minValue, maxValue));
         }
 
         //Keybind
-        public static KeyBind CreateKeybind(this Menu m, string keyName, int uniqueId, uint valueKey = 32,
+        public static KeyBind CreateKeybind(this Menu m, string keyName, string uniqueId, uint valueKey = 32,
             bool defaultValue = false, KeyBind.BindTypes keyType = KeyBind.BindTypes.PressToggle)
         {
             return m.Add("idAct" + uniqueId, new KeyBind(keyName, defaultValue, keyType, valueKey));
         }
 
+        //Remove
+        public static void DelItem(this Menu m, string uniqueId)
+        {
+            m.Remove("idAct" + uniqueId);
+        }
 
         //Getting Values with INT/Numbers
-        public static bool GetCheckBoxValue(this Menu menu, int uniqueId)
+        public static bool GetCheckBoxValue(this Menu menu, string uniqueId)
         {
             try
             {
@@ -53,7 +59,7 @@ namespace Mario_s_Activator
             return false;
         }
 
-        public static int GetSliderValue(this Menu menu, int uniqueId)
+        public static int GetSliderValue(this Menu menu, string uniqueId)
         {
             try
             {
@@ -71,7 +77,7 @@ namespace Mario_s_Activator
             return 999;
         }
 
-        public static bool GetKeybindValue(this Menu menu, int uniqueId)
+        public static bool GetKeybindValue(this Menu menu, string uniqueId)
         {
             try
             {

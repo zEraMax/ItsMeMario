@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
@@ -39,13 +38,13 @@ namespace Mario_s_Activator
 
         public static void SmiteCast(bool useOnChampions, int keepSmite = 1)
         {
-            if(!PlayerHasSmite && !Smite.IsReady())return;
+            if(!PlayerHasSmite || !Smite.IsReady() || Smite == null || MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind"))return;
             var GetJungleMinion =
                 EntityManager.MinionsAndMonsters.GetJungleMonsters()
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping + 50) <= SmiteDamage());
+                            Prediction.Health.GetPrediction(m, Game.Ping + 50) <= SmiteDamage() && MyMenu.SummonerMenu.GetCheckBoxValue("monster"+m.BaseSkinName));
 
             if (GetJungleMinion != null)
             {
@@ -55,7 +54,7 @@ namespace Mario_s_Activator
 
             if(smiteGanker != null && useOnChampions && Smite.Handle.Ammo > keepSmite)
             {
-                var target = EntityManager.Heroes.Enemies.FirstOrDefault(e => Prediction.Health.GetPrediction(e, Game.Ping + 50) <= e.Health && e.IsValidTarget(Smite.Range));
+                var target = EntityManager.Heroes.Enemies.FirstOrDefault(e => Prediction.Health.GetPrediction(e, Game.Ping + 50) <= SmiteKSDamage() && e.IsValidTarget(Smite.Range));
 
                 if (target != null)
                 {
@@ -78,7 +77,12 @@ namespace Mario_s_Activator
 
         private static float SmiteDamage()
         {
-            return 390 + 20 * (Player.Instance.Level - 1);
+            return 370 + 20 * Player.Instance.Level;
+        }
+
+        private static float SmiteKSDamage()
+        {
+            return 12 + 8*Player.Instance.Level;
         }
     }
 }
