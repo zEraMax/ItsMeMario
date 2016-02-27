@@ -52,8 +52,8 @@ namespace Mario_s_Activator
             {
                 var item = new Item(off.ItemID, off.Range);
                 var target = TargetSelector.GetTarget(item.Range, DamageType.Mixed);
-                var checkBox = MyMenu.OffensiveMenu.GetCheckBoxValue("check" + item.Id);
-                var slider = MyMenu.OffensiveMenu.GetSliderValue("slider" + item.Id);
+                var checkBox = MyMenu.OffensiveMenu.GetCheckBoxValue("check" + off.ItemID);
+                var slider = MyMenu.OffensiveMenu.GetSliderValue("slider" + off.ItemID);
 
                 if (target != null && item.IsOwned() && item.IsReady() && target.IsValidTarget() && checkBox &&
                     target.HealthPercent >= slider)
@@ -117,8 +117,8 @@ namespace Mario_s_Activator
             foreach (var def in DefensiveItems)
             {
                 var item = new Item(def.ItemID, def.Range);
-                var checkBox = MyMenu.DefensiveMenu.GetCheckBoxValue("check" + item.Id);
-                var slider = MyMenu.DefensiveMenu.GetSliderValue("slider" + item.Id);
+                var checkBox = MyMenu.DefensiveMenu.GetCheckBoxValue("check" + def.ItemID);
+                var slider = MyMenu.DefensiveMenu.GetSliderValue("slider" + def.ItemID);
                 var target = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(slider));
 
                 switch (def.ItemID)
@@ -234,15 +234,15 @@ namespace Mario_s_Activator
             foreach (var con in ComsumableItems)
             {
                 var item = new Item(con.ItemID, con.Range);
-                var checkBox = MyMenu.ConsumablesMenu.GetCheckBoxValue("check" + item.Id);
-                var slider = MyMenu.ConsumablesMenu.GetSliderValue("slider" + item.Id);
+                var checkBox = MyMenu.ConsumablesMenu.GetCheckBoxValue("check" + con.ItemID);
 
-                if (item.IsReady() && item.IsOwned() && Player.Instance.HealthPercent <= slider && checkBox)
+                if (item.IsReady() && item.IsOwned() && checkBox)
                 {
                     switch (item.Id)
                     {
                         case ItemId.Elixir_of_Iron:
-                            if (Player.Instance.CountAlliesInRange(800) >= 1 && Player.Instance.CountEnemiesInRange(800) >= 1)
+                            if (Player.Instance.CountAlliesInRange(800) >= 1 &&
+                                Player.Instance.CountEnemiesInRange(800) >= 1)
                             {
                                 item.Cast();
                             }
@@ -261,10 +261,20 @@ namespace Mario_s_Activator
                                 item.Cast();
                             }
                             return;
+                        case ItemId.Hunters_Potion:
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
+                                Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "mana"))
+                            {
+                                item.Cast();
+                            }
+                            return;
+                            case ItemId.Health_Potion:
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health"))
+                            {
+                                item.Cast();
+                            }
+                            return;
                     }
-
-                    Chat.Print("Casting an cons item");
-                    item.Cast();
                 }
             }
         }

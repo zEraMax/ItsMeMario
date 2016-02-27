@@ -38,6 +38,9 @@ namespace Mario_s_Activator
             OffensiveMenu.AddGroupLabel("Hextech GunBlade");
             OffensiveMenu.CreateCheckBox("Use Hextech GunBlade.", "check3146");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3146", 40);
+            OffensiveMenu.AddGroupLabel("Manamune");
+            OffensiveMenu.CreateCheckBox("Use Manamune.", "check3004");
+            OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3004", 80);
             OffensiveMenu.AddGroupLabel("Frost Queens Claim");
             OffensiveMenu.CreateCheckBox("Use frost queen.", "check3092");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3092", 40);
@@ -104,29 +107,30 @@ namespace Mario_s_Activator
             #region ConsumableMenu
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2003");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2003", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2003" + "health", 30);
             ConsumablesMenu.AddGroupLabel("Biscuit");
             ConsumablesMenu.CreateCheckBox("Use Biscuit.", "check" + "2010");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2010"+ "health", 30);
-            ConsumablesMenu.CreateSlider("Use it if MY mana is lower than ({0}%).", "slider" + "2010" + "mana", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2010"+ "health", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2010" + "mana", 30);
             ConsumablesMenu.AddGroupLabel("Hunter`s Potion");
             ConsumablesMenu.CreateCheckBox("Use Hunter`s Potion.", "check" + "2032");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2032", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2032" + "health", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2032" + "mana", 30);
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2033");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2033", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2033", 30);
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2031");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2031", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2031", 30);
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2138");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2138", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2138", 30);
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2140");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2140", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2140", 30);
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2139");
-            ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2139", 30);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2139", 30);
             #endregion ConsumablesMenu
 
             #region SummonerSpells
