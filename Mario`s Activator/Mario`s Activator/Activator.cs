@@ -22,7 +22,7 @@ namespace Mario_s_Activator
         private static void Game_OnTick(EventArgs args)
         {
             Offensive.Cast();
-            Consumables.Cast(40);
+            Consumables.Cast();
         }
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
@@ -33,8 +33,8 @@ namespace Mario_s_Activator
 
         private static void Game_OnUpdate(EventArgs args)
         {
-            Cleansers.Cast(Player.Instance);
-            Defensive.Cast(Player.Instance, 20);
+            Cleansers.Cast();
+            Defensive.Cast();
             SummonerSpells.SmiteCast(false);
         }
     }

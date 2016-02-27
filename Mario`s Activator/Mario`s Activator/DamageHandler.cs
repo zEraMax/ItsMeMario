@@ -15,7 +15,7 @@ namespace Mario_s_Activator
         {
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void Drawing_OnDraw(EventArgs args)

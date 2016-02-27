@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
@@ -51,8 +52,11 @@ namespace Mario_s_Activator
             {
                 var item = new Item(off.ItemID, off.Range);
                 var target = TargetSelector.GetTarget(item.Range, DamageType.Mixed);
+                var checkBox = MyMenu.OffensiveMenu.GetCheckBoxValue("check" + item.Id);
+                var slider = MyMenu.OffensiveMenu.GetSliderValue("slider" + item.Id);
 
-                if (target != null && item.IsOwned() && item.IsReady() && target.IsValidTarget())
+                if (target != null && item.IsOwned() && item.IsReady() && target.IsValidTarget() && checkBox &&
+                    target.HealthPercent >= slider)
                 {
                     if (off.AfterAA)
                     {
@@ -108,11 +112,14 @@ namespace Mario_s_Activator
             new MItem(3056, 0,  false),
         };
 
-        public static void Cast(Obj_AI_Base target, int percent, int count = 1)
+        public static void Cast()
         {
             foreach (var def in DefensiveItems)
             {
                 var item = new Item(def.ItemID, def.Range);
+                var checkBox = MyMenu.DefensiveMenu.GetCheckBoxValue("check" + item.Id);
+                var slider = MyMenu.DefensiveMenu.GetSliderValue("slider" + item.Id);
+                var target = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(slider));
 
                 switch (def.ItemID)
                 {
@@ -123,14 +130,15 @@ namespace Mario_s_Activator
                         }
                         return;
                     case 3143:
-                        if (Player.Instance.CountEnemiesInRange(item.Range) >= count && item.IsReady() && item.IsOwned())
+                        if (Player.Instance.CountEnemiesInRange(item.Range) >= slider && item.IsReady() && item.IsOwned())
                         {
                             item.Cast();
                         }
                         return;
                 }
 
-                if (item.IsReady() && item.IsOwned() && target != null && target.IsInDanger(percent))
+                if (item.IsReady() && item.IsOwned() && target != null && target.IsInDanger(slider) && checkBox &&
+                    target.HealthPercent >= slider)
                 {
                     if (def.RequireTarget)
                     {
@@ -161,10 +169,18 @@ namespace Mario_s_Activator
             new MItem(3140, 0,  false),
         };
 
-        public static void Cast(Obj_AI_Base target)
+        public static void Cast()
         {
-            if (target.HasBuffOfType(BuffType.Stun) || target.HasBuffOfType(BuffType.Snare) ||
-                target.HasBuffOfType(BuffType.Blind))
+            var target =
+                EntityManager.Heroes.Allies.FirstOrDefault(
+                    a =>
+                        (a.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun")) ||
+                        (a.HasBuffOfType(BuffType.Snare) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
+                        (a.HasBuffOfType(BuffType.Blind) && MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
+                        (a.HasBuffOfType(BuffType.Polymorph) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSupression")) ||
+                        (a.HasBuffOfType(BuffType.Taunt) && MyMenu.CleansersMenu.GetCheckBoxValue("ccTaunt")) ||
+                        (a.HasBuffOfType(BuffType.Charm) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSupression")));
+            if (target != null)
             {
                 foreach (var i in CleansersItems)
                 {
@@ -213,35 +229,34 @@ namespace Mario_s_Activator
             new MItem(2139, 0, false),
         };
 
-        public static void Cast(int percent)
+        public static void Cast()
         {
             foreach (var con in ComsumableItems)
             {
                 var item = new Item(con.ItemID, con.Range);
+                var checkBox = MyMenu.ConsumablesMenu.GetCheckBoxValue("check" + item.Id);
+                var slider = MyMenu.ConsumablesMenu.GetSliderValue("slider" + item.Id);
 
-                if (item.IsReady() && item.IsOwned() && Player.Instance.HealthPercent <= percent)
+                if (item.IsReady() && item.IsOwned() && Player.Instance.HealthPercent <= slider && checkBox)
                 {
                     switch (item.Id)
                     {
                         case ItemId.Elixir_of_Iron:
-                            if (Player.Instance.CountAlliesInRange(800) >= 1 &&
-                                Player.Instance.CountEnemiesInRange(800) >= 1 && item.IsReady() && item.IsOwned())
+                            if (Player.Instance.CountAlliesInRange(800) >= 1 && Player.Instance.CountEnemiesInRange(800) >= 1)
                             {
                                 item.Cast();
                             }
                             return;
                         case ItemId.Elixir_of_Wrath:
                             if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange()) >= 1 &&
-                                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && item.IsReady() &&
-                                item.IsOwned())
+                                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                             {
                                 item.Cast();
                             }
                             return;
                         case ItemId.Elixir_of_Sorcery:
                             if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange()) >= 1 &&
-                                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && item.IsReady() &&
-                                item.IsOwned())
+                                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                             {
                                 item.Cast();
                             }

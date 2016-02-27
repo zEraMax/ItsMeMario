@@ -64,10 +64,10 @@ namespace Mario_s_Activator
             DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3190", 20);
             DefensiveMenu.AddGroupLabel("Randuins");
             DefensiveMenu.CreateCheckBox("Use Randuins.", "check" + "3143");
-            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3143", 20);
+            DefensiveMenu.CreateSlider("Use it if there are ({0}) in range.", "slider" + "3143", 2, 0, 5);
             DefensiveMenu.AddGroupLabel("Ohmwrecker");
             DefensiveMenu.CreateCheckBox("Use Ohmwrecker.", "check" + "3056");
-            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3056", 20);
+            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3056", 60);
 
             #endregion DefensiveMenu
 
@@ -102,7 +102,6 @@ namespace Mario_s_Activator
             #endregion CleansersMenu
 
             #region ConsumableMenu
-            /*
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2003");
             ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2003", 30);
@@ -128,7 +127,6 @@ namespace Mario_s_Activator
             ConsumablesMenu.AddGroupLabel("Health Potion");
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2139");
             ConsumablesMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "2139", 30);
-            */
             #endregion ConsumablesMenu
 
             #region SummonerSpells
