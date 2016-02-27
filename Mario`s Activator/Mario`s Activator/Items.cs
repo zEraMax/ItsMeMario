@@ -121,15 +121,15 @@ namespace Mario_s_Activator
                 var slider = MyMenu.DefensiveMenu.GetSliderValue("slider" + def.ItemID);
                 var target = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(slider));
 
-                switch (def.ItemID)
+                switch (item.Id)
                 {
-                    case 3056:
+                    case ItemId.Ohmwrecker:
                         if (target.IsReceivingTurretAA() && item.IsReady() && item.IsOwned())
                         {
                             item.Cast();
                         }
                         return;
-                    case 3143:
+                    case ItemId.Randuins_Omen:
                         if (Player.Instance.CountEnemiesInRange(item.Range) >= slider && item.IsReady() && item.IsOwned())
                         {
                             item.Cast();
@@ -240,6 +240,12 @@ namespace Mario_s_Activator
                 {
                     switch (item.Id)
                     {
+                        case ItemId.Health_Potion:
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health"))
+                            {
+                                item.Cast();
+                            }
+                            return;
                         case ItemId.Elixir_of_Iron:
                             if (Player.Instance.CountAlliesInRange(800) >= 1 &&
                                 Player.Instance.CountEnemiesInRange(800) >= 1)
@@ -264,12 +270,6 @@ namespace Mario_s_Activator
                         case ItemId.Hunters_Potion:
                             if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
                                 Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "mana"))
-                            {
-                                item.Cast();
-                            }
-                            return;
-                            case ItemId.Health_Potion:
-                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health"))
                             {
                                 item.Cast();
                             }

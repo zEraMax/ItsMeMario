@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 
 namespace Mario_s_Activator
 {
@@ -37,7 +38,20 @@ namespace Mario_s_Activator
                 PlayerHasIgnite = true;
                 Chat.Print("Player has ignite");
             }
+            //Poro Mark
+            var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerignite"));
+            if (poro != null)
+            {
+                PoroThrower = new Spell.Skillshot(poro.Slot, 000, SkillShotType.Linear, 250, (int)poro.SData.MissileSpeed, (int)poro.SData.LineWidth);
+                PlayerHasPoroThrower = true;
+                Chat.Print("Player has Poro thrower");
+            }
         }
+
+        #region Mark 
+        public static Spell.Skillshot PoroThrower;
+        public static bool PlayerHasPoroThrower;
+        #endregion Mark
 
         #region Smite
 
