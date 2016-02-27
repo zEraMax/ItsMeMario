@@ -25,7 +25,7 @@ namespace Mario_s_Activator
 
             foreach (var item in Offensive.OffensiveItems.Select(off => new Item(off.ItemID, off.Range)).Where(item => item.IsReady() && item.Range > 0))
             {
-                Circle.Draw(SharpDX.Color.Bisque, item.Range, Player.Instance);
+                Circle.Draw(SharpDX.Color.Red, item.Range, Player.Instance);
             }
 
             foreach (var item in Defensive.DefensiveItems.Select(off => new Item(off.ItemID, off.Range)).Where(item => item.IsReady() && item.Range > 0))

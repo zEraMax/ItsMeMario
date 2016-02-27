@@ -39,7 +39,7 @@ namespace Mario_s_Activator
                 Chat.Print("Player has ignite");
             }
             //Poro Mark
-            var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerignite"));
+            var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersnowball"));
             if (poro != null)
             {
                 PoroThrower = new Spell.Skillshot(poro.Slot, 000, SkillShotType.Linear, 250, (int)poro.SData.MissileSpeed, (int)poro.SData.LineWidth);

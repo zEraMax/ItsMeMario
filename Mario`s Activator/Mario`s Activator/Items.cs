@@ -27,7 +27,7 @@ namespace Mario_s_Activator
         public static List<MItem> OffensiveItems = new List<MItem>
         {
             //Bilgewater Cutlass
-            new MItem(3144, 380,  true),
+            new MItem(3144, 550,  true),
             //Blade of the ruined king
             new MItem(3153, 550,  true),
             //Tiamat
