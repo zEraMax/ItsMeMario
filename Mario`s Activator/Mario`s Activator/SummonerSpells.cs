@@ -7,13 +7,74 @@ namespace Mario_s_Activator
 {
     public static class SummonerSpells
     {
+
+        public static Spell.Active Cleanse;
+        public static bool PlayerHasCleanse;
+        public static Spell.Targeted Exhaust;
+        public static bool PlayerHasExhaust;
+        public static Spell.Skillshot Flash;
+        public static bool PlayerHasFlash;
+        public static Spell.Active Ghost;
+        public static bool PlayerHasGhost;
         public static Spell.Active Heal;
         public static bool PlayerHasHeal;
-        public static Spell.Targeted Ignite;
-        public static bool PlayerHasIgnite;
 
         public static void Initialize()
         {
+            //Barrier
+            var barrier = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerbarrier"));
+            if (barrier != null)
+            {
+                Barrier = new Spell.Active(barrier.Slot);
+                PlayerHasBarrier = true;
+                Chat.Print("Player has barrier");
+            }
+
+            //Cleanase
+            var cleanse = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonercleanse"));
+            if (cleanse != null)
+            {
+                Cleanse = new Spell.Active(cleanse.Slot);
+                PlayerHasCleanse = true;
+                Chat.Print("Player has cleanse");
+            }
+
+            //Exhaust
+            var exhaust = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerexhaust"));
+            if (exhaust != null)
+            {
+                Exhaust = new Spell.Targeted(exhaust.Slot, 650);
+                PlayerHasExhaust = true;
+                Chat.Print("Player Has Exhaust");
+            }
+
+            //Flash
+            var flash = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerflash"));
+            if (flash != null)
+            {
+                Flash = new Spell.Skillshot(flash.Slot, 425, SkillShotType.Circular);
+                PlayerHasFlash = true;
+                Chat.Print("Player has flash");
+            }
+
+            //Ghost
+            var ghost = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerghost"));
+            if (ghost != null)
+            {
+                Ghost = new Spell.Active(ghost.Slot);
+                PlayerHasGhost = true;
+                Chat.Print("Player has ghost");
+            }
+
+            //Ignite
+            var ignite = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerdot"));
+            if (ignite != null)
+            {
+                Ignite = new Spell.Targeted(ignite.Slot, 000);
+                PlayerHasIgnite = true;
+                Chat.Print("Player has ignite");
+            }
+
             //Smite
             var smite = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersmite"));
             if (smite != null)
@@ -30,14 +91,7 @@ namespace Mario_s_Activator
                 PlayerHasHeal = true;
                 Chat.Print("Player has heal");
             }
-            //Ignite
-            var ignite = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerignite"));
-            if (ignite != null)
-            {
-                Ignite = new Spell.Targeted(ignite.Slot, 000);
-                PlayerHasIgnite = true;
-                Chat.Print("Player has ignite");
-            }
+
             //Poro Mark
             var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersnowball"));
             if (poro != null)
@@ -48,6 +102,43 @@ namespace Mario_s_Activator
                 Chat.Print("Player has Poro thrower");
             }
         }
+
+        #region Ignite
+        public static Spell.Targeted Ignite;
+        public static bool PlayerHasIgnite;
+
+        public static void CastIgnite(int Percent)
+        {
+            if (!PlayerHasIgnite) return;
+            var target =
+                EntityManager.Heroes.Enemies.OrderBy(e => e.Health)
+                    .FirstOrDefault(
+                        e =>
+                            e.IsValidTarget(Ignite.Range) && e.HealthPercent <= Percent &&
+                            Prediction.Health.GetPrediction(e, Game.Ping + 50) <= GetTotalDamage(e) + IgniteDamage() &&
+                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo));
+            if (target != null)
+            {
+                Ignite.Cast(target);
+            }
+        }
+
+        private static float IgniteDamage()
+        {
+            return 50 + 20*Player.Instance.Level;
+        }
+
+        public static float GetTotalDamage(Obj_AI_Base target)
+        {
+            var damage = Player.Spells.Where(s => s.Slot == SpellSlot.Q || s.Slot == SpellSlot.W || s.Slot == SpellSlot.E || s.Slot == SpellSlot.R).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
+            return damage + Player.Instance.GetAutoAttackDamage(target);
+        }
+        #endregion Ignite
+
+        #region Barrier
+        public static Spell.Active Barrier;
+        public static bool PlayerHasBarrier;
+        #endregion Barrier
 
         #region Mark 
 
@@ -76,7 +167,7 @@ namespace Mario_s_Activator
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping + 30) <= SmiteDamage() &&
+                            Prediction.Health.GetPrediction(m, Game.Ping + 20) <= SmiteDamage() &&
                             MyMenu.SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
 
             if (GetJungleMinion != null)
@@ -91,7 +182,7 @@ namespace Mario_s_Activator
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
                         e =>
-                            Prediction.Health.GetPrediction(e, Game.Ping + 30) <= SmiteKSDamage() &&
+                            Prediction.Health.GetPrediction(e, Game.Ping + 20) <= SmiteKSDamage() &&
                             e.IsValidTarget(Smite.Range));
 
                 if (target != null)

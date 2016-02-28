@@ -83,6 +83,8 @@ namespace Mario_s_Activator
             CleansersMenu.CreateCheckBox("Snare", "ccSnare");
             CleansersMenu.CreateCheckBox("Supression", "ccSupression");
             CleansersMenu.CreateCheckBox("Taunt", "ccTaunt");
+            CleansersMenu.CreateCheckBox("Charm", "ccCharm");
+            CleansersMenu.CreateCheckBox("Polymorph", "ccPolymorph");
             CleansersMenu.AddLabel("Special spells to use cleanse");
             CleansersMenu.CreateCheckBox("ZedR", "ccZedR");
             CleansersMenu.CreateCheckBox("VladmirR", "ccVladmirR");
@@ -151,6 +153,12 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateCheckBox("Smite Gromp", "monster" + "SRU_Gromp", false);
                 SummonerMenu.CreateCheckBox("Smite Murkwolf", "monster" + "SRU_Murkwolf", false);
                 SummonerMenu.CreateCheckBox("Smite Razorbeak", "monster" + "SRU_Razorbeak", false);
+                SummonerMenu.CreateCheckBox("Smite Krug", "monster" + "SRU_Krug", false);
+            }
+
+            if (SummonerSpells.PlayerHasIgnite)
+            {
+                SummonerMenu.AddLabel("Congrats you have ignite kappa");
             }
 
             #endregion SummonerSpells

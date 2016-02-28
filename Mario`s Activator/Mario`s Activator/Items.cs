@@ -177,9 +177,13 @@ namespace Mario_s_Activator
                         (a.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun")) ||
                         (a.HasBuffOfType(BuffType.Snare) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
                         (a.HasBuffOfType(BuffType.Blind) && MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
-                        (a.HasBuffOfType(BuffType.Polymorph) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSupression")) ||
+                        (a.HasBuffOfType(BuffType.Polymorph) && MyMenu.CleansersMenu.GetCheckBoxValue("ccPolymorph")) ||
                         (a.HasBuffOfType(BuffType.Taunt) && MyMenu.CleansersMenu.GetCheckBoxValue("ccTaunt")) ||
-                        (a.HasBuffOfType(BuffType.Charm) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSupression")));
+                        (a.HasBuffOfType(BuffType.Charm) && MyMenu.CleansersMenu.GetCheckBoxValue("ccCharm")) ||
+                        (a.HasBuff("zedulttargetmark") && MyMenu.CleansersMenu.GetCheckBoxValue("ccZedR")) ||
+                        (a.HasBuff("VladimirHemoplague") && MyMenu.CleansersMenu.GetCheckBoxValue("ccVladmirR")) ||
+                        (a.HasBuff("MordekaiserChildrenOfTheGrave") && MyMenu.CleansersMenu.GetCheckBoxValue("ccMordekaiserR")));
+
             if (target != null)
             {
                 foreach (var i in CleansersItems)
