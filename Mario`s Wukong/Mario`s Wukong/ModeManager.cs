@@ -15,8 +15,6 @@ namespace Mario_sTemplate
                 var target = TargetSelector.GetTarget(highestRange, dmgType);
                 if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
 
-
-
                 if (GetCheckBoxValue(MenuTypes.Harass, "qAutoHarass") &&
                     GetSliderValue(MenuTypes.Harass, "manaAutoHarass") < Player.Instance.ManaPercent)
                 {
@@ -32,8 +30,10 @@ namespace Mario_sTemplate
                     }
                 }
                 var minEne = GetSliderValue(MenuTypes.Combo, "rAutoCount");
-
-                ComboLogics.castR(target, minEne);
+                if (minEne > 0)
+                {
+                    ComboLogics.castR(target, minEne);
+                }
             }
 
             public static void Combo()
