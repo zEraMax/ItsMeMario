@@ -112,9 +112,11 @@ namespace Mario_sTemplate
             #region Drawings
             DrawingsMenu = startMenu.AddSubMenu(":-Drawings Menu-:");
             DrawingsMenu.Add("readyDraw", new CheckBox("• Draw Spell`s range only if they are ready."));
+            DrawingsMenu.Add("damageDraw", new CheckBox("• Draw damage indicator."));
+            DrawingsMenu.Add("perDraw", new CheckBox("• Draw damage indicator percent."));
+            DrawingsMenu.Add("statDraw", new CheckBox("• Draw damage indicator statistics"));
             DrawingsMenu.AddGroupLabel("-:Spells:-");
             DrawingsMenu.Add("qDraw", new CheckBox("• Draw Q."));
-            DrawingsMenu.Add("wDraw", new CheckBox("• Draw W."));
             DrawingsMenu.Add("eDraw", new CheckBox("• Draw E."));
             DrawingsMenu.Add("rDraw", new CheckBox("• Draw R."));
             #endregion Drawings

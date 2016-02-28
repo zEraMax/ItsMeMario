@@ -76,21 +76,22 @@ namespace Mario_s_Activator
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping + 50) <= SmiteDamage() &&
+                            Prediction.Health.GetPrediction(m, Game.Ping + 30) <= SmiteDamage() &&
                             MyMenu.SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
 
             if (GetJungleMinion != null)
             {
                 Smite.Cast(GetJungleMinion);
             }
-            var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower() == "s5_summonersmiteplayerganker");
+            var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower() == "playerganker");
 
             if (smiteGanker != null && useOnChampions && Smite.Handle.Ammo > keepSmite)
             {
+                Chat.Print("Smite KS e pegando o target");
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
                         e =>
-                            Prediction.Health.GetPrediction(e, Game.Ping + 50) <= SmiteKSDamage() &&
+                            Prediction.Health.GetPrediction(e, Game.Ping + 30) <= SmiteKSDamage() &&
                             e.IsValidTarget(Smite.Range));
 
                 if (target != null)
@@ -99,7 +100,7 @@ namespace Mario_s_Activator
                 }
             }
 
-            var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower() == "s5_summonersmiteplayerduel");
+            var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower() == "playerduel");
 
             if (smiteDuel != null && useOnChampions && Smite.Handle.Ammo > keepSmite)
             {
@@ -115,8 +116,7 @@ namespace Mario_s_Activator
         private static float SmiteDamage()
         {
             return
-                new float[] {390, 410, 430, 450, 480, 510, 540, 570, 600, 640, 680, 720, 760, 800, 850, 900, 950, 1000}[
-                    Player.Instance.Level];
+                new float[] {390, 410, 430, 450, 480, 510, 540, 570, 600, 640, 680, 720, 760, 800, 850, 900, 950, 1000}[Player.Instance.Level];
         }
 
         private static float SmiteKSDamage()

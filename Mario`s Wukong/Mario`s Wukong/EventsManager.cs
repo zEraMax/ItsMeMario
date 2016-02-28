@@ -64,11 +64,6 @@ namespace Mario_sTemplate
                 Circle.Draw(SharpDX.Color.Red, Spells.Q.Range, 1f, Player.Instance);
             }
 
-            if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.Drawings, "wDraw") && (ready ? Spells.W.IsReady() : Spells.W.IsLearned))
-            {
-                Circle.Draw(SharpDX.Color.Blue, Spells.W.Range, 1f, Player.Instance);
-            }
-
             if (Helpers.GetCheckBoxValue(Helpers.MenuTypes.Drawings, "eDraw") && (ready ? Spells.E.IsReady() : Spells.E.IsLearned))
             {
                 Circle.Draw(SharpDX.Color.Purple, Spells.E.Range, 1f, Player.Instance);
