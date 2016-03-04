@@ -23,6 +23,7 @@ namespace Mario_s_Activator
         {
             Offensive.Cast();
             Consumables.Cast();
+            SummonerSpells.CastIgnite(40);
         }
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)

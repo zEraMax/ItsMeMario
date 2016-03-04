@@ -46,12 +46,22 @@ namespace Mario_s_Activator
             new MItem(3092, 4500,  false),
         };
 
+        private static Obj_AI_Base GetTarget(float range)
+        {
+            var tar = TargetSelector.GetTarget(range, DamageType.Mixed);
+            if (tar.IsNotNull())
+            {
+                return tar;
+            }
+            return null;
+        }
+
         public static void Cast()
         {
             foreach (var off in OffensiveItems)
             {
                 var item = new Item(off.ItemID, off.Range);
-                var target = TargetSelector.GetTarget(item.Range, DamageType.Mixed);
+                var target = GetTarget(item.Range);
                 var checkBox = MyMenu.OffensiveMenu.GetCheckBoxValue("check" + off.ItemID);
                 var slider = MyMenu.OffensiveMenu.GetSliderValue("slider" + off.ItemID);
 

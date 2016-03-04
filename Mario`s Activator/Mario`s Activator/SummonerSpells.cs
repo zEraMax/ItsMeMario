@@ -116,7 +116,7 @@ namespace Mario_s_Activator
                         e =>
                             e.IsValidTarget(Ignite.Range) && e.HealthPercent <= Percent &&
                             Prediction.Health.GetPrediction(e, Game.Ping + 50) <= GetTotalDamage(e) + IgniteDamage() &&
-                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo));
+                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && e.Health >= GetTotalDamage(e));
             if (target != null)
             {
                 Ignite.Cast(target);

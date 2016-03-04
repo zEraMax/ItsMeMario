@@ -10,3 +10,4 @@ C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\b
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.csprojResolveAssemblyReference.cache
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.exe
 C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.pdb
+C:\Users\Mario\Documents\GitHub\ItsMeMario\Mario`s Gangplank\Mario`s Gangplank\obj\Debug\Mario`s Gangplank.csproj.Mario`s Gangplank.exe.config

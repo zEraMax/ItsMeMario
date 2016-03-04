@@ -77,13 +77,13 @@ namespace Mario_sGangplank.Logics
                 if (barrel == null)
                 {
                     var predpos = pred.CastPosition;
-                    if (Q.IsReady() && predpos.Distance(barrelNearPlayer) <= 710)
+                    if (Q.IsReady() && predpos.Distance(barrelNearPlayer) <= 825)
                     {
                         E.Cast(predpos);
                         CastEBetween();
                         var killBC = Barrrels.GetKillBarrelClosest();
                         var barrelWithENemy = Barrrels.GetBarrelWithEemyInside();
-                        if (killBC != null && barrelWithENemy != null && killBC.Distance(barrelWithENemy) < 710)
+                        if (killBC != null && barrelWithENemy != null && killBC.Distance(barrelWithENemy) < 825)
                         {
                             Q.Cast(killBC);
                         }
@@ -106,7 +106,7 @@ namespace Mario_sGangplank.Logics
                     if (barrelWithEnemy != null && buffWithEnemyLink == null && buffKillableLink == null && E.IsReady())
                     {
                         var pos = killBC.Position.Extend(barrelWithEnemy, 500).To3D();
-                        if (pos.Distance(barrelWithEnemy) <= 700)
+                        if (pos.Distance(barrelWithEnemy) <= 825)
                         {
                             E.Cast(pos);
                         }
@@ -125,7 +125,7 @@ namespace Mario_sGangplank.Logics
                 if (barrelWithEnemy != null && barrelWithEnemy.Health >= 1)
                 {
                     var buffWithEnemyLink = killBC.Buffs.FirstOrDefault(b => b.Name.ToLower().Contains("link"));
-                    if (barrelWithEnemy != null && buffWithEnemyLink != null && buffKillableLink != null && Q.IsReady())
+                    if (buffWithEnemyLink != null && buffKillableLink != null && Q.IsReady())
                     {
                         Q.Cast(killBC);
                     }
