@@ -21,9 +21,16 @@ namespace Mario_s_Activator
 
         private static void Game_OnTick(EventArgs args)
         {
+            var target = TargetSelector.GetTarget(1000, DamageType.Mixed);
+            if (target.IsNotNull())
+            {
+                Console.WriteLine(SummonerSpells.GetTotalDamage(target));
+            }
+
             Offensive.Cast();
             Consumables.Cast();
-            SummonerSpells.CastIgnite(40);
+
+            SummonerSpells.OnTick();
         }
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)

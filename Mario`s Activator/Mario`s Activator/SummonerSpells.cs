@@ -16,8 +16,6 @@ namespace Mario_s_Activator
         public static bool PlayerHasFlash;
         public static Spell.Active Ghost;
         public static bool PlayerHasGhost;
-        public static Spell.Active Heal;
-        public static bool PlayerHasHeal;
 
         public static void Initialize()
         {
@@ -103,6 +101,26 @@ namespace Mario_s_Activator
             }
         }
 
+        public static void OnTick()
+        {
+            CastIgnite(50);
+            CastHeal(20);
+        }
+
+        #region Heal
+        public static Spell.Active Heal;
+        public static bool PlayerHasHeal;
+
+        public static void CastHeal(int percent)
+        {
+            var allies = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(percent));
+            if (allies != null)
+            {
+                Heal.Cast();
+            }
+        }
+        #endregion Heal
+
         #region Ignite
         public static Spell.Targeted Ignite;
         public static bool PlayerHasIgnite;
@@ -115,7 +133,7 @@ namespace Mario_s_Activator
                     .FirstOrDefault(
                         e =>
                             e.IsValidTarget(Ignite.Range) && e.HealthPercent <= Percent &&
-                            Prediction.Health.GetPrediction(e, Game.Ping + 50) <= GetTotalDamage(e) + IgniteDamage() &&
+                            Prediction.Health.GetPrediction(e, Game.Ping + 250) <= GetTotalDamage(e) + IgniteDamage() &&
                             Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && e.Health >= GetTotalDamage(e));
             if (target != null)
             {
@@ -130,8 +148,8 @@ namespace Mario_s_Activator
 
         public static float GetTotalDamage(Obj_AI_Base target)
         {
-            var damage = Player.Spells.Where(s => s.Slot == SpellSlot.Q || s.Slot == SpellSlot.W || s.Slot == SpellSlot.E || s.Slot == SpellSlot.R).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
-            return damage + Player.Instance.GetAutoAttackDamage(target);
+            var damage = Player.Spells.Where(s => (s.Slot == SpellSlot.Q || s.Slot == SpellSlot.W || s.Slot == SpellSlot.E || s.Slot == SpellSlot.R) && s.IsReady).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
+            return (damage + Player.Instance.GetAutoAttackDamage(target)) - 10;
         }
         #endregion Ignite
 

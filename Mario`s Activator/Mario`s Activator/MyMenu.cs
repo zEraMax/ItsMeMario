@@ -1,4 +1,5 @@
-﻿using EloBuddy.SDK.Menu;
+﻿using System.Dynamic;
+using EloBuddy.SDK.Menu;
 
 namespace Mario_s_Activator
 {
@@ -10,6 +11,7 @@ namespace Mario_s_Activator
         public static Menu CleansersMenu = FirstMenu.AddSubMenu("• Cleansers", "activatorcleansers");
         public static Menu ConsumablesMenu = FirstMenu.AddSubMenu("• Consumables", "activatorconsumables");
         public static Menu SummonerMenu = FirstMenu.AddSubMenu("• Summoner Spells", "activatorSummonerspells");
+        public static Menu DrawingMenu = FirstMenu.AddSubMenu("• Drawing", "activatordrawing");
         public static Menu SettingsMenu = FirstMenu.AddSubMenu("• Settings", "activatorsettings");
         public static Menu MiscMenu = FirstMenu.AddSubMenu("• Misc", "activatormisc");
 
@@ -158,12 +160,24 @@ namespace Mario_s_Activator
 
             if (SummonerSpells.PlayerHasIgnite)
             {
-                SummonerMenu.AddLabel("Congrats you have ignite kappa");
+                SummonerMenu.AddGroupLabel("Congrats you have ignite kappa");
             }
 
             #endregion SummonerSpells
 
+            #region Drawings
 
+            #endregion
+
+            #region Settings
+
+            SettingsMenu.AddGroupLabel("Offensive items options");
+            SettingsMenu.CreateCheckBox("Use offensive items only in combo", "combouseitems");
+            SettingsMenu.AddGroupLabel("Defensive items options");
+            SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
+            SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 30, 0, 150);
+
+            #endregion Settings
         }
     }
 }

@@ -27,23 +27,23 @@ namespace Mario_s_Activator
         public static List<MItem> OffensiveItems = new List<MItem>
         {
             //Bilgewater Cutlass
-            new MItem(3144, 550,  true),
+            new MItem(3144, 550, true),
             //Blade of the ruined king
-            new MItem(3153, 550,  true),
+            new MItem(3153, 550, true),
             //Tiamat
-            new MItem(3077, 380,  false, true),
+            new MItem(3077, 380, false, true),
             //Hydra
-            new MItem(3074, 380,  false, true),
+            new MItem(3074, 380, false, true),
             //Titanic
-            new MItem(3053, Player.Instance.GetAutoAttackRange(),  false, true),
+            new MItem(3053, Player.Instance.GetAutoAttackRange(), false, true),
             //Youmuus
-            new MItem(3142, 0,  false),
+            new MItem(3142, 0, false),
             //Hextech
-            new MItem(3146, 0,  true),
+            new MItem(3146, 0, true),
             //Manamune
-            new MItem(3004, 0,  false),
+            new MItem(3004, 0, false),
             //Frost Queens Claim
-            new MItem(3092, 4500,  false),
+            new MItem(3092, 4500, false),
         };
 
         private static Obj_AI_Base GetTarget(float range)
@@ -63,14 +63,66 @@ namespace Mario_s_Activator
                 var item = new Item(off.ItemID, off.Range);
                 var target = GetTarget(item.Range);
                 var checkBox = MyMenu.OffensiveMenu.GetCheckBoxValue("check" + off.ItemID);
+                var combo = MyMenu.SettingsMenu.GetCheckBoxValue("combouseitems");
                 var slider = MyMenu.OffensiveMenu.GetSliderValue("slider" + off.ItemID);
 
                 if (target != null && item.IsOwned() && item.IsReady() && target.IsValidTarget() && checkBox &&
                     target.HealthPercent >= slider)
                 {
-                    if (off.AfterAA)
+                    if (combo)
                     {
-                        if (Activator.CanPost)
+                        if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                        {
+                            if (off.AfterAA)
+                            {
+                                if (Activator.CanPost)
+                                {
+                                    if (off.RequireTarget)
+                                    {
+                                        Chat.Print("Casting an off item");
+                                        item.Cast(target);
+                                    }
+                                    else
+                                    {
+                                        Chat.Print("Casting an off item");
+                                        item.Cast();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (off.RequireTarget)
+                                {
+                                    Chat.Print("Casting an off item");
+                                    item.Cast(target);
+                                }
+                                else
+                                {
+                                    Chat.Print("Casting an off item");
+                                    item.Cast();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (off.AfterAA)
+                        {
+                            if (Activator.CanPost)
+                            {
+                                if (off.RequireTarget)
+                                {
+                                    Chat.Print("Casting an off item");
+                                    item.Cast(target);
+                                }
+                                else
+                                {
+                                    Chat.Print("Casting an off item");
+                                    item.Cast();
+                                }
+                            }
+                        }
+                        else
                         {
                             if (off.RequireTarget)
                             {
@@ -82,19 +134,6 @@ namespace Mario_s_Activator
                                 Chat.Print("Casting an off item");
                                 item.Cast();
                             }
-                        }
-                    }
-                    else
-                    {
-                        if (off.RequireTarget)
-                        {
-                            Chat.Print("Casting an off item");
-                            item.Cast(target);
-                        }
-                        else
-                        {
-                            Chat.Print("Casting an off item");
-                            item.Cast();
                         }
                     }
                 }
