@@ -163,6 +163,7 @@ namespace Mario_s_Activator
 
         public static void Cast()
         {
+            if (Player.Instance.IsInShopRange() || Player.Instance.IsRecalling()) return;
             foreach (var def in DefensiveItems)
             {
                 var item = new Item(def.ItemID, def.Range);
@@ -220,9 +221,11 @@ namespace Mario_s_Activator
 
         public static void Cast()
         {
+            if (Player.Instance.IsInShopRange() || Player.Instance.IsRecalling()) return;
             var target =
                 EntityManager.Heroes.Allies.FirstOrDefault(
-                    a =>
+                    //TODO FIX THIS LATER
+                    a => a.IsMe && 
                         (a.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun")) ||
                         (a.HasBuffOfType(BuffType.Snare) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
                         (a.HasBuffOfType(BuffType.Blind) && MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
@@ -284,6 +287,7 @@ namespace Mario_s_Activator
 
         public static void Cast()
         {
+            if (Player.Instance.IsInShopRange() || Player.Instance.IsRecalling()) return;
             foreach (var con in ComsumableItems)
             {
                 var item = new Item(con.ItemID, con.Range);
@@ -294,7 +298,7 @@ namespace Mario_s_Activator
                     switch (item.Id)
                     {
                         case ItemId.Health_Potion:
-                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health"))
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") && !Player.Instance.HasBuff("RegenerationPotion"))
                             {
                                 item.Cast();
                             }
