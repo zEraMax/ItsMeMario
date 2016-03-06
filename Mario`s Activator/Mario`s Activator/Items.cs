@@ -174,7 +174,7 @@ namespace Mario_s_Activator
                 switch (item.Id)
                 {
                     case ItemId.Ohmwrecker:
-                        if (target.IsReceivingTurretAA() && item.IsReady() && item.IsOwned())
+                        if (DamageHandler.ReceivingTowerAA && item.IsReady() && item.IsOwned())
                         {
                             item.Cast();
                         }
@@ -210,54 +210,72 @@ namespace Mario_s_Activator
         public static List<MItem> CleansersItems = new List<MItem>
         {
             //Mikael
-            new MItem(3222, 750,  true),
+            new MItem(3222, 750, true),
             //Dervish Blade
-            new MItem(3137, 0,  false),
+            new MItem(3137, 0, false),
             //Mercurial Scimitar
-            new MItem(3139, 0,  false),
+            new MItem(3139, 0, false),
             //Quicksilver
-            new MItem(3140, 0,  false),
+            new MItem(3140, 0, false),
         };
 
         public static void Cast()
         {
             if (Player.Instance.IsInShopRange() || Player.Instance.IsRecalling()) return;
-            var target =
-                EntityManager.Heroes.Allies.FirstOrDefault(
-                    //TODO FIX THIS LATER
-                    a => a.IsMe && 
-                        (a.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun")) ||
-                        (a.HasBuffOfType(BuffType.Snare) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
-                        (a.HasBuffOfType(BuffType.Blind) && MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
-                        (a.HasBuffOfType(BuffType.Polymorph) && MyMenu.CleansersMenu.GetCheckBoxValue("ccPolymorph")) ||
-                        (a.HasBuffOfType(BuffType.Taunt) && MyMenu.CleansersMenu.GetCheckBoxValue("ccTaunt")) ||
-                        (a.HasBuffOfType(BuffType.Charm) && MyMenu.CleansersMenu.GetCheckBoxValue("ccCharm")) ||
-                        (a.HasBuff("zedulttargetmark") && MyMenu.CleansersMenu.GetCheckBoxValue("ccZedR")) ||
-                        (a.HasBuff("VladimirHemoplague") && MyMenu.CleansersMenu.GetCheckBoxValue("ccVladmirR")) ||
-                        (a.HasBuff("MordekaiserChildrenOfTheGrave") && MyMenu.CleansersMenu.GetCheckBoxValue("ccMordekaiserR")));
 
-            if (target != null)
+            foreach (var i in CleansersItems)
             {
-                foreach (var i in CleansersItems)
-                {
-                    var item = new Item(i.ItemID, i.Range);
+                var item = new Item(i.ItemID, i.Range);
 
-                    if (item.IsReady() && item.IsOwned())
+                switch (item.Id)
+                {
+                    case ItemId.Mikaels_Crucible:
+                        if (!item.IsReady() || !item.IsOwned()) return;
+
+                        var target =
+                            EntityManager.Heroes.Allies.FirstOrDefault(a =>
+                                (a.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun")) ||
+                                (a.HasBuffOfType(BuffType.Snare) && MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
+                                (a.HasBuffOfType(BuffType.Blind) && MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
+                                (a.HasBuffOfType(BuffType.Polymorph) &&
+                                 MyMenu.CleansersMenu.GetCheckBoxValue("ccPolymorph")) ||
+                                (a.HasBuffOfType(BuffType.Taunt) && MyMenu.CleansersMenu.GetCheckBoxValue("ccTaunt")) ||
+                                (a.HasBuffOfType(BuffType.Charm) && MyMenu.CleansersMenu.GetCheckBoxValue("ccCharm")) ||
+                                (a.HasBuff("zedulttargetmark") && MyMenu.CleansersMenu.GetCheckBoxValue("ccZedR")) ||
+                                (a.HasBuff("VladimirHemoplague") &&
+                                 MyMenu.CleansersMenu.GetCheckBoxValue("ccVladmirR")) ||
+                                (a.HasBuff("MordekaiserChildrenOfTheGrave") &&
+                                 MyMenu.CleansersMenu.GetCheckBoxValue("ccMordekaiserR")));
+
+                        if (target != null && target.IsValidTarget(item.Range))
+                        {
+                            item.Cast(target);
+                        }
+                        return;
+                }
+
+                if (item.IsReady() && item.IsOwned())
+                {
+                    if (Player.Instance.HasBuffOfType(BuffType.Stun) && MyMenu.CleansersMenu.GetCheckBoxValue("ccStun") ||
+                        (Player.Instance.HasBuffOfType(BuffType.Snare) &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccSnare")) ||
+                        (Player.Instance.HasBuffOfType(BuffType.Blind) &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccBlind")) ||
+                        (Player.Instance.HasBuffOfType(BuffType.Polymorph) &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccPolymorph")) ||
+                        (Player.Instance.HasBuffOfType(BuffType.Taunt) &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccTaunt")) ||
+                        (Player.Instance.HasBuffOfType(BuffType.Charm) &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccCharm")) ||
+                        (Player.Instance.HasBuff("zedulttargetmark") && MyMenu.CleansersMenu.GetCheckBoxValue("ccZedR")) ||
+                        (Player.Instance.HasBuff("VladimirHemoplague") &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccVladmirR")) ||
+                        (Player.Instance.HasBuff("MordekaiserChildrenOfTheGrave") &&
+                         MyMenu.CleansersMenu.GetCheckBoxValue("ccMordekaiserR")))
                     {
-                        if (i.RequireTarget)
-                        {
-                            if (target.IsValidTarget(item.Range))
-                            {
-                                Chat.Print("Casting a cleanse item");
-                                item.Cast(target);
-                            }
-                        }
-                        else
-                        {
-                            Chat.Print("Casting a cleanse item");
-                            item.Cast();
-                        }
+                        item.Cast();
                     }
+
                 }
             }
         }
@@ -298,7 +316,24 @@ namespace Mario_s_Activator
                     switch (item.Id)
                     {
                         case ItemId.Health_Potion:
-                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") && !Player.Instance.HasBuff("RegenerationPotion"))
+                            if (Player.Instance.HealthPercent <=
+                                MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
+                                !Player.Instance.HasBuff("RegenerationPotion"))
+                            {
+                                item.Cast();
+                            }
+                            return;
+                        case ItemId.Total_Biscuit_of_Rejuvenation:
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
+                                Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "mana") &&
+                                !Player.Instance.HasBuff("ItemMiniRegenPotion"))
+                            {
+                                item.Cast();
+                            }
+                            return;
+                        case ItemId.Hunters_Potion:
+                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
+                                Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "mana"))
                             {
                                 item.Cast();
                             }
@@ -320,13 +355,6 @@ namespace Mario_s_Activator
                         case ItemId.Elixir_of_Sorcery:
                             if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange()) >= 1 &&
                                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-                            {
-                                item.Cast();
-                            }
-                            return;
-                        case ItemId.Hunters_Potion:
-                            if (Player.Instance.HealthPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "health") &&
-                                Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + con.ItemID + "mana"))
                             {
                                 item.Cast();
                             }

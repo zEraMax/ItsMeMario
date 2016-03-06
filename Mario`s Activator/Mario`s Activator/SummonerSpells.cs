@@ -103,7 +103,7 @@ namespace Mario_s_Activator
 
         public static void OnTick()
         {
-            CastIgnite(50);
+            CastIgnite();
             CastHeal(20);
         }
 
@@ -126,14 +126,14 @@ namespace Mario_s_Activator
         public static Spell.Targeted Ignite;
         public static bool PlayerHasIgnite;
 
-        public static void CastIgnite(int Percent)
+        public static void CastIgnite()
         {
             if (!PlayerHasIgnite) return;
             var target =
                 EntityManager.Heroes.Enemies.OrderBy(e => e.Health)
                     .FirstOrDefault(
                         e =>
-                            e.IsValidTarget(Ignite.Range) && e.HealthPercent <= Percent &&
+                            e.IsValidTarget(Ignite.Range) &&
                             Prediction.Health.GetPrediction(e, Game.Ping + 250) <= GetTotalDamage(e) + IgniteDamage() &&
                             Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && e.Health >= GetTotalDamage(e));
             if (target != null)

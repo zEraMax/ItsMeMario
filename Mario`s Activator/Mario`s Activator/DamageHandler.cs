@@ -9,13 +9,24 @@ namespace Mario_s_Activator
     public static class DamageHandler
     {
         public static List<MissileClient> Missiles = new List<MissileClient>();
-        public static List<MissileClient> TurretAttacks = new List<MissileClient>();
+        public static bool ReceivingTowerAA;
 
         public static void Init()
         {
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
+            Obj_AI_Base.OnBasicAttack += Obj_AI_Base_OnBasicAttack;
             //Drawing.OnDraw += Drawing_OnDraw;
+        }
+
+        private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            var tower = sender as Obj_AI_Turret;
+            if (tower != null && args.Target.IsAlly)
+            {
+                ReceivingTowerAA = true;
+                Core.DelayAction(() => ReceivingTowerAA = false , 80);
+            }
         }
 
         private static void Drawing_OnDraw(EventArgs args)
@@ -36,11 +47,6 @@ namespace Mario_s_Activator
                 {
                     Missiles.Add(missile);
                 }
-                var turret = missile.SpellCaster as Obj_AI_Turret;
-                if (turret.IsNotNull())
-                {
-                    TurretAttacks.Add(missile);
-                }
             }
         }
 
@@ -53,11 +59,6 @@ namespace Mario_s_Activator
                 if (champion.IsNotNull())
                 {
                     Missiles.Remove(missile);
-                }
-                var turret = missile.SpellCaster as Obj_AI_Turret;
-                if (turret.IsNotNull())
-                {
-                    TurretAttacks.Remove(missile);
                 }
             }
         }
@@ -119,11 +120,6 @@ namespace Mario_s_Activator
                 }
             }
             return false;
-        }
-
-        public static bool IsReceivingTurretAA(this Obj_AI_Base target)
-        {
-            return TurretAttacks.Any(aa => aa.Target == target);
         }
     }
 }
