@@ -113,6 +113,7 @@ namespace Mario_s_Activator
 
         public static void CastHeal(int percent)
         {
+            if (!PlayerHasHeal) return;
             var allies = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(percent));
             if (allies != null)
             {
