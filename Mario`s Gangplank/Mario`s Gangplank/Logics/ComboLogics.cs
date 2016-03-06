@@ -64,10 +64,12 @@ namespace Mario_sGangplank.Logics
         public static void castE(Obj_AI_Base target)
         {
             if (!target.IsValidTarget(E.Range + 50) || !E.IsReady()) return;
-            var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range +50));
+            var barrelNearPlayer = Barrrels.GetBarrels().FirstOrDefault(b => b.IsInRange(Player.Instance, Q.Range + 150));
             if (barrelNearPlayer == null)
             {
-                E.Cast(target.IsInRange(Player.Instance, 600) ? Player.Instance.Position.Extend(target, 100).To3D() : Player.Instance.Position.Extend(target, 300).To3D());
+                var sliderClose = GetSliderValue(MenuTypes.Combo, "eComboRangeClose");
+                var sliderFar = GetSliderValue(MenuTypes.Combo, "eComboRangeFar");
+                E.Cast(target.IsInRange(Player.Instance, 650) ? Player.Instance.Position.Extend(target, sliderClose).To3D() : Player.Instance.Position.Extend(target, sliderFar).To3D());
             }
             else if (barrelNearPlayer.Health <= 1 && barrelNearPlayer.Health >= 1)
             {
@@ -145,9 +147,12 @@ namespace Mario_sGangplank.Logics
 
         public static void castRKS(Obj_AI_Base target)
         {
-            if (R.IsReady() && Prediction.Health.GetPrediction(target, 350) <= GetRKSDamage(target) && !Player.Instance.IsInRange(target, 900))
+            if (R.IsReady() && Prediction.Health.GetPrediction(target, 350) <= GetRKSDamage(target) &&
+                !Player.Instance.IsInRange(target, 900) &&
+                Prediction.Health.GetPrediction(target, 350) <= GetSliderValue(MenuTypes.Settings, "rKSOverkill"))
             {
-                Player.Instance.Spellbook.CastSpell(SpellSlot.R, target.ServerPosition.Extend(target.Direction.To2D().Perpendicular(), 200).To3D());
+                Player.Instance.Spellbook.CastSpell(SpellSlot.R,
+                    target.ServerPosition.Extend(target.Direction.To2D().Perpendicular(), 200).To3D());
             }
         }
 
@@ -157,7 +162,7 @@ namespace Mario_sGangplank.Logics
             if (ally == null) return;
             var enemy = EntityManager.Heroes.Enemies.OrderBy(e => e.HealthPercent).FirstOrDefault(a => a.IsInRange(ally, 500));
             if (enemy == null) return;
-            if (R.IsReady() && enemy.HealthPercent + 10 > ally.HealthPercent)
+            if (R.IsReady() && enemy.HealthPercent + 15 > ally.HealthPercent)
             {
                 Player.Instance.Spellbook.CastSpell(SpellSlot.R, ally.ServerPosition.Extend(ally.Direction.To2D().Perpendicular(), 200).To3D());
             }

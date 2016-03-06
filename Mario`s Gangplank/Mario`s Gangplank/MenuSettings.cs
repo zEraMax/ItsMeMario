@@ -24,6 +24,10 @@ namespace Mario_sGangplank
             ComboMenu.AddGroupLabel("-:Combo Spells:-");
             ComboMenu.Add("qCombo", new CheckBox("• Use Q."));
             ComboMenu.Add("eCombo", new CheckBox("• Use E."));
+            ComboMenu.AddLabel("If the target is close to you");
+            ComboMenu.Add("eComboRangeClose", new Slider("How close to put the barrel(0 on the player)", 150, 50, 600));
+            ComboMenu.AddLabel("If the target is far from you");
+            ComboMenu.Add("eComboRangeFar", new Slider("How close to put the barrel(0 on the player)", 350, 300, 800));
             ComboMenu.Add("rCombo", new CheckBox("• Use R."));
             ComboMenu.Add("rComboCount", new Slider("Minimun enemies to use R.(0 = Off)", 2, 0, 5));
             #endregion Combo
@@ -88,8 +92,9 @@ namespace Mario_sGangplank
             SettingsMenu.Add("qKS", new CheckBox("• Use Q to ks."));
             SettingsMenu.AddGroupLabel("-:R Settings:-");
             SettingsMenu.Add("rKS", new CheckBox("• Use R to ks."));
+            SettingsMenu.Add("rKSOverkill", new Slider("R KS overkill, it will only ult if target health is greater than [{0}]", 150, 50, 400));
             SettingsMenu.Add("rToSaveAlly", new CheckBox("• Use R to save ally."));
-            SettingsMenu.Add("rToSaveAllyPercent", new Slider("• Ally health to save him msut be less than ({0}).", 15, 0, 100));
+            SettingsMenu.Add("rToSaveAllyPercent", new Slider("• Ally health to save him msut be less than ({0}).", 15));
             SettingsMenu.AddGroupLabel("-:W Settings:-"); 
             SettingsMenu.Add("wUsePercent", new Slider("• Use W if health is lower than ({0}).", 20));
             SettingsMenu.AddSeparator(1);
