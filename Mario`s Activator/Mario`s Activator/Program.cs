@@ -57,6 +57,7 @@ namespace Mario_s_Activator
                     else
                     {
                         VersionChecked = true;
+                        Chat.Print("Your version is updated loading the activator now have fun :D");
                     }
                 }
                 else

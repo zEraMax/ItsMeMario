@@ -68,7 +68,6 @@
     <Compile Include="Spells\ProtectSpells.cs" />
     <Compile Include="Spells\ShieldSpells.cs" />
     <Compile Include="Spells\SummonerSpells.cs" />
-    <Compile Include="VersionChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
