@@ -87,6 +87,7 @@ namespace Mario_s_Activator
                 {
                     DangerHandlers.Init();
                     Activator.Init();
+                    ActivatorLoaded = true;
                 }
                 if (ActivatorLoaded)
                 {

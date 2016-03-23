@@ -213,8 +213,9 @@ namespace Mario_s_Activator
             #endregion SummonerSpells
 
             #region Drawings
-
-            #endregion
+            DrawingMenu.AddGroupLabel("All drawings settings");
+            DrawingMenu.CreateCheckBox("Disable all drawings", "disableDrawings", false);
+            #endregion Drawings
 
             #region Settings
 

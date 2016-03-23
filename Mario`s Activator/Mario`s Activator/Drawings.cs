@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK.Rendering;
 using static Mario_s_Activator.Spells.SummonerSpells;
+using static Mario_s_Activator.MyMenu;
 
 namespace Mario_s_Activator
 {
@@ -12,16 +13,14 @@ namespace Mario_s_Activator
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        private static float range;
         private static void Drawing_OnDraw(EventArgs args)
         {
-            Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange"), Player.Instance);
+            if(DrawingMenu.GetCheckBoxValue("disableDrawings"))return;
+            Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + SettingsMenu.GetSliderValue("saferange"), Player.Instance);
 
-
-            
             if (PlayerHasSmite)
             {
-                if (Smite.IsReady() && !MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind"))
+                if (Smite.IsReady() && !SummonerMenu.GetKeybindValue("smiteKeybind"))
                 {
                     Circle.Draw(SharpDX.Color.Yellow, Smite.Range, Player.Instance);
                 }
