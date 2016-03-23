@@ -22,7 +22,7 @@ namespace Mario_s_Activator.Spells
         public static Spell.Active Heal;
         public static bool PlayerHasHeal;
 
-        public static void Initialize()
+        public static void InitializeSummonerSpells()
         {
             //Barrier
             var barrier = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerbarrier"));

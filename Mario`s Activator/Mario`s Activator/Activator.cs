@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Activator.Spells;
+using static Mario_s_Activator.Spells.SummonerSpells;
 
 namespace Mario_s_Activator
 {
@@ -11,7 +12,7 @@ namespace Mario_s_Activator
         public static bool CanPost;
         public static void Init()
         {
-            SummonerSpells.Initialize();
+            InitializeSummonerSpells();
             Game.OnTick += Game_OnTick;
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             Game.OnUpdate += Game_OnUpdate;
@@ -276,18 +277,18 @@ namespace Mario_s_Activator
 
         public static void SmiteOnTick()
         {
-            if (!SummonerSpells.PlayerHasSmite || !SummonerSpells.Smite.IsReady() || SummonerSpells.Smite == null || MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind")) return;
+            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind")) return;
             var GetJungleMinion =
                 EntityManager.MinionsAndMonsters.GetJungleMonsters()
                     .FirstOrDefault(
                         m =>
-                            SummonerSpells.MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(SummonerSpells.Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping + 20) <= SummonerSpells.SmiteDamage() &&
+                            MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
+                            Prediction.Health.GetPrediction(m, Game.Ping + 20) <= SmiteDamage() &&
                             MyMenu.SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
 
             if (GetJungleMinion != null)
             {
-                SummonerSpells.Smite.Cast(GetJungleMinion);
+                Smite.Cast(GetJungleMinion);
             }
 
             if(!MyMenu.SummonerMenu.GetCheckBoxValue("smiteUseOnChampions"))return;
@@ -295,45 +296,45 @@ namespace Mario_s_Activator
 
             var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerganker"));
 
-            if (smiteGanker != null && SummonerSpells.Smite.Handle.Ammo > keepSmite)
+            if (smiteGanker != null && Smite.Handle.Ammo > keepSmite)
             {
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
                         e =>
-                            Prediction.Health.GetPrediction(e, Game.Ping) <= SummonerSpells.SmiteKSDamage() && e.IsValidTarget(SummonerSpells.Smite.Range));
+                            Prediction.Health.GetPrediction(e, Game.Ping) <= SmiteKSDamage() && e.IsValidTarget(Smite.Range));
 
                 if (target != null)
                 {
-                    SummonerSpells.Smite.Cast(target);
+                    Smite.Cast(target);
                     Chat.Print("KS");
                 }
             }
 
             var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerduel"));
 
-            if (smiteDuel != null && SummonerSpells.Smite.Handle.Ammo > keepSmite)
+            if (smiteDuel != null && Smite.Handle.Ammo > keepSmite)
             {
-                var target = TargetSelector.GetTarget(SummonerSpells.Smite.Range, DamageType.Mixed);
+                var target = TargetSelector.GetTarget(Smite.Range, DamageType.Mixed);
 
                 if (target != null)
                 {
-                    SummonerSpells.Smite.Cast(target);
+                    Smite.Cast(target);
                 }
             }
         }
 
         public static void IgniteOnTick()
         {
-            if (SummonerSpells.PlayerHasIgnite && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "ignite"))
+            if (PlayerHasIgnite && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "ignite"))
             {
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
                         e =>
-                            e.IsValidTarget(SummonerSpells.Ignite.Range) &&
-                            e.Health <= SummonerSpells.GetTotalDamage(e) + SummonerSpells.IgniteDamage() && e.Health >= SummonerSpells.IgniteDamage());
-                if (target != null && SummonerSpells.Ignite.IsReady())
+                            e.IsValidTarget(Ignite.Range) &&
+                            e.Health <= GetTotalDamage(e) + IgniteDamage() && e.Health >= IgniteDamage());
+                if (target != null && Ignite.IsReady())
                 {
-                    SummonerSpells.Ignite.Cast(target);
+                    Ignite.Cast(target);
                 }
             }
             
@@ -341,22 +342,22 @@ namespace Mario_s_Activator
 
         public static void BarrierOnTick()
         {
-            if (SummonerSpells.PlayerHasBarrier && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
+            if (PlayerHasBarrier && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
                 Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "barrier")))
             {
-                SummonerSpells.Barrier.Cast();
+                Barrier.Cast();
             }
         }
 
         public static void HealOnTick()
         {
-            if (SummonerSpells.PlayerHasHeal && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "heal"))
+            if (PlayerHasHeal && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "heal"))
             {
-                var ally = EntityManager.Heroes.Allies.OrderBy(a => a.Health).FirstOrDefault(a => a.IsValidTarget(SummonerSpells.Heal.Range));
+                var ally = EntityManager.Heroes.Allies.OrderBy(a => a.Health).FirstOrDefault(a => a.IsValidTarget(Heal.Range));
                 if (Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "me")) ||
                     ally.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
                 {
-                    SummonerSpells.Heal.Cast();
+                    Heal.Cast();
                 }
             }
         }

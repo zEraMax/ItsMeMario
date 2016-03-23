@@ -3,6 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using Mario_s_Activator.Spells;
+using static Mario_s_Activator.Spells.SummonerSpells;
 
 namespace Mario_s_Activator
 {
@@ -166,7 +167,7 @@ namespace Mario_s_Activator
 
             #region SummonerSpells
 
-            if (SummonerSpells.PlayerHasSmite)
+            if (PlayerHasSmite)
             {
                 SummonerMenu.AddGroupLabel("Smite");
                 SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
@@ -188,14 +189,14 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateCheckBox("Smite Krug", "monster" + "SRU_Krug", false);
             }
 
-            if (SummonerSpells.PlayerHasBarrier)
+            if (PlayerHasBarrier)
             {
                 SummonerMenu.AddGroupLabel("Barrier");
                 SummonerMenu.CreateCheckBox("Use Barrier.", "check" + "barrier");
                 SummonerMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "barrier", 20);
             }
 
-            if (SummonerSpells.PlayerHasHeal)
+            if (PlayerHasHeal)
             {
                 SummonerMenu.AddGroupLabel("Heal");
                 SummonerMenu.CreateCheckBox("Use Heal.", "check" + "heal");
@@ -203,7 +204,7 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateSlider("Use it if ALLY health is lower than ({0}%).", "slider" + "heal" + "ally", 10);
             }
 
-            if (SummonerSpells.PlayerHasIgnite)
+            if (PlayerHasIgnite)
             {
                 SummonerMenu.AddGroupLabel("Ignite");
                 SummonerMenu.CreateCheckBox("Use ignite.", "check" + "ignite");
