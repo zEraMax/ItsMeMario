@@ -7,7 +7,8 @@ namespace Mario_s_Activator.Spells
 {
     public static class SummonerSpells
     {
-
+        public static Spell.Targeted Ignite;
+        public static bool PlayerHasIgnite;
         public static Spell.Active Cleanse;
         public static bool PlayerHasCleanse;
         public static Spell.Targeted Exhaust;
@@ -16,6 +17,10 @@ namespace Mario_s_Activator.Spells
         public static bool PlayerHasFlash;
         public static Spell.Active Ghost;
         public static bool PlayerHasGhost;
+        public static Spell.Active Barrier;
+        public static bool PlayerHasBarrier;
+        public static Spell.Active Heal;
+        public static bool PlayerHasHeal;
 
         public static void Initialize()
         {
@@ -104,50 +109,9 @@ namespace Mario_s_Activator.Spells
             }
         }
 
-        public static void OnTick()
+        public static float IgniteDamage()
         {
-            CastSmite();
-            CastIgnite();
-            CastHeal();
-            CastPoroThrower();
-        }
-
-        #region Heal
-        public static Spell.Active Heal;
-        public static bool PlayerHasHeal;
-
-        public static void CastHeal()
-        {
-            if (!PlayerHasHeal || !MyMenu.SummonerMenu.GetCheckBoxValue("")) return;
-            var allies = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("")));
-            if (allies != null)
-            {
-                Heal.Cast();
-            }
-        }
-        #endregion Heal
-
-        #region Ignite
-        public static Spell.Targeted Ignite;
-        public static bool PlayerHasIgnite;
-
-        public static void CastIgnite()
-        {
-            if (!PlayerHasIgnite || !MyMenu.SummonerMenu.GetCheckBoxValue("")) return;
-            var target =
-                EntityManager.Heroes.Enemies.OrderBy(e => e.Health)
-                    .FirstOrDefault(
-                        e =>
-                            e.IsValidTarget(Ignite.Range) && e.Health <= GetTotalDamage(e) + IgniteDamage() && e.Health >= GetTotalDamage(e));
-            if (target != null)
-            {
-                Ignite.Cast(target);
-            }
-        }
-
-        private static float IgniteDamage()
-        {
-            return 50 + (20*Player.Instance.Level);
+            return 50 + (20 * Player.Instance.Level);
         }
 
         public static float GetTotalDamage(Obj_AI_Base target)
@@ -155,21 +119,6 @@ namespace Mario_s_Activator.Spells
             var damage = Player.Spells.Where(s => (s.Slot == SpellSlot.Q || s.Slot == SpellSlot.W || s.Slot == SpellSlot.E || s.Slot == SpellSlot.R) && s.IsReady).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
             return (damage + Player.Instance.GetAutoAttackDamage(target)) - 10;
         }
-        #endregion Ignite
-
-        #region Barrier
-        public static Spell.Active Barrier;
-        public static bool PlayerHasBarrier;
-
-        public static void CastBarrier()
-        {
-            if(!PlayerHasBarrier || !MyMenu.SummonerMenu.GetCheckBoxValue(""))return;
-            if (Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("")))
-            {
-                Barrier.Cast();
-            }
-        }
-        #endregion Barrier
 
         #region Mark 
 

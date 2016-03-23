@@ -15,7 +15,6 @@ namespace Mario_s_Activator
             new Item(ItemId.Titanic_Hydra, Player.Instance.GetAutoAttackRange()),
             new Item(ItemId.Youmuus_Ghostblade),
             new Item(ItemId.Hextech_Gunblade, 700),
-            new Item(ItemId.Manamune),
             new Item(ItemId.Frost_Queens_Claim)
         };
     }
@@ -51,7 +50,7 @@ namespace Mario_s_Activator
         {
             new Item(ItemId.Health_Potion),
             new Item(ItemId.Total_Biscuit_of_Rejuvenation),
-            new Item(ItemId.Hunters_Machete),
+            new Item(ItemId.Hunters_Potion),
             new Item(ItemId.Corrupting_Potion),
             new Item(ItemId.Refillable_Potion),
             new Item(ItemId.Elixir_of_Iron),

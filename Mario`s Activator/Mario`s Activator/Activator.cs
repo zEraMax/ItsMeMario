@@ -17,7 +17,20 @@ namespace Mario_s_Activator
             Game.OnUpdate += Game_OnUpdate;
             MyMenu.InitializeMenu();
             Drawings.InitializeDrawings();
+
             Obj_AI_Base.OnBuffGain += Obj_AI_Base_OnBuffGain;
+            GameObject.OnIntegerPropertyChange += GameObject_OnIntegerPropertyChange;
+        }
+
+        private static void GameObject_OnIntegerPropertyChange(GameObject sender, GameObjectIntegerPropertyChangeEventArgs args)
+        {
+            var hero = sender as AIHeroClient;
+            var pinkWard = new Item(ItemId.Vision_Ward);
+
+            if (hero != null && hero.IsEnemy && pinkWard.IsOwned() && pinkWard.IsReady() && (GameObjectCharacterState)args.Value == GameObjectCharacterState.IsStealth)
+            {
+                pinkWard.Cast(hero.Position);
+            }
         }
 
         private static void Obj_AI_Base_OnBuffGain(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
@@ -305,6 +318,45 @@ namespace Mario_s_Activator
                 if (target != null)
                 {
                     SummonerSpells.Smite.Cast(target);
+                }
+            }
+        }
+
+        public static void IgniteOnTick()
+        {
+            if (SummonerSpells.PlayerHasIgnite && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "ignite"))
+            {
+                var target =
+                    EntityManager.Heroes.Enemies.FirstOrDefault(
+                        e =>
+                            e.IsValidTarget(SummonerSpells.Ignite.Range) &&
+                            e.Health <= SummonerSpells.GetTotalDamage(e) + SummonerSpells.IgniteDamage() && e.Health >= SummonerSpells.IgniteDamage());
+                if (target != null && SummonerSpells.Ignite.IsReady())
+                {
+                    SummonerSpells.Ignite.Cast(target);
+                }
+            }
+            
+        }
+
+        public static void BarrierOnTick()
+        {
+            if (SummonerSpells.PlayerHasBarrier && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
+                Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "barrier")))
+            {
+                SummonerSpells.Barrier.Cast();
+            }
+        }
+
+        public static void HealOnTick()
+        {
+            if (SummonerSpells.PlayerHasHeal && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "heal"))
+            {
+                var ally = EntityManager.Heroes.Allies.OrderBy(a => a.Health).FirstOrDefault(a => a.IsValidTarget(SummonerSpells.Heal.Range));
+                if (Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "me")) ||
+                    ally.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
+                {
+                    SummonerSpells.Heal.Cast();
                 }
             }
         }

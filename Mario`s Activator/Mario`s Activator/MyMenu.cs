@@ -3,7 +3,6 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using Mario_s_Activator.Spells;
-using static Mario_s_Activator.Spells.SummonerSpells;
 
 namespace Mario_s_Activator
 {
@@ -45,9 +44,6 @@ namespace Mario_s_Activator
             OffensiveMenu.AddGroupLabel("Hextech GunBlade");
             OffensiveMenu.CreateCheckBox("Use Hextech GunBlade.", "check3146");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3146", 40);
-            OffensiveMenu.AddGroupLabel("Manamune");
-            OffensiveMenu.CreateCheckBox("Use Manamune.", "check3004");
-            OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3004", 80);
             OffensiveMenu.AddGroupLabel("Frost Queens Claim");
             OffensiveMenu.CreateCheckBox("Use frost queen.", "check3092");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3092", 40);
@@ -170,7 +166,7 @@ namespace Mario_s_Activator
 
             #region SummonerSpells
 
-            if (PlayerHasSmite)
+            if (SummonerSpells.PlayerHasSmite)
             {
                 SummonerMenu.AddGroupLabel("Smite");
                 SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
@@ -192,14 +188,25 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateCheckBox("Smite Krug", "monster" + "SRU_Krug", false);
             }
 
-            if (PlayerHasIgnite)
+            if (SummonerSpells.PlayerHasBarrier)
             {
-               
+                SummonerMenu.AddGroupLabel("Barrier");
+                SummonerMenu.CreateCheckBox("Use Barrier.", "check" + "barrier");
+                SummonerMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "barrier", 20);
             }
 
-            if (PlayerHasHeal)
+            if (SummonerSpells.PlayerHasHeal)
             {
-                
+                SummonerMenu.AddGroupLabel("Heal");
+                SummonerMenu.CreateCheckBox("Use Heal.", "check" + "heal");
+                SummonerMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "heal" + "me", 20);
+                SummonerMenu.CreateSlider("Use it if ALLY health is lower than ({0}%).", "slider" + "heal" + "ally", 10);
+            }
+
+            if (SummonerSpells.PlayerHasIgnite)
+            {
+                SummonerMenu.AddGroupLabel("Ignite");
+                SummonerMenu.CreateCheckBox("Use ignite.", "check" + "ignite");
             }
 
             #endregion SummonerSpells
