@@ -194,7 +194,7 @@ namespace Mario_s_Activator
 
             if (PlayerHasIgnite)
             {
-                SummonerMenu.AddGroupLabel("Congrats you have ignite kappa");
+               
             }
 
             if (PlayerHasHeal)
@@ -214,7 +214,7 @@ namespace Mario_s_Activator
             SettingsMenu.CreateCheckBox("Use offensive items only in combo", "combouseitems");
             SettingsMenu.AddGroupLabel("Danger Options");
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
-            SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 0, 20, 80);
+            SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
 
             #endregion Settings
         }

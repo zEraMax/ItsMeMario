@@ -54,7 +54,7 @@ namespace Mario_s_Activator
         private static void Game_OnUpdate(EventArgs args)
         {
             CleanseOnTick();
-            if (Player.Instance.IsInDanger(30))
+            if (Player.Instance.IsInDanger(80))
             {
                 Chat.Print("On danger");
             }
@@ -66,11 +66,11 @@ namespace Mario_s_Activator
         private static void OffensiveOnTick()
         { 
             var offItem = Offensive.OffensiveItems.FirstOrDefault(i => i.IsReady() && i.IsOwned() && MyMenu.OffensiveMenu.GetCheckBoxValue("check" + (int)i.Id));
-
+            
             if (offItem != null)
             {
-                var target = TargetSelector.GetTarget(offItem.Range, DamageType.Mixed);
-                if (target != null)
+                var anyEnemy = ObjectManager.Get<Obj_AI_Base>().FirstOrDefault(e => e.IsEnemy && e.IsValidTarget(offItem.Range));
+                if (anyEnemy != null)
                 {
                     switch (offItem.Id)
                     {
@@ -83,22 +83,12 @@ namespace Mario_s_Activator
                             }
                             return;
                     }
+                }
 
-                    try
-                    {
-                        offItem.Cast();
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
-                            offItem.Cast(target);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Failed to cast the item with the id =" + offItem.Id);
-                        }
-                    }
+                var target = TargetSelector.GetTarget(offItem.Range, DamageType.Mixed);
+                if (target != null && offItem.IsReady() && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                {
+                    offItem.Cast(target);
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -44,7 +43,7 @@ namespace Mario_s_Activator
         }
     }
     
-    public static class DamageHandler
+    public static class DangerHandlers
     {
         public static List<MissileClient> Missiles = new List<MissileClient>();
         public static List<TargetSpell> TargettedSpells = new List<TargetSpell>();
@@ -133,7 +132,7 @@ namespace Mario_s_Activator
 
         public static bool IsInDanger(this AIHeroClient target, int percent)
         {
-            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
+            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.HealthPercent > percent) return false;
             //Missiles
             var missile = Missiles.FirstOrDefault(m => m.IsInRange(target, 2500) && m.IsValid);
             var champion = missile?.SpellCaster as AIHeroClient;
@@ -176,10 +175,10 @@ namespace Mario_s_Activator
                         return true;
                     }
                     return
-                        missile.Distance(Player.Instance) <= boundingRadius && target.HealthPercent <= percent;
+                        missile.Distance(Player.Instance) <= boundingRadius;
                 }
 
-                if (missile.Distance(Player.Instance) <= boundingRadius && target.HealthPercent <= percent)
+                if (missile.Distance(Player.Instance) <= boundingRadius)
                 {
                     return true;
                 }
@@ -195,7 +194,7 @@ namespace Mario_s_Activator
                 {
                     return true;
                 }
-                if (normalTargSpell != null && target.HealthPercent <= percent)
+                if (normalTargSpell != null)
                 {
                     return true;
                 }
@@ -216,7 +215,7 @@ namespace Mario_s_Activator
                         var segementPoint = hueSPell.Projection.SegmentPoint.Distance(Player.Instance.Position) <=
                                             spellInfo.Radius + Player.Instance.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
 
-                        if (segementPoint && target.HealthPercent <= percent)
+                        if (segementPoint)
                         {
                             return true;
                         }

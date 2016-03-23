@@ -16,7 +16,7 @@ namespace Mario_s_Activator
         {
             Chat.Print("Loaded!");
             
-            DamageHandler.Init();
+            DangerHandlers.Init();
             Activator.Init();
         }
     }
