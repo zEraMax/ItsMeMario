@@ -4,6 +4,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Activator.Spells;
 using static Mario_s_Activator.Spells.SummonerSpells;
+using static Mario_s_Activator.MyMenu;
 
 namespace Mario_s_Activator
 {
@@ -16,7 +17,7 @@ namespace Mario_s_Activator
             Game.OnTick += Game_OnTick;
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             Game.OnUpdate += Game_OnUpdate;
-            MyMenu.InitializeMenu();
+            InitializeMenu();
             Drawings.InitializeDrawings();
 
             Obj_AI_Base.OnBuffGain += Obj_AI_Base_OnBuffGain;
@@ -40,9 +41,9 @@ namespace Mario_s_Activator
 
             var itemCleanse =
                 Cleansers.CleansersItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && MyMenu.CleansersMenu.GetCheckBoxValue("check" + (int)i.Id));
+                    i => i.IsReady() && i.IsOwned() && CleansersMenu.GetCheckBoxValue("check" + (int)i.Id));
 
-            var delay = MyMenu.CleansersMenu.GetSliderValue("delayCleanse");
+            var delay = CleansersMenu.GetSliderValue("delayCleanse");
 
             if (itemCleanse != null)
             {
@@ -63,23 +64,25 @@ namespace Mario_s_Activator
         {
             OffensiveOnTick();
             ConsumablesOnTick();
+
+            if (SettingsMenu.GetCheckBoxValue("debug"))
+            {
+                if (Player.Instance.IsInDanger(80))
+                {
+                    Chat.Print("On danger");
+                }
+            }
         }
 
         private static void Game_OnUpdate(EventArgs args)
         {
-            CleanseOnTick();
-            if (Player.Instance.IsInDanger(80))
-            {
-                Chat.Print("On danger");
-            }
             DefensiveOnTick();
             SmiteOnTick();
-
         }
 
         private static void OffensiveOnTick()
         { 
-            var offItem = Offensive.OffensiveItems.FirstOrDefault(i => i.IsReady() && i.IsOwned() && MyMenu.OffensiveMenu.GetCheckBoxValue("check" + (int)i.Id));
+            var offItem = Offensive.OffensiveItems.FirstOrDefault(i => i.IsReady() && i.IsOwned() && OffensiveMenu.GetCheckBoxValue("check" + (int)i.Id));
             
             if (offItem != null)
             {
@@ -111,11 +114,11 @@ namespace Mario_s_Activator
         {
             var itemConsumable =
                 Consumables.ComsumableItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && MyMenu.ConsumablesMenu.GetCheckBoxValue("check" + (int) i.Id));
+                    i => i.IsReady() && i.IsOwned() && ConsumablesMenu.GetCheckBoxValue("check" + (int) i.Id));
 
             if (itemConsumable != null)
             {
-                var sliderHealth = MyMenu.ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health");
+                var sliderHealth = ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health");
 
                 switch (itemConsumable.Id)
                 {
@@ -127,7 +130,7 @@ namespace Mario_s_Activator
                         return;
                     case ItemId.Total_Biscuit_of_Rejuvenation:
                         if (Player.Instance.HealthPercent <= sliderHealth &&
-                            Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
+                            Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
                             !Player.Instance.HasBuff("ItemMiniRegenPotion"))
                         {
                             itemConsumable.Cast();
@@ -135,7 +138,7 @@ namespace Mario_s_Activator
                         return;
                     case ItemId.Hunters_Potion:
                         if (Player.Instance.HealthPercent <= sliderHealth &&
-                            Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
+                            Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
                             !Player.Instance.HasBuff("ItemCrystalFlaskJungle"))
                         {
                             itemConsumable.Cast();
@@ -143,7 +146,7 @@ namespace Mario_s_Activator
                         return;
                     case ItemId.Corrupting_Potion:
                         if (Player.Instance.HealthPercent <= sliderHealth &&
-                            Player.Instance.ManaPercent <= MyMenu.ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
+                            Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
                             !Player.Instance.HasBuff("ItemDarkCrystalFlask"))
                         {
                             itemConsumable.Cast();
@@ -180,35 +183,6 @@ namespace Mario_s_Activator
             }
         }
 
-        public static void CleanseOnTick()
-        {
-            var itemCleanse =
-                Cleansers.CleansersItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && MyMenu.CleansersMenu.GetCheckBoxValue("check" + (int) i.Id));
-            if (itemCleanse != null)
-            {
-                if (itemCleanse.Id == ItemId.Mikaels_Crucible)
-                {
-                    var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.HasCC());
-                    if (ally != null)
-                    {
-                        try
-                        {
-                            itemCleanse.Cast(ally);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Tried and failed to cast mikael");
-                        }
-                    }
-                }
-                else if(Player.Instance.HasCC())
-                {
-                    itemCleanse.Cast();
-                }
-            }
-        }
-
         private static Spell.Targeted _protectSpell;
         public static void ProtectorOnTick()
         {
@@ -223,7 +197,7 @@ namespace Mario_s_Activator
                     _protectSpell = new Spell.Targeted(spell.Slot, (uint)range);
 
                     var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValidTarget(_protectSpell.Range));
-                    var health = MyMenu.ProtectMenu.GetSliderValue("protectallyhealth");
+                    var health = ProtectMenu.GetSliderValue("protectallyhealth");
 
                     if (ally != null && _protectSpell != null && ally.Health >= health)
                     {
@@ -238,7 +212,7 @@ namespace Mario_s_Activator
         {
             var defItem =
                 Defensive.DefensiveItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && MyMenu.DefensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
+                    i => i.IsReady() && i.IsOwned() && DefensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
 
             if (defItem != null)
             {
@@ -246,13 +220,13 @@ namespace Mario_s_Activator
                 {
                         case ItemId.Randuins_Omen:
                         if (Player.Instance.CountEnemiesInRange(defItem.Range) >=
-                            MyMenu.DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
+                            DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
                         {
                             defItem.Cast();
                         }
                         return;
                 }
-                if (Player.Instance.IsInDanger(MyMenu.DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
+                if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
                 {
                     try
                     {
@@ -277,22 +251,22 @@ namespace Mario_s_Activator
 
         public static void SmiteOnTick()
         {
-            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind")) return;
+            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || SummonerMenu.GetKeybindValue("smiteKeybind")) return;
             var GetJungleMinion =
                 EntityManager.MinionsAndMonsters.GetJungleMonsters()
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
                             Prediction.Health.GetPrediction(m, Game.Ping + 20) <= SmiteDamage() &&
-                            MyMenu.SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+                            SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
 
             if (GetJungleMinion != null)
             {
                 Smite.Cast(GetJungleMinion);
             }
 
-            if(!MyMenu.SummonerMenu.GetCheckBoxValue("smiteUseOnChampions"))return;
-            var keepSmite = MyMenu.SummonerMenu.GetSliderValue("smiteKeep");
+            if(!SummonerMenu.GetCheckBoxValue("smiteUseOnChampions"))return;
+            var keepSmite = SummonerMenu.GetSliderValue("smiteKeep");
 
             var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerganker"));
 
@@ -325,7 +299,7 @@ namespace Mario_s_Activator
 
         public static void IgniteOnTick()
         {
-            if (PlayerHasIgnite && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "ignite"))
+            if (PlayerHasIgnite && SummonerMenu.GetCheckBoxValue("check" + "ignite"))
             {
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
@@ -342,8 +316,8 @@ namespace Mario_s_Activator
 
         public static void BarrierOnTick()
         {
-            if (PlayerHasBarrier && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
-                Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "barrier")))
+            if (PlayerHasBarrier && SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
+                Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "barrier")))
             {
                 Barrier.Cast();
             }
@@ -351,11 +325,11 @@ namespace Mario_s_Activator
 
         public static void HealOnTick()
         {
-            if (PlayerHasHeal && MyMenu.SummonerMenu.GetCheckBoxValue("check" + "heal"))
+            if (PlayerHasHeal && SummonerMenu.GetCheckBoxValue("check" + "heal"))
             {
                 var ally = EntityManager.Heroes.Allies.OrderBy(a => a.Health).FirstOrDefault(a => a.IsValidTarget(Heal.Range));
-                if (Player.Instance.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "me")) ||
-                    ally.IsInDanger(MyMenu.SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
+                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")) ||
+                    ally.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
                 {
                     Heal.Cast();
                 }

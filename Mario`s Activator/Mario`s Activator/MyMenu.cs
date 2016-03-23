@@ -22,6 +22,10 @@ namespace Mario_s_Activator
 
         public static void InitializeMenu()
         {
+            FirstMenu.AddGroupLabel("This addon is made by MarioGK and should not be redistributed in any way.");
+            FirstMenu.AddGroupLabel("Any unauthorized redistribution without credits will result in severe consequences.");
+            FirstMenu.AddGroupLabel("I hope you have fun using it and please give me feedbacks");
+
             #region OffensiveMenu
 
             OffensiveMenu.AddGroupLabel("Bilgewater Cutlass");
@@ -224,6 +228,8 @@ namespace Mario_s_Activator
             SettingsMenu.AddGroupLabel("Danger Options");
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
             SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
+
+            SettingsMenu.CreateCheckBox("Enable developer debugging", "debug");
 
             #endregion Settings
         }

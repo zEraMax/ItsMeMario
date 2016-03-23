@@ -30,7 +30,6 @@ namespace Mario_s_Activator.Spells
             {
                 Barrier = new Spell.Active(barrier.Slot);
                 PlayerHasBarrier = true;
-                Chat.Print("Player has barrier");
             }
 
             //Cleanase
@@ -39,7 +38,6 @@ namespace Mario_s_Activator.Spells
             {
                 Cleanse = new Spell.Active(cleanse.Slot);
                 PlayerHasCleanse = true;
-                Chat.Print("Player has cleanse");
             }
 
             //Exhaust
@@ -48,7 +46,6 @@ namespace Mario_s_Activator.Spells
             {
                 Exhaust = new Spell.Targeted(exhaust.Slot, 650);
                 PlayerHasExhaust = true;
-                Chat.Print("Player Has Exhaust");
             }
 
             //Flash
@@ -57,7 +54,6 @@ namespace Mario_s_Activator.Spells
             {
                 Flash = new Spell.Skillshot(flash.Slot, 425, SkillShotType.Circular);
                 PlayerHasFlash = true;
-                Chat.Print("Player has flash");
             }
 
             //Ghost
@@ -66,7 +62,6 @@ namespace Mario_s_Activator.Spells
             {
                 Ghost = new Spell.Active(ghost.Slot);
                 PlayerHasGhost = true;
-                Chat.Print("Player has ghost");
             }
 
             //Ignite
@@ -75,7 +70,6 @@ namespace Mario_s_Activator.Spells
             {
                 Ignite = new Spell.Targeted(ignite.Slot, 000);
                 PlayerHasIgnite = true;
-                Chat.Print("Player has ignite");
             }
 
             //Smite
@@ -84,7 +78,6 @@ namespace Mario_s_Activator.Spells
             {
                 Smite = new Spell.Targeted(smite.Slot, 570);
                 PlayerHasSmite = true;
-                Chat.Print("Player has smite");
             }
             //Heal
             var heal = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerheal"));
@@ -92,7 +85,6 @@ namespace Mario_s_Activator.Spells
             {
                 Heal = new Spell.Active(heal.Slot, 550);
                 PlayerHasHeal = true;
-                Chat.Print("Player has heal");
             }
 
             //Poro Mark
@@ -105,7 +97,6 @@ namespace Mario_s_Activator.Spells
                     MinimumHitChance = HitChance.High
                 };
                 PlayerHasPoroThrower = true;
-                Chat.Print("Player has Poro thrower");
             }
         }
 

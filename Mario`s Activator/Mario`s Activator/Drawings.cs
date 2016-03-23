@@ -37,6 +37,14 @@ namespace Mario_s_Activator
                 Circle.Draw(SharpDX.Color.Green, item.Range, Player.Instance);
             }
             */
+
+            if(SettingsMenu.GetCheckBoxValue("debug"))
+            {
+                foreach (var m in DangerHandler.Missiles)
+                {
+                    EloBuddy.SDK.Rendering.Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);
+                }
+            }
         }
     }
 }

@@ -43,12 +43,12 @@ namespace Mario_s_Activator
         }
     }
     
-    public static class DangerHandlers
+    public static class DangerHandler
     {
         public static List<MissileClient> Missiles = new List<MissileClient>();
         public static List<TargetSpell> TargettedSpells = new List<TargetSpell>();
         public static List<NotMissile> NotMissiles = new List<NotMissile>();
-        public static bool ReceivingTowerAA;
+        private static bool ReceivingTowerAA;
 
         public static void Init()
         {
@@ -59,8 +59,6 @@ namespace Mario_s_Activator
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             //Turrets AAs
             Obj_AI_Base.OnBasicAttack += Obj_AI_Base_OnBasicAttack;
-            //Debug
-            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -70,14 +68,6 @@ namespace Mario_s_Activator
             {
                 ReceivingTowerAA = true;
                 Core.DelayAction(() => ReceivingTowerAA = false, 100);
-            }
-        }
-
-        private static void Drawing_OnDraw(EventArgs args)
-        {
-            foreach (var m in Missiles)
-            {
-                EloBuddy.SDK.Rendering.Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);
             }
         }
 

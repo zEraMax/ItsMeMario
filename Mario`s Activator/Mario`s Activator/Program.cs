@@ -14,15 +14,9 @@ namespace Mario_s_Activator
         public static bool VersionChecked { get; internal set; }
         public static bool ActivatorLoaded { get; internal set; }
 
-        private static Version LocalVersion
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
-        }
+        private static Version LocalVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
-        private static string VersionUrl
-        {
-            get { return "https://raw.githubusercontent.com/mariogk/ItsMeMario/master/Mario%60s%20Activator/Activator.version"; }
-        }
+        private static string VersionUrl => "https://raw.githubusercontent.com/mariogk/ItsMeMario/master/Mario%60s%20Activator/Activator.version";
 
 
         private static void DoWithResponse(WebRequest request, Action<HttpWebResponse> responseAction)
@@ -86,7 +80,7 @@ namespace Mario_s_Activator
             {
                 if (!ActivatorLoaded)
                 {
-                    DangerHandlers.Init();
+                    DangerHandler.Init();
                     Activator.Init();
                     ActivatorLoaded = true;
                 }
