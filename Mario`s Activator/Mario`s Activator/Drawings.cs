@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
 using static Mario_s_Activator.Spells.SummonerSpells;
 using static Mario_s_Activator.MyMenu;
@@ -16,7 +18,6 @@ namespace Mario_s_Activator
         private static void Drawing_OnDraw(EventArgs args)
         {
             if(DrawingMenu.GetCheckBoxValue("disableDrawings"))return;
-            Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + SettingsMenu.GetSliderValue("saferange"), Player.Instance);
 
             if (PlayerHasSmite)
             {
@@ -26,24 +27,24 @@ namespace Mario_s_Activator
                 }
             }
 
-            /*
-            foreach (var item in Offensive.OffensiveItems.Select(off => new Item(off.ItemID, off.Range)).Where(item => item.IsReady() && item.Range > 0))
+            foreach (var item in Offensive.OffensiveItems.Where(i => i.IsReady() && i.Range > 0))
             {
-                Circle.Draw(SharpDX.Color.Red, item.Range, Player.Instance);
+                Circle.Draw(SharpDX.Color.Orange, item.Range, Player.Instance);
             }
 
-            foreach (var item in Defensive.DefensiveItems.Select(off => new Item(off.ItemID, off.Range)).Where(item => item.IsReady() && item.Range > 0))
+            foreach (var item in Defensive.DefensiveItems.Where(i => i.IsReady() && i.Range > 0))
             {
-                Circle.Draw(SharpDX.Color.Green, item.Range, Player.Instance);
+                Circle.Draw(SharpDX.Color.BlueViolet, item.Range, Player.Instance);
             }
-            */
 
-            if(SettingsMenu.GetCheckBoxValue("debug"))
+            if (SettingsMenu.GetCheckBoxValue("debug"))
             {
                 foreach (var m in DangerHandler.Missiles)
                 {
-                    EloBuddy.SDK.Rendering.Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);
+                    Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);
                 }
+
+                Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + SettingsMenu.GetSliderValue("saferange"), Player.Instance);
             }
         }
     }
