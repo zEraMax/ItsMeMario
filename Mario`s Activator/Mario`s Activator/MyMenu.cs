@@ -129,16 +129,12 @@ namespace Mario_s_Activator
             ConsumablesMenu.CreateCheckBox("Use Corrupting Potion.", "check" + (int)ItemId.Corrupting_Potion);
             ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + (int)ItemId.Corrupting_Potion + "health", 30);
             ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + (int)ItemId.Corrupting_Potion + "mana", 30);
-            /*
-            ConsumablesMenu.CreateCheckBox("Use Hunter`s Potion.", "check" + "2032");
-            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2032" + "health", 30);
-            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2032" + "mana", 30);
-            */
+            ConsumablesMenu.CreateCheckBox("Use Refillable Potion.", "check" + (int)ItemId.Refillable_Potion);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + (int)ItemId.Refillable_Potion + "health", 30);
             ConsumablesMenu.AddGroupLabel("Elixirs");
             ConsumablesMenu.CreateCheckBox("Use Elixir Of Sorcery", "check" + (int) ItemId.Elixir_of_Sorcery);
             ConsumablesMenu.CreateCheckBox("Use Elixir Of Wrath", "check" + (int) ItemId.Elixir_of_Wrath);
             ConsumablesMenu.CreateCheckBox("Use Elixir Of Iron", "check" + (int) ItemId.Elixir_of_Iron);
-            //ConsumablesMenu.CreateCheckBox("")
             #endregion ConsumablesMenu
 
             #region ProtectMenu
