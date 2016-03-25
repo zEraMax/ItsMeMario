@@ -49,7 +49,8 @@ namespace Mario_s_Activator
         public static List<Item> ComsumableItems = new List<Item>
         {
             new Item(ItemId.Health_Potion),
-            new Item(ItemId.Total_Biscuit_of_Rejuvenation),
+            //Biscuit
+            new Item(2009),
             new Item(ItemId.Hunters_Potion),
             new Item(ItemId.Corrupting_Potion),
             new Item(ItemId.Refillable_Potion),

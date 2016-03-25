@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
@@ -118,9 +119,9 @@ namespace Mario_s_Activator
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2003");
             ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2003" + "health", 45);
             ConsumablesMenu.AddGroupLabel("Biscuit");
-            ConsumablesMenu.CreateCheckBox("Use Biscuit.", "check" + "2010");
-            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2010"+ "health", 45);
-            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2010" + "mana", 30);
+            ConsumablesMenu.CreateCheckBox("Use Biscuit.", "check" + "2009");
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2009" + "health", 45);
+            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2009" + "mana", 30);
             ConsumablesMenu.AddGroupLabel("Hunter`s Potion");
             ConsumablesMenu.CreateCheckBox("Use Hunter`s Potion.", "check" + "2032");
             ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2032" + "health", 30);
@@ -179,18 +180,33 @@ namespace Mario_s_Activator
                 SummonerMenu.AddSeparator();
                 SummonerMenu.CreateCheckBox("Use smite on champions", "smiteUseOnChampions");
                 SummonerMenu.CreateSlider("Keep how many smites", "smiteKeep", 1, 0, 2);
-                SummonerMenu.AddLabel("Epic");
-                SummonerMenu.CreateCheckBox("Smite Baron", "monster" + "SRU_Baron");
-                SummonerMenu.CreateCheckBox("Smite Dragon", "monster" + "SRU_Dragon");
-                SummonerMenu.AddLabel("Normal");
-                SummonerMenu.CreateCheckBox("Smite Blue", "monster" + "SRU_Blue");
-                SummonerMenu.CreateCheckBox("Smite Red", "monster" + "SRU_Red");
-                SummonerMenu.CreateCheckBox("Smite Crab", "monster" + "Sru_Crab", false);
-                SummonerMenu.AddLabel("Meh...");
-                SummonerMenu.CreateCheckBox("Smite Gromp", "monster" + "SRU_Gromp", false);
-                SummonerMenu.CreateCheckBox("Smite Murkwolf", "monster" + "SRU_Murkwolf", false);
-                SummonerMenu.CreateCheckBox("Smite Razorbeak", "monster" + "SRU_Razorbeak", false);
-                SummonerMenu.CreateCheckBox("Smite Krug", "monster" + "SRU_Krug", false);
+
+                switch (Game.MapId)
+                {
+                    case GameMapId.TwistedTreeline:
+                        SummonerMenu.AddLabel("Epic");
+                        SummonerMenu.CreateCheckBox("Smite Spider Boss", "monster" + "TT_Spiderboss");
+                        SummonerMenu.AddLabel("Normal");
+                        SummonerMenu.CreateCheckBox("Smite Golem", "monster" + "TTNGolem");
+                        SummonerMenu.CreateCheckBox("Smite Wolf", "monster" + "TTNWolf");
+                        SummonerMenu.CreateCheckBox("Smite Wraith", "monster" + "TTNWraith", false);
+                        break;
+                    case GameMapId.SummonersRift:
+                        SummonerMenu.AddLabel("Epic");
+                        SummonerMenu.CreateCheckBox("Smite Baron", "monster" + "SRU_Baron");
+                        SummonerMenu.CreateCheckBox("Smite Dragon", "monster" + "SRU_Dragon");
+                        SummonerMenu.CreateCheckBox("Smite RiftHearald", "monster" + "SRU_RiftHerald");
+                        SummonerMenu.AddLabel("Normal");
+                        SummonerMenu.CreateCheckBox("Smite Blue", "monster" + "SRU_Blue");
+                        SummonerMenu.CreateCheckBox("Smite Red", "monster" + "SRU_Red");
+                        SummonerMenu.CreateCheckBox("Smite Crab", "monster" + "Sru_Crab", false);
+                        SummonerMenu.AddLabel("Meh...");
+                        SummonerMenu.CreateCheckBox("Smite Gromp", "monster" + "SRU_Gromp", false);
+                        SummonerMenu.CreateCheckBox("Smite Murkwolf", "monster" + "SRU_Murkwolf", false);
+                        SummonerMenu.CreateCheckBox("Smite Razorbeak", "monster" + "SRU_Razorbeak", false);
+                        SummonerMenu.CreateCheckBox("Smite Krug", "monster" + "SRU_Krug", false);
+                        break;
+                }
             }
 
             if (PlayerHasBarrier)
@@ -217,8 +233,10 @@ namespace Mario_s_Activator
             #endregion SummonerSpells
 
             #region Drawings
+
             DrawingMenu.AddGroupLabel("All drawings settings");
             DrawingMenu.CreateCheckBox("Disable all drawings", "disableDrawings", false);
+
             #endregion Drawings
 
             #region Settings

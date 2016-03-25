@@ -39,7 +39,7 @@ namespace Mario_s_Activator.Spells
                 Cleanse = new Spell.Active(cleanse.Slot);
                 PlayerHasCleanse = true;
             }
-
+            
             //Exhaust
             var exhaust = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerexhaust"));
             if (exhaust != null)
@@ -136,61 +136,10 @@ namespace Mario_s_Activator.Spells
 
         public static string[] MonsterSmiteables =
         {
+            "TT_Spiderboss", "TTNGolem", "TTNWolf", "TTNWraith",
             "SRU_Blue", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak",
-            "SRU_Red", "SRU_Krug", "SRU_Dragon", "Sru_Crab", "SRU_Baron"
+            "SRU_Red", "SRU_Krug", "SRU_Dragon", "Sru_Crab", "SRU_Baron", "SRU_RiftHerald"
         };
-
-        public static void CastSmite()
-        {
-            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null ||
-                MyMenu.SummonerMenu.GetKeybindValue("smiteKeybind")) return;
-
-            var GetJungleMinion =
-                EntityManager.MinionsAndMonsters.GetJungleMonsters()
-                    .FirstOrDefault(
-                        m =>
-                            MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping) <= SmiteDamage() &&
-                            MyMenu.SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
-
-            if (GetJungleMinion != null)
-            {
-                Smite.Cast(GetJungleMinion);
-                return;
-            }
-
-            if (!MyMenu.SummonerMenu.GetCheckBoxValue("smiteUsageOnChampions")) return;
-
-            var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerganker"));
-            var keepSlider = MyMenu.SummonerMenu.GetSliderValue("smiteKeepCharges");
-
-            if (smiteGanker != null && Smite.Handle.Ammo > keepSlider)
-            {
-                var targetKS =
-                    EntityManager.Heroes.Enemies.FirstOrDefault(
-                        e =>
-                            Prediction.Health.GetPrediction(e, Game.Ping) <= SmiteKSDamage() &&
-                            e.IsValidTarget(Smite.Range));
-
-                if (targetKS != null)
-                {
-                    Smite.Cast(targetKS);
-                    return;
-                }
-            }
-
-            var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerduel"));
-
-            if (smiteDuel != null && Smite.Handle.Ammo > keepSlider)
-            {
-                var targetTS = TargetSelector.GetTarget(Smite.Range, DamageType.Mixed);
-
-                if (targetTS != null)
-                {
-                    Smite.Cast(targetTS);
-                }
-            }
-        }
 
         public static float SmiteDamage()
         {

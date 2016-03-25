@@ -44,7 +44,7 @@ namespace Mario_s_Activator
                 if (stream != default(Stream))
                 {
                     var internetVersion = new Version(new StreamReader(stream).ReadToEnd());
-                    if (internetVersion.CompareTo(LocalVersion) > 0)
+                    if (internetVersion != LocalVersion)
                     {
                         Chat.Print("New version found = " + internetVersion + " please update it.");
                     }

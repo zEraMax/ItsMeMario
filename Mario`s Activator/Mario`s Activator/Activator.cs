@@ -24,6 +24,7 @@ namespace Mario_s_Activator
             GameObject.OnIntegerPropertyChange += GameObject_OnIntegerPropertyChange;
         }
 
+
         private static void GameObject_OnIntegerPropertyChange(GameObject sender, GameObjectIntegerPropertyChangeEventArgs args)
         {
             var hero = sender as AIHeroClient;
@@ -56,7 +57,10 @@ namespace Mario_s_Activator
                     }
                 }
 
-                Core.DelayAction(() => itemCleanse.Cast(), delay);
+                if (Player.Instance.HasCC())
+                {
+                    Core.DelayAction(() => itemCleanse.Cast(), delay);
+                }
             }
         }
 
@@ -257,8 +261,9 @@ namespace Mario_s_Activator
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping + 20) <= SmiteDamage() &&
+                            Prediction.Health.GetPrediction(m, Game.Ping) <= SmiteDamage() &&
                             SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+
 
             if (GetJungleMinion != null)
             {
