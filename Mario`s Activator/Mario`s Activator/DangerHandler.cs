@@ -6,6 +6,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
 using EloBuddy.SDK.Spells;
 using Mario_s_Activator.Spells;
+using SharpDX;
 
 namespace Mario_s_Activator
 {
@@ -27,15 +28,17 @@ namespace Mario_s_Activator
     
     public class NotMissile
     {
-        public Geometry.ProjectionInfo Projection;
+        public Vector3 Start;
+        public Vector3 End;
         public Obj_AI_Base Caster;
         public Champion Champ;
         public SpellSlot Slot;
         public string SName;
 
-        public NotMissile(Geometry.ProjectionInfo projection, Obj_AI_Base caster, Champion champ, SpellSlot slot, string sname)
+        public NotMissile(Vector3 start, Vector3 end, Obj_AI_Base caster, Champion champ, SpellSlot slot, string sname)
         {
-            Projection = projection;
+            Start = start;
+            End = end;
             Caster = caster;
             Champ = champ;
             Slot = slot;
@@ -112,8 +115,7 @@ namespace Mario_s_Activator
                 }
                 if (target == null)
                 { 
-                    var projection = Player.Instance.Position.To2D().ProjectOn(args.Start.To2D(), args.End.To2D());
-                    var notMissile = new NotMissile(projection, senderHero, senderHero.Hero, args.Slot, args.SData.Name);
+                    var notMissile = new NotMissile(args.Start, args.End, senderHero, senderHero.Hero, args.Slot, args.SData.Name);
                     NotMissiles.Add(notMissile);
                     Core.DelayAction(() => NotMissiles.Remove(notMissile), 80);
                 }
@@ -146,29 +148,29 @@ namespace Mario_s_Activator
                     slot = spell2.Slot;
                 }
 
-                var projection = Player.Instance.Position.To2D()
+                var projection = target.Position.To2D()
                     .ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D());
 
-                var boundingRadius = Player.Instance.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
+                var boundingRadius = target.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
 
                 if (projection.IsOnSegment &&
-                    projection.SegmentPoint.Distance(Player.Instance.Position) <= missile.SData.CastRadius + boundingRadius)
+                    projection.SegmentPoint.Distance(target.Position) <= missile.SData.CastRadius + boundingRadius)
                 {
                     var DangSpell =
                         DangerousSpells.Spells.FirstOrDefault(
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
-                                missile.Distance(Player.Instance) <= boundingRadius + 300);
+                                missile.Distance(target) <= boundingRadius + 300);
 
                     if (DangSpell != null)
                     {
                         return true;
                     }
                     return
-                        missile.Distance(Player.Instance) <= boundingRadius;
+                        missile.Distance(target) <= boundingRadius;
                 }
 
-                if (missile.Distance(Player.Instance) <= boundingRadius)
+                if (missile.Distance(target) <= boundingRadius)
                 {
                     return true;
                 }
@@ -192,9 +194,13 @@ namespace Mario_s_Activator
 
             if (NotMissiles.Any())
             {
-                var hueSPell = NotMissiles.FirstOrDefault(s => s.Projection.IsOnSegment);
+                var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
+                
                 if (hueSPell != null)
                 {
+                    var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
+                    if (!projection.IsOnSegment) return false;
+
                     //If there`s a missile with the same name as the skillshot that it got from obj process cast
                     var missileSameName = Missiles.FirstOrDefault(m => m.SData.Name.ToLower().Contains(hueSPell.SName.ToLower()));
                     if (missileSameName != null) return false;
@@ -202,8 +208,8 @@ namespace Mario_s_Activator
                     var spellInfo = SpellDatabase.GetSpellInfoList(hueSPell.Caster).FirstOrDefault(s => s.Slot == hueSPell.Slot);
                     if (spellInfo != null)
                     {
-                        var segementPoint = hueSPell.Projection.SegmentPoint.Distance(Player.Instance.Position) <=
-                                            spellInfo.Radius + Player.Instance.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
+                        var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
+                                            spellInfo.Radius + target.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
 
                         if (segementPoint)
                         {

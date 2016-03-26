@@ -238,12 +238,12 @@ namespace Mario_s_Activator
             #region Settings
 
             SettingsMenu.AddGroupLabel("Offensive items options");
-            SettingsMenu.CreateCheckBox("Use offensive items only in combo", "combouseitems");
+            SettingsMenu.CreateCheckBox("Use offensive items only in combo", "comboUseItems");
             SettingsMenu.AddGroupLabel("Danger Options");
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
             SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
-
-            SettingsMenu.CreateCheckBox("Enable developer debugging", "debug");
+            SettingsMenu.AddGroupLabel("Debug Settings");
+            SettingsMenu.CreateCheckBox("Enable developer debugging", "debug", false);
 
             #endregion Settings
         }
