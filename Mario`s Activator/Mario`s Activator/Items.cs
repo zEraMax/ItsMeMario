@@ -50,7 +50,7 @@ namespace Mario_s_Activator
         {
             new Item(ItemId.Health_Potion),
             //Biscuit
-            new Item(2009),
+            new Item(ItemId.Total_Biscuit_of_Rejuvenation),
             new Item(ItemId.Hunters_Potion),
             new Item(ItemId.Corrupting_Potion),
             new Item(ItemId.Refillable_Potion),

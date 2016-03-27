@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Activator.Spells;
@@ -11,6 +12,7 @@ namespace Mario_s_Activator
     internal class Activator
     {
         public static bool CanPost;
+
         public static void Init()
         {
             InitializeSummonerSpells();
@@ -30,7 +32,8 @@ namespace Mario_s_Activator
             var hero = sender as AIHeroClient;
             var pinkWard = new Item(ItemId.Vision_Ward);
 
-            if (hero != null && hero.IsEnemy && pinkWard.IsOwned() && pinkWard.IsReady() && (GameObjectCharacterState)args.Value == GameObjectCharacterState.IsStealth)
+            if (hero != null && hero.IsEnemy && pinkWard.IsOwned() && pinkWard.IsReady() &&
+                (GameObjectCharacterState) args.Value == GameObjectCharacterState.IsStealth)
             {
                 pinkWard.Cast(hero.Position);
             }
@@ -49,7 +52,7 @@ namespace Mario_s_Activator
 
             var itemCleanse =
                 Cleansers.CleansersItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && CleansersMenu.GetCheckBoxValue("check" + (int)i.Id));
+                    i => i.IsReady() && i.IsOwned() && CleansersMenu.GetCheckBoxValue("check" + (int) i.Id));
 
             if (itemCleanse != null)
             {
@@ -95,11 +98,14 @@ namespace Mario_s_Activator
 
         private static void OffensiveOnTick()
         {
-            var offItem = Offensive.OffensiveItems.FirstOrDefault(i => i.IsReady() && i.IsOwned() && OffensiveMenu.GetCheckBoxValue("check" + (int)i.Id));
-            
+            var offItem =
+                Offensive.OffensiveItems.FirstOrDefault(i => i.IsReady() && i.IsOwned() && OffensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
+
             if (offItem != null)
             {
-                if (SettingsMenu.GetCheckBoxValue("comboUseItems") ? Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) : offItem.IsReady())
+                if (SettingsMenu.GetCheckBoxValue("comboUseItems")
+                    ? Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
+                    : offItem.IsReady())
                 {
                     var anyEnemy = ObjectManager.Get<Obj_AI_Base>().FirstOrDefault(e => e.IsEnemy && e.IsValidTarget(offItem.Range));
                     if (anyEnemy != null)
@@ -128,7 +134,7 @@ namespace Mario_s_Activator
 
         private static void ConsumablesOnTick()
         {
-            if(Player.Instance.IsInShopRange() || Player.Instance.IsRecalling())return;
+            if (Player.Instance.IsInShopRange() || Player.Instance.IsRecalling()) return;
 
             var itemConsumable =
                 Consumables.ComsumableItems.FirstOrDefault(
@@ -136,63 +142,71 @@ namespace Mario_s_Activator
 
             if (itemConsumable != null)
             {
-                var sliderHealth = ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health");
-
                 switch (itemConsumable.Id)
                 {
                     case ItemId.Elixir_of_Sorcery:
-                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
+                        if (Player.Instance.HasBuff("ElixirOfSorcery")) return;
+                        if (Player.Instance.CountEnemiesInRange(1000) >= 1 &&
                             Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Elixir_of_Wrath:
-                        if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange() + 150) >= 1 &&
+                        if (Player.Instance.HasBuff("ElixirOfWrath")) return;
+                        if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange() + 250) >= 1 &&
                             Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Elixir_of_Iron:
-                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
+                        if (Player.Instance.HasBuff("ElixirOfIron")) return;
+                        if (Player.Instance.CountEnemiesInRange(1000) >= 1 &&
                             Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Health_Potion:
-                        if (Player.Instance.HealthPercent <= sliderHealth && !Player.Instance.HasBuff("RegenerationPotion"))
+                        if (Player.Instance.HasBuff("RegenerationPotion")) return;
+                        if (Player.Instance.HealthPercent <= ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health"))
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Total_Biscuit_of_Rejuvenation:
-                        if (Player.Instance.HealthPercent <= sliderHealth &&
+                        if (Player.Instance.HasBuff("ItemMiniRegenPotion")) return;
+                        if (Player.Instance.HealthPercent <= ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health") ||
                             Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
-                            !Player.Instance.HasBuff("ItemMiniRegenPotion"))
+                            Player.Instance.Health + 250 <= Player.Instance.MaxHealth &&
+                            Player.Instance.Mana + 150 <= Player.Instance.MaxMana)
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Hunters_Potion:
-                        if (Player.Instance.HealthPercent <= sliderHealth &&
+                        if (Player.Instance.HasBuff("ItemCrystalFlaskJungle")) return;
+                        if (Player.Instance.HealthPercent <= ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health") ||
                             Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
-                            !Player.Instance.HasBuff("ItemCrystalFlaskJungle"))
+                            Player.Instance.Health + 250 <= Player.Instance.MaxHealth &&
+                            Player.Instance.Mana + 150 <= Player.Instance.MaxMana)
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Corrupting_Potion:
-                        if (Player.Instance.HealthPercent <= sliderHealth &&
+                        if (Player.Instance.HasBuff("ItemDarkCrystalFlask")) return;
+                        if (Player.Instance.HealthPercent <= ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health") ||
                             Player.Instance.ManaPercent <= ConsumablesMenu.GetSliderValue("slider" + (int) itemConsumable.Id + "mana") &&
-                            !Player.Instance.HasBuff("ItemDarkCrystalFlask"))
+                            Player.Instance.Health + 250 <= Player.Instance.MaxHealth &&
+                            Player.Instance.Mana + 150 <= Player.Instance.MaxMana)
                         {
                             itemConsumable.Cast();
                         }
                         return;
                     case ItemId.Refillable_Potion:
-                        if (Player.Instance.HealthPercent <= sliderHealth && !Player.Instance.HasBuff("ItemCrystalFlask"))
+                        if (Player.Instance.HealthPercent <= ConsumablesMenu.GetSliderValue("slider" + (int)itemConsumable.Id + "health") && !Player.Instance.HasBuff("ItemCrystalFlask"))
                         {
                             itemConsumable.Cast();
                         }
@@ -202,26 +216,27 @@ namespace Mario_s_Activator
         }
 
         private static Spell.Targeted _protectSpell;
+
         private static void ProtectorOnTick()
         {
-            if(!ProtectMenu.GetCheckBoxValue("checkProtector"))return;
-
             var champS = ProtectSpells.Spells.FirstOrDefault(s => s.Champ == Player.Instance.Hero);
             if (champS != null)
             {
+                if (!ProtectMenu.GetCheckBoxValue("checkProtector")) return;
+
                 var spell = Player.GetSpell(champS.Slot);
                 if (spell != null && ProtectMenu.GetCheckBoxValue("canUseSpell" + spell.Slot))
                 {
                     var range = spell.SData.CastRadius <= 0 ? spell.SData.CastRadius : spell.SData.CastRangeDisplayOverride;
 
-                    _protectSpell = new Spell.Targeted(spell.Slot, (uint)range);
+                    _protectSpell = new Spell.Targeted(spell.Slot, (uint) range);
 
                     var ally =
                         EntityManager.Heroes.Allies.FirstOrDefault(
                             a =>
                                 a.IsValidTarget(_protectSpell.Range) && ProtectMenu.GetCheckBoxValue("canUseSpellOn" + a.ChampionName) &&
                                 a.IsInDanger(ProtectMenu.GetSliderValue("protectallyhealth")));
-                   
+
                     if (ally != null)
                     {
                         _protectSpell?.Cast(ally);
@@ -241,14 +256,14 @@ namespace Mario_s_Activator
             {
                 switch (defItem.Id)
                 {
-                        case ItemId.Randuins_Omen:
+                    case ItemId.Randuins_Omen:
                         if (Player.Instance.CountEnemiesInRange(defItem.Range) >=
                             DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
                         {
                             defItem.Cast();
                         }
                         return;
-                        case ItemId.Ohmwrecker:
+                    case ItemId.Ohmwrecker:
                         var towerAAingAlly = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValid && a.ReceivingTurretAttack());
                         if (towerAAingAlly != null)
                         {
@@ -309,7 +324,7 @@ namespace Mario_s_Activator
                 Smite.Cast(GetJungleMinion);
             }
 
-            if(!SummonerMenu.GetCheckBoxValue("smiteUseOnChampions"))return;
+            if (!SummonerMenu.GetCheckBoxValue("smiteUseOnChampions")) return;
 
             var keepSmite = SummonerMenu.GetSliderValue("smiteKeep");
 
@@ -357,7 +372,7 @@ namespace Mario_s_Activator
                     Ignite.Cast(target);
                 }
             }
-            
+
         }
 
         private static void BarrierOnTick()
@@ -374,7 +389,8 @@ namespace Mario_s_Activator
             if (PlayerHasHeal && SummonerMenu.GetCheckBoxValue("check" + "heal"))
             {
                 var ally = EntityManager.Heroes.Allies.OrderBy(a => a.Health).FirstOrDefault(a => a.IsValidTarget(Heal.Range));
-                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")) || ally.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
+                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")) ||
+                    ally.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "ally")))
                 {
                     Heal.Cast();
                 }

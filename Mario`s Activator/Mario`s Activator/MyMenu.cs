@@ -118,9 +118,9 @@ namespace Mario_s_Activator
             ConsumablesMenu.CreateCheckBox("Use Health Potion.", "check" + "2003");
             ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2003" + "health", 45);
             ConsumablesMenu.AddGroupLabel("Biscuit");
-            ConsumablesMenu.CreateCheckBox("Use Biscuit.", "check" + "2009");
-            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2009" + "health", 45);
-            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + "2009" + "mana", 30);
+            ConsumablesMenu.CreateCheckBox("Use Biscuit.", "check" + (int)ItemId.Total_Biscuit_of_Rejuvenation);
+            ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + (int)ItemId.Total_Biscuit_of_Rejuvenation + "health", 45);
+            ConsumablesMenu.CreateSlider("Use it if MY MANA is lower than ({0}%).", "slider" + (int)ItemId.Total_Biscuit_of_Rejuvenation + "mana", 30);
             ConsumablesMenu.AddGroupLabel("Hunter`s Potion");
             ConsumablesMenu.CreateCheckBox("Use Hunter`s Potion.", "check" + "2032");
             ConsumablesMenu.CreateSlider("Use it if MY HEALTH is lower than ({0}%).", "slider" + "2032" + "health", 30);
