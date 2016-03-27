@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
@@ -17,9 +16,9 @@ namespace Mario_s_Activator
         public static Menu ConsumablesMenu = FirstMenu.AddSubMenu("• Consumables", "activatorconsumables");
         public static Menu ProtectMenu = FirstMenu.AddSubMenu("• Protector", "activatorprotector");
         public static Menu SummonerMenu = FirstMenu.AddSubMenu("• Summoner Spells", "activatorSummonerspells");
+        public static Menu MiscMenu = FirstMenu.AddSubMenu("• Misc", "activatormisc");
         public static Menu DrawingMenu = FirstMenu.AddSubMenu("• Drawing", "activatordrawing");
         public static Menu SettingsMenu = FirstMenu.AddSubMenu("• Settings", "activatorsettings");
-        public static Menu MiscMenu = FirstMenu.AddSubMenu("• Misc", "activatormisc");
 
         public static void InitializeMenu()
         {
@@ -142,6 +141,7 @@ namespace Mario_s_Activator
             if (champS != null)
             {
                 ProtectMenu.AddGroupLabel("Settings: ");
+                ProtectMenu.CreateCheckBox("Enable protector", "checkProtector");
                 ProtectMenu.CreateSlider("Ally health must be lower than {0}", "protectallyhealth", 20);
                 ProtectMenu.AddGroupLabel("Spells: ");
 
@@ -153,7 +153,7 @@ namespace Mario_s_Activator
                 }
 
                 ProtectMenu.AddGroupLabel("WhiteList: ");
-                foreach (var a in EntityManager.Heroes.Allies.Where(a => !a.IsMe))
+                foreach (var a in EntityManager.Heroes.Allies)
                 {
                     ProtectMenu.CreateCheckBox("- Can use on " + a.ChampionName + " (" + a.Name + ") ",
                         "canUseSpellOn" + a.ChampionName);
@@ -228,6 +228,16 @@ namespace Mario_s_Activator
 
             #endregion SummonerSpells
 
+            #region Misc
+            MiscMenu.AddGroupLabel("Revealers");
+            MiscMenu.AddLabel("Trinkets");
+            MiscMenu.CreateCheckBox("Use trinket to reveal invisible enemies", "revelInviEnemiesTrinket");
+            MiscMenu.CreateCheckBox("Use trinket to reveal a bush if an enemy enters it ", "revelBushEnemiesTrinket");
+            MiscMenu.AddLabel("Wards");
+            MiscMenu.CreateCheckBox("Use ward to reveal invisible enemies", "revelInviEnemiesWard");
+            MiscMenu.CreateCheckBox("Use trinket to reveal a bush if an enemy enters it ", "revelBushEnemiesWard");
+            #endregion Misc
+
             #region Drawings
 
             DrawingMenu.AddGroupLabel("All drawings settings");
@@ -242,8 +252,20 @@ namespace Mario_s_Activator
             SettingsMenu.AddGroupLabel("Danger Options");
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
             SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
+            //Dangerous Spells Menu
+            SettingsMenu.AddGroupLabel("Dangerous spells");
+            SettingsMenu.AddLabel("Disable/Enable spells that are dangerous and that they will ignore the percent set");
+            SettingsMenu.AddLabel("by the slider of the item to evade them anyway.");
+            foreach (var e in EntityManager.Heroes.Enemies)
+            {
+                foreach (var s in DangerousSpells.Spells.Where(s => s.Hero == e.Hero))
+                {
+                    var slot = s.Slot.ToString().Substring(s.Slot.ToString().Length - 1);
+                    SettingsMenu.CreateCheckBox(s.Hero + "`s " + slot, "dangSpell" + s.Hero + s.Slot);
+                }
+            }
             SettingsMenu.AddGroupLabel("Debug Settings");
-            SettingsMenu.CreateCheckBox("Enable developer debugging", "debug", false);
+            SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);
 
             #endregion Settings
         }

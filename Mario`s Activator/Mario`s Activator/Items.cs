@@ -59,4 +59,13 @@ namespace Mario_s_Activator
             new Item(ItemId.Elixir_of_Sorcery),
         };
     }
+
+    internal class WardsAndTrinkets
+    {
+        public static List<Item> Wards = new List<Item>
+        {
+            //new Item(ItemId.Warding_Totem_Trinket, ),
+            new Item(ItemId.Farsight_Alteration, 4000),
+        }; 
+    }
 }

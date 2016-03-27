@@ -75,19 +75,11 @@ namespace Mario_s_Activator
             ConsumablesOnTick();
             IgniteOnTick();
 
-            if (SettingsMenu.GetCheckBoxValue("debug"))
+            if (SettingsMenu.GetCheckBoxValue("dev"))
             {
-                if (Player.Instance.IsInDanger(80))
+                foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInDanger(80)))
                 {
-                    Chat.Print("Player On danger");
-                }
-
-                foreach (var a in EntityManager.Heroes.Allies)
-                {
-                    if (a.IsInDanger(80))
-                    {
-                        Chat.Print(a.ChampionName + " On danger");
-                    }
+                    Chat.Print(a.ChampionName + " On danger");
                 }
             }
         }
@@ -148,6 +140,27 @@ namespace Mario_s_Activator
 
                 switch (itemConsumable.Id)
                 {
+                    case ItemId.Elixir_of_Sorcery:
+                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
+                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                        {
+                            itemConsumable.Cast();
+                        }
+                        return;
+                    case ItemId.Elixir_of_Wrath:
+                        if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange() + 150) >= 1 &&
+                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                        {
+                            itemConsumable.Cast();
+                        }
+                        return;
+                    case ItemId.Elixir_of_Iron:
+                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
+                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                        {
+                            itemConsumable.Cast();
+                        }
+                        return;
                     case ItemId.Health_Potion:
                         if (Player.Instance.HealthPercent <= sliderHealth && !Player.Instance.HasBuff("RegenerationPotion"))
                         {
@@ -184,27 +197,6 @@ namespace Mario_s_Activator
                             itemConsumable.Cast();
                         }
                         return;
-                    case ItemId.Elixir_of_Sorcery:
-                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
-                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-                        {
-                            itemConsumable.Cast();
-                        }
-                        return;
-                    case ItemId.Elixir_of_Wrath:
-                        if (Player.Instance.CountEnemiesInRange(Player.Instance.GetAutoAttackRange() + 150) >= 1 &&
-                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-                        {
-                            itemConsumable.Cast();
-                        }
-                        return;
-                    case ItemId.Elixir_of_Iron:
-                        if (Player.Instance.CountEnemiesInRange(850) >= 1 &&
-                            Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-                        {
-                            itemConsumable.Cast();
-                        }
-                        return;
                 }
             }
         }
@@ -212,22 +204,27 @@ namespace Mario_s_Activator
         private static Spell.Targeted _protectSpell;
         private static void ProtectorOnTick()
         {
+            if(!ProtectMenu.GetCheckBoxValue("checkProtector"))return;
+
             var champS = ProtectSpells.Spells.FirstOrDefault(s => s.Champ == Player.Instance.Hero);
             if (champS != null)
             {
                 var spell = Player.GetSpell(champS.Slot);
-                if (spell != null)
+                if (spell != null && ProtectMenu.GetCheckBoxValue("canUseSpell" + spell.Slot))
                 {
                     var range = spell.SData.CastRadius <= 0 ? spell.SData.CastRadius : spell.SData.CastRangeDisplayOverride;
 
                     _protectSpell = new Spell.Targeted(spell.Slot, (uint)range);
 
-                    var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValidTarget(_protectSpell.Range));
-                    var health = ProtectMenu.GetSliderValue("protectallyhealth");
-
-                    if (ally != null && _protectSpell != null && ally.Health >= health)
+                    var ally =
+                        EntityManager.Heroes.Allies.FirstOrDefault(
+                            a =>
+                                a.IsValidTarget(_protectSpell.Range) && ProtectMenu.GetCheckBoxValue("canUseSpellOn" + a.ChampionName) &&
+                                a.IsInDanger(ProtectMenu.GetSliderValue("protectallyhealth")));
+                   
+                    if (ally != null)
                     {
-                        _protectSpell.Cast(ally);
+                        _protectSpell?.Cast(ally);
                     }
 
                 }
@@ -247,6 +244,13 @@ namespace Mario_s_Activator
                         case ItemId.Randuins_Omen:
                         if (Player.Instance.CountEnemiesInRange(defItem.Range) >=
                             DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
+                        {
+                            defItem.Cast();
+                        }
+                        return;
+                        case ItemId.Ohmwrecker:
+                        var towerAAingAlly = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValid && a.ReceivingTurretAttack());
+                        if (towerAAingAlly != null)
                         {
                             defItem.Cast();
                         }
@@ -273,6 +277,19 @@ namespace Mario_s_Activator
             }
         }
 
+        private static void BushRevealerOnTick()
+        {
+            var item = WardsAndTrinkets.Wards.FirstOrDefault(w => w.IsReady() && w.IsOwned());
+            var target = TargetSelector.GetTarget(1000, DamageType.Mixed);
+
+            if (item != null && target != null && !target.IsDead && !target.IsHPBarRendered &&
+                target.Position.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Grass))
+            {
+                //var random = new Random();
+                item.Cast(target.Position);
+            }
+        }
+
         #region SummonerOnTick
 
         private static void SmiteOnTick()
@@ -293,6 +310,7 @@ namespace Mario_s_Activator
             }
 
             if(!SummonerMenu.GetCheckBoxValue("smiteUseOnChampions"))return;
+
             var keepSmite = SummonerMenu.GetSliderValue("smiteKeep");
 
             var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerganker"));
@@ -333,6 +351,7 @@ namespace Mario_s_Activator
                         e =>
                             e.IsValidTarget(Ignite.Range) &&
                             e.Health <= GetTotalDamage(e) + IgniteDamage() && e.Health >= IgniteDamage());
+
                 if (target != null && Ignite.IsReady())
                 {
                     Ignite.Cast(target);

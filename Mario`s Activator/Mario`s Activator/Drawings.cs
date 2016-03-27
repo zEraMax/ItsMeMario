@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
 using static Mario_s_Activator.Spells.SummonerSpells;
 using static Mario_s_Activator.MyMenu;
@@ -37,8 +36,10 @@ namespace Mario_s_Activator
                 Circle.Draw(SharpDX.Color.BlueViolet, item.Range, Player.Instance);
             }
 
-            if (SettingsMenu.GetCheckBoxValue("debug"))
+            if (SettingsMenu.GetCheckBoxValue("dev"))
             {
+                Circle.Draw(SharpDX.Color.Purple, 650, 1, Player.Instance);
+
                 foreach (var m in DangerHandler.Missiles)
                 {
                     Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);

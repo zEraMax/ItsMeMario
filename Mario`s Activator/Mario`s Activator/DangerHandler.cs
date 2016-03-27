@@ -7,6 +7,7 @@ using EloBuddy.SDK.Constants;
 using EloBuddy.SDK.Spells;
 using Mario_s_Activator.Spells;
 using SharpDX;
+using static Mario_s_Activator.MyMenu;
 
 namespace Mario_s_Activator
 {
@@ -25,7 +26,17 @@ namespace Mario_s_Activator
             Slot = slot;
         }
     }
-    
+
+    public class TurretAA
+    {
+        public Obj_AI_Base Target;
+
+        public TurretAA(Obj_AI_Base target)
+        {
+            Target = target;
+        }
+    }
+
     public class NotMissile
     {
         public Vector3 Start;
@@ -51,7 +62,7 @@ namespace Mario_s_Activator
         public static List<MissileClient> Missiles = new List<MissileClient>();
         public static List<TargetSpell> TargettedSpells = new List<TargetSpell>();
         public static List<NotMissile> NotMissiles = new List<NotMissile>();
-        private static bool ReceivingTowerAA;
+        public static List<TurretAA> TurretAAs = new List<TurretAA>();
 
         public static void Init()
         {
@@ -67,11 +78,19 @@ namespace Mario_s_Activator
         private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             var tower = sender as Obj_AI_Turret;
-            if (tower != null && args.Target.IsAlly)
+            var target = args.Target as Obj_AI_Base;
+            if (tower != null && target != null && target.IsAlly)
             {
-                ReceivingTowerAA = true;
-                Core.DelayAction(() => ReceivingTowerAA = false, 100);
+                var a = new TurretAA(target);
+                TurretAAs.Add(a);
+                Core.DelayAction(() => TurretAAs.Remove(a), 100);
             }
+        }
+
+        public static bool ReceivingTurretAttack(this Obj_AI_Base target)
+        {
+            var aa = TurretAAs.FirstOrDefault(t => t.Target == target);
+            return aa != null;
         }
 
         private static void GameObject_OnCreate(GameObject sender, EventArgs args)
@@ -124,7 +143,7 @@ namespace Mario_s_Activator
 
         public static bool IsInDanger(this AIHeroClient target, int percent)
         {
-            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.HealthPercent > percent) return false;
+            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
             //Missiles
             var missile = Missiles.FirstOrDefault(m => m.IsInRange(target, 2500) && m.IsValid);
             var champion = missile?.SpellCaster as AIHeroClient;
@@ -151,7 +170,7 @@ namespace Mario_s_Activator
                 var projection = target.Position.To2D()
                     .ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D());
 
-                var boundingRadius = target.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
+                var boundingRadius = target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
 
                 if (projection.IsOnSegment &&
                     projection.SegmentPoint.Distance(target.Position) <= missile.SData.CastRadius + boundingRadius)
@@ -160,14 +179,13 @@ namespace Mario_s_Activator
                         DangerousSpells.Spells.FirstOrDefault(
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
-                                missile.Distance(target) <= boundingRadius + 300);
+                                missile.Distance(target) <= boundingRadius + 300 && SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot));
 
                     if (DangSpell != null)
                     {
                         return true;
                     }
-                    return
-                        missile.Distance(target) <= boundingRadius;
+                    return missile.Distance(target) <= boundingRadius && target.HealthPercent <= percent;
                 }
 
                 if (missile.Distance(target) <= boundingRadius)
@@ -186,7 +204,7 @@ namespace Mario_s_Activator
                 {
                     return true;
                 }
-                if (normalTargSpell != null)
+                if (normalTargSpell != null && target.HealthPercent <= percent)
                 {
                     return true;
                 }
@@ -196,7 +214,7 @@ namespace Mario_s_Activator
             {
                 var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
                 
-                if (hueSPell != null)
+                if (hueSPell != null && target.HealthPercent <= percent)
                 {
                     var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
                     if (!projection.IsOnSegment) return false;
@@ -209,7 +227,7 @@ namespace Mario_s_Activator
                     if (spellInfo != null)
                     {
                         var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
-                                            spellInfo.Radius + target.BoundingRadius + MyMenu.SettingsMenu.GetSliderValue("saferange");
+                                            spellInfo.Radius + target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
 
                         if (segementPoint)
                         {
