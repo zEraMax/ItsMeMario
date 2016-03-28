@@ -143,7 +143,7 @@ namespace Mario_s_Activator
 
         public static bool IsInDanger(this AIHeroClient target, int percent)
         {
-            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.Health > percent) return false;
+            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.HealthPercent > percent) return false;
             //Missiles
             var missile = Missiles.FirstOrDefault(m => m.IsInRange(target, 2500) && m.IsValid);
             var champion = missile?.SpellCaster as AIHeroClient;

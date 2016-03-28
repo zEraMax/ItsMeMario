@@ -13,7 +13,7 @@ namespace Mario_s_Activator
             new Item(ItemId.Tiamat, 380),
             new Item(ItemId.Ravenous_Hydra, 380),
             new Item(ItemId.Titanic_Hydra, Player.Instance.GetAutoAttackRange()),
-            new Item(ItemId.Youmuus_Ghostblade),
+            new Item(ItemId.Youmuus_Ghostblade, 1000),
             new Item(ItemId.Hextech_Gunblade, 700),
             new Item(ItemId.Frost_Queens_Claim)
         };

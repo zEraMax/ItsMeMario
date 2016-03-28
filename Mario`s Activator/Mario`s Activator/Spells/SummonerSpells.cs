@@ -68,7 +68,7 @@ namespace Mario_s_Activator.Spells
             var ignite = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerdot"));
             if (ignite != null)
             {
-                Ignite = new Spell.Targeted(ignite.Slot, 000);
+                Ignite = new Spell.Targeted(ignite.Slot, 600);
                 PlayerHasIgnite = true;
             }
 

@@ -224,6 +224,8 @@ namespace Mario_s_Activator
             {
                 SummonerMenu.AddGroupLabel("Ignite");
                 SummonerMenu.CreateCheckBox("Use ignite.", "check" + "ignite");
+                SummonerMenu.AddLabel("Advanced Options please dont modify them if you dont know what they do");
+                SummonerMenu.CreateSlider("Minimun range to cast ignite on target", "minimunRangeIgnite", 480, 0, 600);
             }
 
             #endregion SummonerSpells
