@@ -254,10 +254,13 @@ namespace Mario_s_Activator
             SettingsMenu.AddGroupLabel("Danger Options");
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
             SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
-            //Dangerous Spells Menu
-            SettingsMenu.AddGroupLabel("Dangerous spells");
-            SettingsMenu.AddLabel("Disable/Enable spells that are dangerous and that they will ignore the percent set");
-            SettingsMenu.AddLabel("by the slider of the item to evade them anyway.");
+
+            //Spells Menu
+            /*
+            SettingsMenu.AddGroupLabel("Spells to consider");
+            SettingsMenu.AddLabel("Disable/Enable spells that will be considered in the logic of considering you are or not");
+            SettingsMenu.AddLabel("in danger, for example if you disable Lucian`s Q it will not cast any items even if you HP is low");
+            SettingsMenu.AddLabel("but if Lucian`s W is enabled and it`s coming at you or near you it will cast the items");
             foreach (var e in EntityManager.Heroes.Enemies)
             {
                 foreach (var s in DangerousSpells.Spells.Where(s => s.Hero == e.Hero))
@@ -266,6 +269,7 @@ namespace Mario_s_Activator
                     SettingsMenu.CreateCheckBox(s.Hero + "`s " + slot, "dangSpell" + s.Hero + s.Slot);
                 }
             }
+            */
             SettingsMenu.AddGroupLabel("Debug Settings");
             SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);
 

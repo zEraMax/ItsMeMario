@@ -153,6 +153,7 @@ namespace Mario_s_Activator
                 var spell1 =
                     missile.SpellCaster.Spellbook.Spells.FirstOrDefault(
                         s => s.Name.ToLower().Equals(missile.SData.Name.ToLower()));
+
                 var spell2 =
                     missile.SpellCaster.Spellbook.Spells.FirstOrDefault(
                         s => (s.Name.ToLower() + "missile").Equals(missile.SData.Name.ToLower()));
