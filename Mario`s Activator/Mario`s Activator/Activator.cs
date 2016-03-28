@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Activator.Spells;
@@ -294,6 +293,7 @@ namespace Mario_s_Activator
 
         private static void BushRevealerOnTick()
         {
+            /*
             var item = WardsAndTrinkets.Wards.FirstOrDefault(w => w.IsReady() && w.IsOwned());
             var target = TargetSelector.GetTarget(1000, DamageType.Mixed);
 
@@ -303,6 +303,7 @@ namespace Mario_s_Activator
                 //var random = new Random();
                 item.Cast(target.Position);
             }
+            */
         }
 
         #region SummonerOnTick
@@ -315,7 +316,7 @@ namespace Mario_s_Activator
                     .FirstOrDefault(
                         m =>
                             MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping) <= SmiteDamage() &&
+                            Prediction.Health.GetPrediction(m, Game.Ping) - 15 <= SmiteDamage() &&
                             SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
 
 

@@ -146,17 +146,17 @@ namespace Mario_s_Activator
                 ProtectMenu.AddGroupLabel("Spells: ");
 
                 var spell = Player.GetSpell(champS.Slot);
+                
                 if (spell != null)
                 {
-                    ProtectMenu.CreateCheckBox("- Use spell " + spell.Name.Substring(spell.Name.Length - 1).ToUpper(),
-                        "canUseSpell" + spell.Slot);
+                    var slot = spell.Slot.ToString()[spell.Slot.ToString().Length - 1];
+                    ProtectMenu.CreateCheckBox("- Use spell " + slot, "canUseSpell" + spell.Slot);
                 }
 
                 ProtectMenu.AddGroupLabel("WhiteList: ");
                 foreach (var a in EntityManager.Heroes.Allies)
                 {
-                    ProtectMenu.CreateCheckBox("- Can use on " + a.ChampionName + " (" + a.Name + ") ",
-                        "canUseSpellOn" + a.ChampionName);
+                    ProtectMenu.CreateCheckBox("- Can use on " + a.ChampionName + " (" + a.Name + ") ", "canUseSpellOn" + a.ChampionName);
                 }
             }
             else
@@ -260,7 +260,7 @@ namespace Mario_s_Activator
             {
                 foreach (var s in DangerousSpells.Spells.Where(s => s.Hero == e.Hero))
                 {
-                    var slot = s.Slot.ToString().Substring(s.Slot.ToString().Length - 1);
+                    var slot = s.Slot.ToString()[s.Slot.ToString().Length - 1];
                     SettingsMenu.CreateCheckBox(s.Hero + "`s " + slot, "dangSpell" + s.Hero + s.Slot);
                 }
             }

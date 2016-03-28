@@ -20,7 +20,7 @@ namespace Mario_s_Activator
 
             if (PlayerHasSmite)
             {
-                if (Smite.IsReady() && !SummonerMenu.GetKeybindValue("smiteKeybind"))
+                if (Smite.IsReady() && !SummonerMenu.GetKeybindValue("smiteKeybind") && SummonerMenu.GetCheckBoxValue("drawSmiteRange"))
                 {
                     Circle.Draw(SharpDX.Color.Yellow, Smite.Range, Player.Instance);
                 }

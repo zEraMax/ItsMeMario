@@ -143,7 +143,7 @@ namespace Mario_s_Activator
 
         public static bool IsInDanger(this AIHeroClient target, int percent)
         {
-            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
+            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.Health > percent) return false;
             //Missiles
             var missile = Missiles.FirstOrDefault(m => m.IsInRange(target, 2500) && m.IsValid);
             var champion = missile?.SpellCaster as AIHeroClient;
@@ -179,13 +179,13 @@ namespace Mario_s_Activator
                         DangerousSpells.Spells.FirstOrDefault(
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
-                                missile.Distance(target) <= boundingRadius + 300 && SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot));
+                                missile.Distance(target) <= boundingRadius + 300 && SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot.ToString()));
 
                     if (DangSpell != null)
                     {
                         return true;
                     }
-                    return missile.Distance(target) <= boundingRadius && target.HealthPercent <= percent;
+                    return missile.Distance(target) <= boundingRadius;
                 }
 
                 if (missile.Distance(target) <= boundingRadius)
@@ -204,7 +204,7 @@ namespace Mario_s_Activator
                 {
                     return true;
                 }
-                if (normalTargSpell != null && target.HealthPercent <= percent)
+                if (normalTargSpell != null)
                 {
                     return true;
                 }
@@ -214,7 +214,7 @@ namespace Mario_s_Activator
             {
                 var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
                 
-                if (hueSPell != null && target.HealthPercent <= percent)
+                if (hueSPell != null)
                 {
                     var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
                     if (!projection.IsOnSegment) return false;
