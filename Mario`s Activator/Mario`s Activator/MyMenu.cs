@@ -173,6 +173,9 @@ namespace Mario_s_Activator
                 SummonerMenu.AddGroupLabel("Smite");
                 SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
                 SummonerMenu.CreateCheckBox("Draw smite range.", "drawSmiteRange");
+                SummonerMenu.CreateCheckBox("Draw smite damage on jungle minions HP.", "drawSmiteDamage");
+                SummonerMenu.AddLabel("If your smite is failing for whatever reason please disable the predction checkbox");
+                SummonerMenu.CreateCheckBox("Use predction on smite", "usePred");
                 SummonerMenu.AddSeparator();
                 SummonerMenu.CreateCheckBox("Use smite on champions", "smiteUseOnChampions");
                 SummonerMenu.CreateSlider("Keep how many smites", "smiteKeep", 1, 0, 2);

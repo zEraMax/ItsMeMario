@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using EloBuddy;
+using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using Version = System.Version;
 
@@ -46,8 +48,7 @@ namespace Mario_s_Activator
                     var internetVersion = new Version(new StreamReader(stream).ReadToEnd());
                     if (internetVersion != LocalVersion)
                     {
-                        VersionChecked = true;
-                        Chat.Print("New version found please update it, or you will have problems, but the activator will be loaded anyway.");
+                        Chat.Print("New version found of Mario`s Activator please update it.", Color.DarkCyan);
                     }
                     else
                     {
@@ -72,6 +73,16 @@ namespace Mario_s_Activator
             ActivatorLoaded = false;
             CheckVersion();
             Game.OnTick += Game_OnTick;
+            Chat.OnMessage += Chat_OnMessage;
+        }
+
+        private static void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
+        {
+            if (args.Message.Contains("load") && sender.IsMe)
+            {
+                Core.DelayAction(() => Chat.Print("Loading now", Color.BlueViolet), 200);
+                Core.DelayAction(() => VersionChecked = true, 400);
+            }
         }
 
         private static void Game_OnTick(EventArgs args)

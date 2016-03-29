@@ -291,17 +291,27 @@ namespace Mario_s_Activator
                             defItem.Cast();
                         }
                         return;
+                        case ItemId.Face_of_the_Mountain:
+                        var ally =
+                            EntityManager.Heroes.Allies.OrderBy(a => a.Health)
+                                .FirstOrDefault(
+                                    a =>
+                                        a.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id + "ally")) &&
+                                        a.IsValidTarget(defItem.Range));
+                        if (ally != null)
+                        {
+                            defItem.Cast(ally);
+                        }
+
+                        if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int)defItem.Id)))
+                        {
+                            defItem.Cast(Player.Instance);
+                        }
+                        return;
                 }
                 if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
                 {
-                    if (defItem.Range <= 0)
-                    {
-                        defItem.Cast();
-                    }
-                    else
-                    {
-                        defItem.Cast(Player.Instance);
-                    }
+                    defItem.Cast();
                 }
             }
         }
@@ -327,13 +337,29 @@ namespace Mario_s_Activator
         private static void SmiteOnTick()
         {
             if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || SummonerMenu.GetKeybindValue("smiteKeybind")) return;
-            var GetJungleMinion =
-                EntityManager.MinionsAndMonsters.GetJungleMonsters()
-                    .FirstOrDefault(
-                        m =>
-                            MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                            Prediction.Health.GetPrediction(m, Game.Ping) - 15 <= SmiteDamage() &&
-                            SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+
+            Obj_AI_Base GetJungleMinion;
+
+            if (SummonerMenu.GetCheckBoxValue("usePred"))
+            {
+                GetJungleMinion =
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                        .FirstOrDefault(
+                            m =>
+                                MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
+                                Prediction.Health.GetPrediction(m, Game.Ping) - 15 <= SmiteDamage() &&
+                                SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+            }
+            else
+            {
+                GetJungleMinion =
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                        .FirstOrDefault(
+                            m =>
+                                MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
+                                m.Health <= SmiteDamage() &&
+                                SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+            }
 
 
             if (GetJungleMinion != null)
@@ -342,28 +368,28 @@ namespace Mario_s_Activator
             }
 
             if (!SummonerMenu.GetCheckBoxValue("smiteUseOnChampions")) return;
-            Chat.Print("Test Smite");
+
             var keepSmite = SummonerMenu.GetSliderValue("smiteKeep");
 
             var smiteGanker = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerganker"));
+            if(Smite.Handle.Ammo < keepSmite)return;
 
-            if (smiteGanker != null && Smite.Handle.Ammo > keepSmite)
+            if (smiteGanker != null)
             {
                 var target =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
                         e =>
-                            Prediction.Health.GetPrediction(e, Game.Ping) <= SmiteKSDamage() && e.IsValidTarget(Smite.Range));
+                            Prediction.Health.GetPrediction(e, Game.Ping) - 5 <= SmiteKSDamage() && e.IsValidTarget(Smite.Range));
 
                 if (target != null)
                 {
                     Smite.Cast(target);
-                    Chat.Print("KS");
                 }
             }
 
-            var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("playerduel"));
+            var smiteDuel = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("duel"));
 
-            if (smiteDuel != null && Smite.Handle.Ammo > keepSmite)
+            if (smiteDuel != null)
             {
                 var target = TargetSelector.GetTarget(Smite.Range, DamageType.Mixed);
 
