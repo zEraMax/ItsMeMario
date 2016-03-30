@@ -8,7 +8,7 @@ using EloBuddy.SDK.Menu.Values;
 using SharpDX;
 // ReSharper disable CoVariantArrayConversion
 
-namespace Mario_s_Template
+namespace Mario_s_Lux
 {
     public static class Extensions
     {
@@ -45,7 +45,7 @@ namespace Mario_s_Template
                 EntityManager.MinionsAndMonsters.GetLaneMinions().Where(m => m.IsValidTarget(spell.Range)).ToArray();
 
             var bestPos = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, spell.Width,
-                (int) spell.Range, Player.Instance.Position.To2D());
+                (int)spell.Range, Player.Instance.Position.To2D());
 
             return minions.Length != 0 ? bestPos.CastPosition : Vector3.Zero;
 
