@@ -31,7 +31,7 @@ namespace Mario_s_Template
                     FaceName = "Segoi UI",
                     Height = 16,
                     Weight = FontWeight.Bold,
-                    OutputPrecision = FontPrecision.Default,
+                    OutputPrecision = FontPrecision.TrueType,
                     Quality = FontQuality.ClearType,
                 });
 
@@ -42,7 +42,7 @@ namespace Mario_s_Template
                     FaceName = "Segoi UI",
                     Height = 11,
                     Weight = FontWeight.Bold,
-                    OutputPrecision = FontPrecision.Default,
+                    OutputPrecision = FontPrecision.TrueType,
                     Quality = FontQuality.ClearType,
                 });
         }
@@ -73,9 +73,9 @@ namespace Mario_s_Template
                 if (DrawingsMenu.GetCheckBoxValue("statDraw"))
                 {
                     //Statistics
-                    var posXStat = (int)enemy.HPBarPosition[0];
-                    var posYStat = (int)enemy.HPBarPosition[1] - 7;
-                    var mathStat = "-" + Math.Round(damage) + " / " +
+                    var posXStat = (int)enemy.HPBarPosition[0] - 46;
+                    var posYStat = (int)enemy.HPBarPosition[1] + 12;
+                    var mathStat = "- " + Math.Round(damage) + " / " +
                                    Math.Round(enemy.Health - damage);
                     _Font2.DrawText(null, mathStat, posXStat, posYStat, DamageIndicatorColorSlide.GetSharpColor());
                 }
@@ -83,8 +83,8 @@ namespace Mario_s_Template
                 if (DrawingsMenu.GetCheckBoxValue("perDraw"))
                 {
                     //Percent
-                    var posXPer = (int)enemy.HPBarPosition[0] + 106;
-                    var posYPer = (int)enemy.HPBarPosition[1] - 12;
+                    var posXPer = (int)enemy.HPBarPosition[0] - 28;
+                    var posYPer = (int)enemy.HPBarPosition[1];
                     _Font.DrawText(null, string.Concat(Math.Ceiling((int)damage / enemy.TotalShieldHealth() * 100), "%"),
                         posXPer, posYPer, DamageIndicatorColorSlide.GetSharpColor());
                 }

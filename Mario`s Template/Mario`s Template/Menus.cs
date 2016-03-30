@@ -12,6 +12,7 @@ namespace Mario_s_Template
         public static Menu AutoHarassMenu;
         public static Menu LaneClearMenu;
         public static Menu LasthitMenu;
+        public static Menu JungleClearMenu;
         public static Menu KillStealMenu;
         public static Menu DrawingsMenu;
         public static Menu MiscMenu;
@@ -30,45 +31,64 @@ namespace Mario_s_Template
             AutoHarassMenu = FirstMenu.AddSubMenu("• AutoHarass", "autoharassmenuid");
             LaneClearMenu = FirstMenu.AddSubMenu("• LaneClear", "laneclearmenuid");
             LasthitMenu = FirstMenu.AddSubMenu("• LastHit", "lasthitmenuid");
+            JungleClearMenu = FirstMenu.AddSubMenu("• JungleClear", "jungleclearmenuid");
             KillStealMenu = FirstMenu.AddSubMenu("• KillSteal", "killstealmenuid");
             MiscMenu = FirstMenu.AddSubMenu("• Misc", "miscmenuid");
             DrawingsMenu = FirstMenu.AddSubMenu("• Drawings", "drawingsmenuid");
 
-            ComboMenu.AddGroupLabel("Settings");
+            ComboMenu.AddGroupLabel("Spells");
             ComboMenu.CreateCheckBox("Use Q", "qUse");
             ComboMenu.CreateCheckBox("Use W", "wUse");
             ComboMenu.CreateCheckBox("Use E", "eUse");
             ComboMenu.CreateCheckBox("Use R", "rUse");
 
-            HarassMenu.AddGroupLabel("Settings");
+            HarassMenu.AddGroupLabel("Spells");
             HarassMenu.CreateCheckBox("Use Q", "qUse");
             HarassMenu.CreateCheckBox("Use W", "wUse");
             HarassMenu.CreateCheckBox("Use E", "eUse");
             HarassMenu.CreateCheckBox("Use R", "rUse");
+            HarassMenu.AddGroupLabel("Settings");
+            HarassMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
 
-            AutoHarassMenu.AddGroupLabel("Settings");
+            AutoHarassMenu.AddGroupLabel("Spells");
             AutoHarassMenu.CreateCheckBox("Use Q", "qUse");
             AutoHarassMenu.CreateCheckBox("Use W", "wUse");
             AutoHarassMenu.CreateCheckBox("Use E", "eUse");
             AutoHarassMenu.CreateCheckBox("Use R", "rUse");
+            AutoHarassMenu.AddGroupLabel("Settings");
+            AutoHarassMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
 
-            LaneClearMenu.AddGroupLabel("Settings");
+            LaneClearMenu.AddGroupLabel("Spells");
             LaneClearMenu.CreateCheckBox("Use Q", "qUse");
             LaneClearMenu.CreateCheckBox("Use W", "wUse");
             LaneClearMenu.CreateCheckBox("Use E", "eUse");
             LaneClearMenu.CreateCheckBox("Use R", "rUse");
+            LaneClearMenu.AddGroupLabel("Settings");
+            LaneClearMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
 
-            LasthitMenu.AddGroupLabel("Settings");
+            LasthitMenu.AddGroupLabel("Spells");
             LasthitMenu.CreateCheckBox("Use Q", "qUse");
             LasthitMenu.CreateCheckBox("Use W", "wUse");
             LasthitMenu.CreateCheckBox("Use E", "eUse");
             LasthitMenu.CreateCheckBox("Use R", "rUse");
+            LasthitMenu.AddGroupLabel("Settings");
+            LasthitMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
 
-            KillStealMenu.AddGroupLabel("Settings");
+            JungleClearMenu.AddGroupLabel("Spells");
+            JungleClearMenu.CreateCheckBox("Use Q", "qUse");
+            JungleClearMenu.CreateCheckBox("Use W", "wUse");
+            JungleClearMenu.CreateCheckBox("Use E", "eUse");
+            JungleClearMenu.CreateCheckBox("Use R", "rUse");
+            JungleClearMenu.AddGroupLabel("Settings");
+            JungleClearMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
+
+            KillStealMenu.AddGroupLabel("Spells");
             KillStealMenu.CreateCheckBox("Use Q", "qUse");
             KillStealMenu.CreateCheckBox("Use W", "wUse");
             KillStealMenu.CreateCheckBox("Use E", "eUse");
             KillStealMenu.CreateCheckBox("Use R", "rUse");
+            KillStealMenu.AddGroupLabel("Settings");
+            KillStealMenu.CreateSlider("Mana must be lower than [{0}%] to use Harass spells", "manaSlider", 30);
 
             MiscMenu.AddGroupLabel("Settings");
             
@@ -77,7 +97,7 @@ namespace Mario_s_Template
             DrawingsMenu.CreateCheckBox("Draw Spell`s range only if they are ready.", "readyDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator.", "damageDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator percent.", "perDraw");
-            DrawingsMenu.CreateCheckBox("Draw damage indicator statistics.", "statDraw");
+            DrawingsMenu.CreateCheckBox("Draw damage indicator statistics.", "statDraw", false);
             DrawingsMenu.AddGroupLabel("Spells");
             DrawingsMenu.CreateCheckBox("Draw Q.", "qDraw");
             DrawingsMenu.CreateCheckBox("Draw W.", "wDraw");
@@ -88,7 +108,7 @@ namespace Mario_s_Template
             WColorSlide = new ColorSlide(DrawingsMenu, "wColor", Color.Purple, "W Color:");
             EColorSlide = new ColorSlide(DrawingsMenu, "eColor", Color.Orange, "E Color:");
             RColorSlide = new ColorSlide(DrawingsMenu, "rColor", Color.DeepPink, "R Color:");
-            DamageIndicatorColorSlide = new ColorSlide(DrawingsMenu, "healthColor", Color.Yellow, "DamageIndicator Color:");
+            DamageIndicatorColorSlide = new ColorSlide(DrawingsMenu, "healthColor", Color.YellowGreen, "DamageIndicator Color:");
         }
     }
 }

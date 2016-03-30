@@ -11,10 +11,10 @@ namespace Mario_s_Template.Modes
         {
             var target = TargetSelector.GetTarget(1000, DamageType.Mixed);
 
-            if (HarassMenu.GetCheckBoxValue("qUse")) Q.TryToCast(target);
-            if (HarassMenu.GetCheckBoxValue("wUse")) W.TryToCast(target);
-            if (HarassMenu.GetCheckBoxValue("eUse")) E.TryToCast(target);
-            if (HarassMenu.GetCheckBoxValue("rUse")) R.TryToCast(target);
+            Q.TryToCast(target, HarassMenu);
+            W.TryToCast(target, HarassMenu);
+            E.TryToCast(target, HarassMenu);
+            R.TryToCast(target, HarassMenu);
         }
     }
 }

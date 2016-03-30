@@ -6,48 +6,69 @@ namespace Mario_s_Template
 {
     public static class SpellsManager
     {
-        public static Spell.SpellBase Q;
-        public static Spell.SpellBase W;
-        public static Spell.SpellBase E;
-        public static Spell.SpellBase R;
+        public static Spell.Targeted Q;
+        public static Spell.Active W;
+        public static Spell.Active E;
+        public static Spell.Targeted R;
 
         public static void InitializeSpells()
         {
-            Q = new Spell.Active(SpellSlot.Q, 000);
-            W = new Spell.Active(SpellSlot.W, 000);
-            E = new Spell.Active(SpellSlot.E, 000);
-            R = new Spell.Active(SpellSlot.R, 000);
+            Q = new Spell.Targeted(SpellSlot.Q, 350);
+            W = new Spell.Active(SpellSlot.W, 200);
+            E = new Spell.Active(SpellSlot.E, 300);
+            R = new Spell.Targeted(SpellSlot.R, 400);
         }
 
         #region Damages
         public static float GetDamage(this Obj_AI_Base target, SpellSlot slot)
         {
+            var damageType = DamageType.Magical;
             var AD = Player.Instance.FlatPhysicalDamageMod;
             var AP = Player.Instance.FlatMagicDamageMod;
             var sLevel = Player.GetSpell(slot).Level - 1;
 
             //You can get the damage information easily on wikia
 
+            var dmg = 0f;
+
             switch (slot)
             {
                 case SpellSlot.Q:
-                    return new float[] {10, 20, 30, 40, 50}[sLevel] + 0.0f*AP + 0.0f*AD;
+                    if (Q.IsReady())
+                    {
+                        dmg += new float[] { 20, 45, 70, 95, 120 }[sLevel] + 1f * AD;
+                    }
+                    break;
                 case SpellSlot.W:
-                    return new float[] {10, 20, 30, 40, 50}[sLevel] + 0.0f*AP + 0.0f*AD;
+                    if (W.IsReady())
+                    {
+                        dmg += new float[] { 0, 0, 0, 0, 0 }[sLevel] + 1f * AD;
+                    }
+                    break;
                 case SpellSlot.E:
-                    return new float[] {10, 20, 30, 40, 50}[sLevel] + 0.0f*AP + 0.0f*AD;
+                    if (E.IsReady())
+                    {
+                        dmg += new float[] { 80, 110, 140, 170, 200 }[sLevel];
+                    }
+                    break;
                 case SpellSlot.R:
-                    return new float[] {10, 20, 30, 40, 50}[sLevel] + 0.0f*AP + 0.0f*AD;
+                    if (R.IsReady())
+                    {
+                        dmg += new float[] { 600, 840, 1080 }[sLevel] * 0.6f + 1.2f * AP;
+                    }
+                    break;
             }
-            return 0f;
+            return Player.Instance.CalculateDamageOnUnit(target, damageType, dmg - 10);
         }
 
         public static float GetTotalDamage(this Obj_AI_Base target)
         {
-            return
+            var dmg =
                 Player.Spells.Where(
                     s => (s.Slot == SpellSlot.Q) || (s.Slot == SpellSlot.W) || (s.Slot == SpellSlot.E) || (s.Slot == SpellSlot.R) && s.IsReady)
                     .Sum(s => target.GetDamage(s.Slot));
+
+            return dmg + Player.Instance.GetAutoAttackDamage(target);
         }
 
         #endregion Damages

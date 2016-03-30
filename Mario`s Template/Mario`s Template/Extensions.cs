@@ -8,10 +8,7 @@ using SharpDX;
 
 namespace Mario_s_Template
 {
-    /// <summary>
-    /// Vector Extensions
-    /// </summary>
-    public static partial class Extensions
+    public static class Extensions
     {
         /// <summary>
         /// Checks if the position is solid
@@ -22,110 +19,103 @@ namespace Mario_s_Template
         {
             return pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) && pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall);
         }
-    }
 
-    /// <summary>
-    /// Spells Extensions
-    /// </summary>
-    public static partial class Extensions
-    {
         #region CanCast
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell)
+        public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
         {
             if (spell == null) return false;
-            return target.IsValidTarget(spell.Range) && spell.IsReady();
+            var slot = spell.Slot.ToString().ToLower();
+            if (!m.DisplayName.ToLower().Contains("combo"))
+            {
+                var manaSlider = m.GetSliderValue("manaSlider");
+                if (Player.Instance.ManaPercent < manaSlider) return false;
+            }
+            return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(slot + "Use");
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Active spell)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Active spell, Menu m)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase);
+            return target.CanCast(asBase, m);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Skillshot spell, int hitchancePercent = 75)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Skillshot spell, Menu m, int hitchancePercent = 75)
         {
             var asBase = spell as Spell.SpellBase;
             var pred = spell.GetPrediction(target);
-            return target.CanCast(asBase) && pred.HitChancePercent >= 75;
+            return target.CanCast(asBase, m) && pred.HitChancePercent >= 75;
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Chargeable spell)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Chargeable spell, Menu m)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase);
+            return target.CanCast(asBase, m);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Ranged spell)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Ranged spell, Menu m)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase);
+            return target.CanCast(asBase, m);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Targeted spell)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Targeted spell, Menu m)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase);
+            return target.CanCast(asBase, m);
         }
 
         #endregion CanCast
 
         #region TryToCast
 
-        public static bool TryToCast(this Spell.SpellBase spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.SpellBase spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast(target);
+            return target.CanCast(spell, m) && spell.Cast(target);
         }
 
-        public static bool TryToCast(this Spell.Active spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.Active spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast();
+            return target.CanCast(spell, m) && spell.Cast();
         }
 
-        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast(target);
+            return target.CanCast(spell, m) && spell.Cast(target);
         }
 
-        public static bool TryToCast(this Spell.Targeted spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.Targeted spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast(target);
+            return target.CanCast(spell, m) && spell.Cast(target);
         }
 
-        public static bool TryToCast(this Spell.Chargeable spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.Chargeable spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast(target);
+            return target.CanCast(spell, m) && spell.Cast(target);
         }
 
-        public static bool TryToCast(this Spell.Ranged spell, Obj_AI_Base target)
+        public static bool TryToCast(this Spell.Ranged spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell) && spell.Cast(target);
+            return target.CanCast(spell, m) && spell.Cast(target);
         }
 
         #endregion TryToCast
 
         #region Drawings
 
-        public static bool DrawSpell(this Spell.SpellBase spell, Color color)
+        public static void DrawSpell(this Spell.SpellBase spell, Color color)
         {
             EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
-            return false;
         }
 
         #endregion Drawings
-    }
 
-    /// <summary>
-    /// Menu Extensions
-    /// </summary>
-    public static partial class Extensions
-    {
         #region Creating
         public static void CreateCheckBox(this Menu m, string displayName, string uniqueId, bool defaultValue = true)
         {
@@ -197,13 +187,6 @@ namespace Mario_s_Template
         }
         #endregion Getting
 
-    }
-
-    /// <summary>
-    /// Getting target extensions
-    /// </summary>
-    public static partial class Extensions
-    {
         public static Obj_AI_Minion GetLastMinion(this Spell.SpellBase spell)
         {
             return
