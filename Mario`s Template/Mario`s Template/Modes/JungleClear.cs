@@ -7,10 +7,10 @@ namespace Mario_s_Template.Modes
     {
         public static void Execute()
         {
-            Q.TryToCast(Q.GetLastMinion(), JungleClearMenu);
-            W.TryToCast(Q.GetLastMinion(), JungleClearMenu);
-            E.TryToCast(Q.GetLastMinion(), JungleClearMenu);
-            R.TryToCast(Q.GetLastMinion(), JungleClearMenu);
+            Q.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            W.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            E.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            R.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
         }
     }
 }

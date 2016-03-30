@@ -187,7 +187,7 @@ namespace Mario_s_Template
         }
         #endregion Getting
 
-        public static Obj_AI_Minion GetLastMinion(this Spell.SpellBase spell)
+        public static Obj_AI_Minion GetLastHitMinion(this Spell.SpellBase spell)
         {
             return
                 EntityManager.MinionsAndMonsters.GetLaneMinions()
@@ -204,6 +204,14 @@ namespace Mario_s_Template
                     e =>
                         e.IsValidTarget(spell.Range) && Prediction.Health.GetPrediction(e, spell.CastDelay) <= e.GetDamage(spell.Slot) &&
                         !e.HasUndyingBuff());
+        }
+
+        public static Obj_AI_Base GetJungleMinion(this Spell.SpellBase spell)
+        {
+            return
+                EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                    .OrderByDescending(m => m.Health)
+                    .FirstOrDefault(m => m.IsValidTarget(spell.Range));
         }
     }
 }

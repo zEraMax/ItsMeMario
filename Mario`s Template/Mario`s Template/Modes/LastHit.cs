@@ -7,10 +7,10 @@ namespace Mario_s_Template.Modes
     {
         public static void Execute()
         {
-            Q.TryToCast(Q.GetLastMinion(), LasthitMenu);
-            W.TryToCast(Q.GetLastMinion(), LasthitMenu);
-            E.TryToCast(Q.GetLastMinion(), LasthitMenu);
-            R.TryToCast(Q.GetLastMinion(), LasthitMenu);
+            Q.TryToCast(Q.GetLastHitMinion(), LasthitMenu);
+            W.TryToCast(Q.GetLastHitMinion(), LasthitMenu);
+            E.TryToCast(Q.GetLastHitMinion(), LasthitMenu);
+            R.TryToCast(Q.GetLastHitMinion(), LasthitMenu);
         }
     }
 }
