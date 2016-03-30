@@ -8,7 +8,9 @@ namespace Mario_s_Lux.Modes
     {
         public static void Execute()
         {
-            var target = TargetSelector.GetTarget(E.Range, DamageType.Mixed);
+            var target = TargetSelector.GetTarget(E.Range + 200, DamageType.Mixed);
+
+            if (target == null) return;
 
             Q.TryToCast(target, Menus.HarassMenu);
             E.TryToCast(target, Menus.HarassMenu);

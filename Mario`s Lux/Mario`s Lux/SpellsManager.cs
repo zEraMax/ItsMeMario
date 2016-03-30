@@ -14,7 +14,7 @@ namespace Mario_s_Lux
 
         public static void InitializeSpells()
         {
-            Q = new Spell.Skillshot(SpellSlot.Q, 1300, SkillShotType.Linear, 250, 1200, 70)
+            Q = new Spell.Skillshot(SpellSlot.Q, 1290, SkillShotType.Linear, 250, 1200, 70)
             {
                 AllowedCollisionCount = 1
             };
@@ -26,7 +26,7 @@ namespace Mario_s_Lux
             {
                 AllowedCollisionCount = int.MaxValue
             };
-            R = new Spell.Skillshot(SpellSlot.R, 3300, SkillShotType.Circular, 1000, int.MaxValue, 110)
+            R = new Spell.Skillshot(SpellSlot.R, 3100, SkillShotType.Circular, 1000, int.MaxValue, 110)
             {
                 AllowedCollisionCount = int.MaxValue
             };

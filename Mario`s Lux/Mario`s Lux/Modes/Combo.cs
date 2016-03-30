@@ -9,27 +9,44 @@ namespace Mario_s_Lux.Modes
     {
         public static void Execute()
         {
-            var target = TargetSelector.GetTarget(E.Range, DamageType.Mixed);
+            var target = TargetSelector.GetTarget(E.Range + 200, DamageType.Magical);
+
+            if (target == null) return;
 
             Q.TryToCast(target, ComboMenu);
 
-            if (Player.GetSpell(SpellSlot.E).ToggleState <= 0)
+            if (Player.GetSpell(SpellSlot.E).ToggleState <= 0 && ComboMenu.GetCheckBoxValue("eUse") && E.IsReady())
             {
-                E.TryToCast(target, ComboMenu);
+                E.Cast(E.GetBestCircularCastPosition(1));
             }
 
-            if(!ComboMenu.GetCheckBoxValue("smartCombo"))return;
+            if (!ComboMenu.GetCheckBoxValue("smartCombo")) return;
 
-            if ((target.HasBuffOfType(BuffType.Snare) && target.HasPassive()) || (target.HasBuffOfType(BuffType.Stun) && target.HasPassive()))
+            if (target.HasBuffOfType(BuffType.Snare) || target.HasBuffOfType(BuffType.Stun))
             {
+                if (R.IsReady() && !E.IsReady())
+                {
+                    var passiveDamage = target.HasPassive() ? target.GetPassiveDamage() : 0f;
+                    var rDamage = target.GetDamage(SpellSlot.R) + passiveDamage;
+
+                    var predictedHealth = Prediction.Health.GetPrediction(target, R.CastDelay + Game.Ping);
+
+                    if (predictedHealth <= rDamage)
+                    {
+                        R.Cast(target);
+                    }
+                }
                 if (E.IsReady() && R.IsReady())
                 {
-                    var damage = target.GetDamage(SpellSlot.E) + target.GetDamage(SpellSlot.R) + target.GetPassiveDamage();
-                    var predictedHealth = Prediction.Health.GetPrediction(target, R.CastDelay);
-                    if (predictedHealth <= damage)
+                    var passiveDamage = target.HasPassive() ? target.GetPassiveDamage() : 0f;
+                    var totalDamage = target.GetDamage(SpellSlot.E) + target.GetDamage(SpellSlot.R) + passiveDamage;
+
+                    var predictedHealth = Prediction.Health.GetPrediction(target, R.CastDelay + Game.Ping);
+
+                    if (predictedHealth <= totalDamage)
                     {
-                        E.Cast(target.Position);
-                        R.Cast(target.Position);
+                        E.Cast(target);
+                        R.Cast(target);
                     }
                 }
             }

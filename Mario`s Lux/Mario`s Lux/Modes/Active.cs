@@ -2,6 +2,7 @@
 using EloBuddy.SDK;
 using static Mario_s_Lux.EManager;
 using static Mario_s_Lux.SpellsManager;
+using static Mario_s_Lux.Menus;
 
 namespace Mario_s_Lux.Modes
 {
@@ -35,6 +36,30 @@ namespace Mario_s_Lux.Modes
             if (orbMode.HasFlag(Orbwalker.ActiveModes.LastHit))
             {
                 LastHit.Execute();
+            }
+
+            if (KillStealMenu.GetCheckBoxValue("rUse"))
+            {
+                var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
+                   
+                if(target == null)return;
+
+                if (R.IsReady())
+                {
+                    var passiveDamage = target.HasPassive() ? target.GetPassiveDamage() : 0f;
+                    var rDamage = target.GetDamage(SpellSlot.R) + passiveDamage;
+
+                    var predictedHealth = Prediction.Health.GetPrediction(target, R.CastDelay + Game.Ping);
+
+                    if (predictedHealth <= rDamage)
+                    {
+                        var pred = R.GetPrediction(target);
+                        if (pred.HitChancePercent >= 90)
+                        {
+                            R.Cast(target);
+                        }
+                    }
+                }
             }
         }
     }
