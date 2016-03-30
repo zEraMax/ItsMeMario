@@ -180,7 +180,8 @@ namespace Mario_s_Activator
                         DangerousSpells.Spells.FirstOrDefault(
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
-                                missile.Distance(target) <= boundingRadius + 300 && SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot.ToString()));
+                                missile.Distance(target) <= boundingRadius + 300);
+                    //&& SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot.ToString())
 
                     if (DangSpell != null)
                     {

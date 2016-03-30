@@ -103,6 +103,11 @@ namespace Mario_s_Activator
             CleansersMenu.CreateCheckBox("Use Dervish Blade.", "check" + "3137");
             CleansersMenu.CreateCheckBox("Use Mercurial Scimitar.", "check" + "3139");
             CleansersMenu.CreateCheckBox("Use QuickSilver.", "check" + "3140");
+            if (PlayerHasCleanse)
+            {
+                CleansersMenu.AddLabel("Cleanse Summoner Spell");
+                CleansersMenu.CreateCheckBox("Use cleanse", "check" + "cleanse");
+            }
             CleansersMenu.AddGroupLabel("Mikael Settings");
             CleansersMenu.CreateCheckBox("Use Mikael.", "check" + "3222");
             CleansersMenu.AddSeparator();
@@ -174,7 +179,7 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
                 SummonerMenu.CreateCheckBox("Draw smite range.", "drawSmiteRange");
                 SummonerMenu.CreateCheckBox("Draw smite damage on jungle minions HP.", "drawSmiteDamage");
-                SummonerMenu.AddLabel("If your smite is failing for whatever reason please disable the predction checkbox");
+                SummonerMenu.AddLabel("If your smite is failing for whatever reason please disable the prediction checkbox");
                 SummonerMenu.CreateCheckBox("Use predction on smite", "usePred");
                 SummonerMenu.AddSeparator();
                 SummonerMenu.CreateCheckBox("Use smite on champions", "smiteUseOnChampions");
@@ -229,6 +234,11 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateCheckBox("Use ignite.", "check" + "ignite");
                 SummonerMenu.AddLabel("Advanced Options please dont modify them if you dont know what they do");
                 SummonerMenu.CreateSlider("Minimun range to cast ignite on target", "minimunRangeIgnite", 480, 0, 600);
+            }
+
+            if (PlayerHasCleanse)
+            {
+                SummonerMenu.AddGroupLabel("The activator detected that you have cleanse please go to the cleansers menu to configurate it");
             }
 
             #endregion SummonerSpells

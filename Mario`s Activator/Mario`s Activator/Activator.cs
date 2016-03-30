@@ -44,7 +44,7 @@ namespace Mario_s_Activator
 
             var delay = CleansersMenu.GetSliderValue("delayCleanse");
 
-            if (PlayerHasCleanse && Player.Instance.HasCC())
+            if (PlayerHasCleanse && Player.Instance.HasCC() && CleansersMenu.GetCheckBoxValue("check" + "cleanse"))
             {
                 Core.DelayAction(() => Cleanse.Cast(), delay);
             }
@@ -393,7 +393,8 @@ namespace Mario_s_Activator
             {
                 var target = TargetSelector.GetTarget(Smite.Range, DamageType.Mixed);
 
-                if (target != null)
+                if (target != null && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && target.HealthPercent <= 60 &&
+                    target.IsInAutoAttackRange(Player.Instance))
                 {
                     Smite.Cast(target);
                 }
