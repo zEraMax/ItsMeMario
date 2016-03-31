@@ -4,7 +4,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
-using EloBuddy.SDK.Spells;
 using Mario_s_Activator.Spells;
 using SharpDX;
 using static Mario_s_Activator.MyMenu;
@@ -56,7 +55,7 @@ namespace Mario_s_Activator
             SName = sname;
         }
     }
-    
+
     public static class DangerHandler
     {
         public static List<MissileClient> Missiles = new List<MissileClient>();
@@ -123,7 +122,7 @@ namespace Mario_s_Activator
         {
             var target = args.Target as Obj_AI_Base;
             var senderHero = sender as AIHeroClient;
-            if(args.IsAutoAttack()) return;
+            if (args.IsAutoAttack()) return;
             if (senderHero != null && senderHero.IsEnemy)
             {
                 if (target != null && target.IsAlly)
@@ -133,7 +132,7 @@ namespace Mario_s_Activator
                     Core.DelayAction(() => TargettedSpells.Remove(targettedSpell), 80);
                 }
                 if (target == null)
-                { 
+                {
                     var notMissile = new NotMissile(args.Start, args.End, senderHero, senderHero.Hero, args.Slot, args.SData.Name);
                     NotMissiles.Add(notMissile);
                     Core.DelayAction(() => NotMissiles.Remove(notMissile), 80);
@@ -143,7 +142,28 @@ namespace Mario_s_Activator
 
         public static bool IsInDanger(this AIHeroClient target, int percent)
         {
-            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange() || target.HealthPercent > percent) return false;
+            if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
+
+            var sliderPercent = SettingsMenu.GetSliderValue("dangerSlider");
+            var boundingRadius = target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+
+            if (TargettedSpells.Any())
+            {
+                var normalTargSpell = TargettedSpells.FirstOrDefault(t => t.Target == target);
+
+                var dangTargSpell =
+                    DangerousSpells.Spells.FirstOrDefault(
+                        s => s.Hero == normalTargSpell?.Champ && s.Slot == normalTargSpell.Slot);
+                if (dangTargSpell != null && target.HealthPercent <= percent + sliderPercent)
+                {
+                    return true;
+                }
+                if (normalTargSpell != null && target.HealthPercent <= percent)
+                {
+                    return true;
+                }
+            }
+
             //Missiles
             var missile = Missiles.FirstOrDefault(m => m.IsInRange(target, 2500) && m.IsValid);
             var champion = missile?.SpellCaster as AIHeroClient;
@@ -171,8 +191,6 @@ namespace Mario_s_Activator
                 var projection = target.Position.To2D()
                     .ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D());
 
-                var boundingRadius = target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
-
                 if (projection.IsOnSegment &&
                     projection.SegmentPoint.Distance(target.Position) <= missile.SData.CastRadius + boundingRadius)
                 {
@@ -180,63 +198,48 @@ namespace Mario_s_Activator
                         DangerousSpells.Spells.FirstOrDefault(
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
-                                missile.Distance(target) <= boundingRadius + 300);
-                    //&& SettingsMenu.GetCheckBoxValue(ds.Hero.ToString() + ds.Slot.ToString())
+                                missile.Distance(target) <= boundingRadius + 250 &&
+                                SettingsMenu.GetCheckBoxValue("dangSpell" + ds.Hero.ToString() + ds.Slot.ToString()));
 
-                    if (DangSpell != null)
+                    if (DangSpell != null && target.HealthPercent <= percent + sliderPercent)
                     {
                         return true;
                     }
-                    return missile.Distance(target) <= boundingRadius;
+                    return missile.Distance(target) <= boundingRadius && target.HealthPercent <= percent;
                 }
 
-                if (missile.Distance(target) <= boundingRadius)
-                {
-                    return true;
-                }
-            }
+                return missile.Distance(target) <= boundingRadius && target.HealthPercent <= percent;
 
-            if (TargettedSpells.Any())
-            {
-                var normalTargSpell = TargettedSpells.FirstOrDefault(t => t.Target == target);
-                var dangTargSpell =
-                    DangerousSpells.Spells.FirstOrDefault(
-                        s => s.Hero == normalTargSpell?.Champ && s.Slot == normalTargSpell.Slot);
-                if (dangTargSpell != null)
-                {
-                    return true;
-                }
-                if (normalTargSpell != null)
-                {
-                    return true;
-                }
-            }
 
-            if (NotMissiles.Any())
-            {
-                var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
-                
-                if (hueSPell != null)
+                /*
+                if (NotMissiles.Any())
                 {
-                    var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
-                    if (!projection.IsOnSegment) return false;
+                    var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
 
-                    //If there`s a missile with the same name as the skillshot that it got from obj process cast
-                    var missileSameName = Missiles.FirstOrDefault(m => m.SData.Name.ToLower().Contains(hueSPell.SName.ToLower()));
-                    if (missileSameName != null) return false;
-                    //
-                    var spellInfo = SpellDatabase.GetSpellInfoList(hueSPell.Caster).FirstOrDefault(s => s.Slot == hueSPell.Slot);
-                    if (spellInfo != null)
+                    if (hueSPell != null)
                     {
-                        var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
-                                            spellInfo.Radius + target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+                        var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
+                        if (!projection.IsOnSegment) return false;
 
-                        if (segementPoint)
+                        //If there`s a missile with the same name as the skillshot that it got from obj process cast
+                        var missileSameName = Missiles.FirstOrDefault(m => m.SData.Name.ToLower().Contains(hueSPell.SName.ToLower()));
+                        if (missileSameName != null) return false;
+                        //
+                        var spellInfo = SpellDatabase.GetSpellInfoList(hueSPell.Caster).FirstOrDefault(s => s.Slot == hueSPell.Slot);
+                        if (spellInfo != null)
                         {
-                            return true;
+                            var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
+                                                spellInfo.Radius + target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+
+                            if (segementPoint)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
+
+                */
             }
             return false;
         }

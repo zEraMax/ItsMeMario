@@ -265,24 +265,18 @@ namespace Mario_s_Activator
             SettingsMenu.AddGroupLabel("Offensive items options");
             SettingsMenu.CreateCheckBox("Use offensive items only in combo", "comboUseItems");
             SettingsMenu.AddGroupLabel("Danger Options");
+            SettingsMenu.CreateSlider("Add [{0}%] to the item HP% slider if the spell is dangerous", "dangerSlider", 10, 10,50);
             SettingsMenu.AddLabel("Dont mess with the options if you dont know what they do");
             SettingsMenu.CreateSlider("Extra range to be safe of a skillshot", "saferange", 110, 80, 180);
 
             //Spells Menu
-            /*
             SettingsMenu.AddGroupLabel("Spells to consider");
-            SettingsMenu.AddLabel("Disable/Enable spells that will be considered in the logic of considering you are or not");
-            SettingsMenu.AddLabel("in danger, for example if you disable Lucian`s Q it will not cast any items even if you HP is low");
-            SettingsMenu.AddLabel("but if Lucian`s W is enabled and it`s coming at you or near you it will cast the items");
-            foreach (var e in EntityManager.Heroes.Enemies)
+            SettingsMenu.AddLabel("Disable/Enable dangerous spells");
+            foreach (var s in EntityManager.Heroes.Enemies.SelectMany(e => DangerousSpells.Spells.Where(s => s.Hero == e.Hero)))
             {
-                foreach (var s in DangerousSpells.Spells.Where(s => s.Hero == e.Hero))
-                {
-                    var slot = s.Slot.ToString()[s.Slot.ToString().Length - 1];
-                    SettingsMenu.CreateCheckBox(s.Hero + "`s " + slot, "dangSpell" + s.Hero + s.Slot);
-                }
+                SettingsMenu.CreateCheckBox(s.Hero + "`s " + s.Slot, "dangSpell" + s.Hero + s.Slot);
             }
-            */
+            SettingsMenu.AddSeparator();
             SettingsMenu.AddGroupLabel("Debug Settings");
             SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);
 
