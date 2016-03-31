@@ -118,12 +118,11 @@ namespace Mario_s_Lux
         public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
         {
             if (spell == null) return false;
-            if (m.UniqueMenuId != ComboMenuID)
+            if (m != ComboMenu)
             {
                 if (Player.Instance.ManaPercent < m.GetSliderValue("manaSlider")) return false;
             }
-            return target.IsValidTarget(spell.Range) && spell.IsReady() &&
-                   m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
+            return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
         }
 
         public static bool CanCast(this Obj_AI_Base target, Spell.Active spell, Menu m)
@@ -203,10 +202,17 @@ namespace Mario_s_Lux
 
         public static void DrawSpell(this Spell.SpellBase spell, Color color)
         {
-            if (DrawingsMenu.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") &&
-                DrawingsMenu.GetCheckBoxValue("readyDraw") ? spell.IsReady() : spell.IsLearned)
+            if (DrawingsMenu.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Draw"))
             {
-                EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
+                if (DrawingsMenu.GetCheckBoxValue("readyDraw"))
+                {
+                    if (spell.IsReady())
+                    {
+                        EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
+                        return;
+                    }
+                }
+                //EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
             }
         }
 
