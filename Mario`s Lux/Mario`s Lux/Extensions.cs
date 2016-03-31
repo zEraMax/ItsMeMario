@@ -6,6 +6,8 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
+using static Mario_s_Lux.Menus;
+
 // ReSharper disable CoVariantArrayConversion
 
 namespace Mario_s_Lux
@@ -116,13 +118,12 @@ namespace Mario_s_Lux
         public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
         {
             if (spell == null) return false;
-            var slot = spell.Slot.ToString().ToLower();
-            if (!m.DisplayName.ToLower().Contains("combo"))
+            if (m.UniqueMenuId != ComboMenuID)
             {
-                var manaSlider = m.GetSliderValue("manaSlider");
-                if (Player.Instance.ManaPercent < manaSlider) return false;
+                if (Player.Instance.ManaPercent < m.GetSliderValue("manaSlider")) return false;
             }
-            return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(slot + "Use");
+            return target.IsValidTarget(spell.Range) && spell.IsReady() &&
+                   m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
         }
 
         public static bool CanCast(this Obj_AI_Base target, Spell.Active spell, Menu m)
@@ -202,7 +203,11 @@ namespace Mario_s_Lux
 
         public static void DrawSpell(this Spell.SpellBase spell, Color color)
         {
-            EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
+            if (DrawingsMenu.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") &&
+                DrawingsMenu.GetCheckBoxValue("readyDraw") ? spell.IsReady() : spell.IsLearned)
+            {
+                EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
+            }
         }
 
         #endregion Drawings

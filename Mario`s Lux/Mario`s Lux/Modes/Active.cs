@@ -1,4 +1,5 @@
-﻿using EloBuddy;
+﻿using System.Linq;
+using EloBuddy;
 using EloBuddy.SDK;
 using static Mario_s_Lux.EManager;
 using static Mario_s_Lux.SpellsManager;
@@ -16,7 +17,10 @@ namespace Mario_s_Lux.Modes
             {
                 if (GetE != null && GetE.CountEnemiesInRange(350) >= 1 && Player.GetSpell(SpellSlot.E).ToggleState >= 1)
                 {
-                    E.Cast(Player.Instance);
+                    var enemy =
+                        EntityManager.Heroes.Enemies.FirstOrDefault(
+                            e => e.IsInRange(GetE, 300) && e.IsInAutoAttackRange(Player.Instance));
+                    if(enemy == null) E.Cast(Player.Instance);
                 }
             }
 

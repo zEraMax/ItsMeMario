@@ -23,18 +23,28 @@ namespace Mario_s_Lux
         public static ColorSlide RColorSlide;
         public static ColorSlide DamageIndicatorColorSlide;
 
+        public const string ComboMenuID = "combomenuid";
+        public const string HarassMenuID = "harassmenuid";
+        public const string AutoHarassMenuID = "autoharassmenuid";
+        public const string LaneClearMenuID = "laneclearmenuid";
+        public const string LastHitMenuID = "lasthitmenuid";
+        public const string JungleClearMenuID = "jungleclearmenuid";
+        public const string KillStealMenuID = "killstealmenuid";
+        public const string DrawingsMenuID = "drawingsmenuid";
+        public const string MiscMenuID = "miscmenuid";
+
         public static void CreateMenu()
         {
             FirstMenu = MainMenu.AddMenu("Mario`s "+Player.Instance.ChampionName, Player.Instance.ChampionName.ToLower() + "marios");
-            ComboMenu = FirstMenu.AddSubMenu("• Combo", "combomenuid");
-            HarassMenu = FirstMenu.AddSubMenu("• Harass", "harassmenuid");
-            AutoHarassMenu = FirstMenu.AddSubMenu("• AutoHarass", "autoharassmenuid");
-            LaneClearMenu = FirstMenu.AddSubMenu("• LaneClear", "laneclearmenuid");
-            LasthitMenu = FirstMenu.AddSubMenu("• LastHit", "lasthitmenuid");
-            JungleClearMenu = FirstMenu.AddSubMenu("• JungleClear", "jungleclearmenuid");
-            KillStealMenu = FirstMenu.AddSubMenu("• KillSteal", "killstealmenuid");
-            MiscMenu = FirstMenu.AddSubMenu("• Misc", "miscmenuid");
-            DrawingsMenu = FirstMenu.AddSubMenu("• Drawings", "drawingsmenuid");
+            ComboMenu = FirstMenu.AddSubMenu("• Combo", ComboMenuID);
+            HarassMenu = FirstMenu.AddSubMenu("• Harass", HarassMenuID);
+            AutoHarassMenu = FirstMenu.AddSubMenu("• AutoHarass", AutoHarassMenuID);
+            LaneClearMenu = FirstMenu.AddSubMenu("• LaneClear", LaneClearMenuID);
+            LasthitMenu = FirstMenu.AddSubMenu("• LastHit", LastHitMenuID);
+            JungleClearMenu = FirstMenu.AddSubMenu("• JungleClear", JungleClearMenuID);
+            KillStealMenu = FirstMenu.AddSubMenu("• KillSteal", KillStealMenuID);
+            MiscMenu = FirstMenu.AddSubMenu("• Misc", MiscMenuID);
+            DrawingsMenu = FirstMenu.AddSubMenu("• Drawings", DrawingsMenuID);
 
             ComboMenu.AddGroupLabel("Spells");
             ComboMenu.CreateCheckBox("Use Q", "qUse");
