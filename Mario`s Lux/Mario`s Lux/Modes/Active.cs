@@ -24,7 +24,7 @@ namespace Mario_s_Lux.Modes
             {
                 if (GetE != null && GetE.CountEnemiesInRange(350) >= 1 && Player.GetSpell(SpellSlot.E).ToggleState >= 1)
                 {
-                    E.Cast(Player.Instance);
+                    E.Cast(Player.Instance); 
                 }
             }
 
