@@ -16,6 +16,7 @@ namespace Mario_s_Template
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
+            if (Player.Instance.ChampionName != "Teste") return;
             SpellsManager.InitializeSpells();
             Menus.CreateMenu();
             Modes.ModeManager.InitializeModes();

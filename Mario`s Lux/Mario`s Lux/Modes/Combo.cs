@@ -15,9 +15,16 @@ namespace Mario_s_Lux.Modes
 
             Q.TryToCast(target, ComboMenu);
 
-            if (Player.GetSpell(SpellSlot.E).ToggleState <= 0 && ComboMenu.GetCheckBoxValue("eUse") && E.IsReady())
+            if (Player.GetSpell(SpellSlot.E).ToggleState <= 0 && ComboMenu.GetCheckBoxValue("eUse") && E.IsReady() )
             {
-                E.Cast(E.GetBestCircularCastPosition(1));
+                if (Player.Instance.CountEnemiesInRange(E.Range) <= 2)
+                {
+                    E.TryToCast(target, ComboMenu);
+                }
+                else
+                {
+                    E.Cast(E.GetBestCircularCastPosition(2));
+                }
             }
 
             if (!ComboMenu.GetCheckBoxValue("smartCombo")) return;

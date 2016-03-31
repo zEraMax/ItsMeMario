@@ -7,6 +7,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
 using static Mario_s_Template.Menus;
+
 // ReSharper disable CoVariantArrayConversion
 
 namespace Mario_s_Template
@@ -46,7 +47,7 @@ namespace Mario_s_Template
                 EntityManager.MinionsAndMonsters.GetLaneMinions().Where(m => m.IsValidTarget(spell.Range)).ToArray();
 
             var bestPos = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, spell.Width,
-                (int) spell.Range, Player.Instance.Position.To2D());
+                (int)spell.Range, Player.Instance.Position.To2D());
 
             return minions.Length != 0 ? bestPos.CastPosition : Vector3.Zero;
 
@@ -117,12 +118,11 @@ namespace Mario_s_Template
         public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
         {
             if (spell == null) return false;
-            if (m.UniqueMenuId != ComboMenuID)
+            if (m != ComboMenu)
             {
                 if (Player.Instance.ManaPercent < m.GetSliderValue("manaSlider")) return false;
             }
-            return target.IsValidTarget(spell.Range) && spell.IsReady() &&
-                   m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
+            return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
         }
 
         public static bool CanCast(this Obj_AI_Base target, Spell.Active spell, Menu m)
@@ -197,19 +197,6 @@ namespace Mario_s_Template
         }
 
         #endregion TryToCast
-
-        #region Drawings
-
-        public static void DrawSpell(this Spell.SpellBase spell, Color color)
-        {
-            if (DrawingsMenu.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") &&
-                DrawingsMenu.GetCheckBoxValue("readyDraw") ? spell.IsReady() : spell.IsLearned)
-            {
-                EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
-            }
-        }
-
-        #endregion Drawings
 
         #endregion Spells
 

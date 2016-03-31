@@ -198,26 +198,6 @@ namespace Mario_s_Lux
 
         #endregion TryToCast
 
-        #region Drawings
-
-        public static void DrawSpell(this Spell.SpellBase spell, Color color)
-        {
-            if (DrawingsMenu.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Draw"))
-            {
-                if (DrawingsMenu.GetCheckBoxValue("readyDraw"))
-                {
-                    if (spell.IsReady())
-                    {
-                        EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
-                        return;
-                    }
-                }
-                //EloBuddy.SDK.Rendering.Circle.Draw(color, spell.Range, 1f, Player.Instance);
-            }
-        }
-
-        #endregion Drawings
-
         #endregion Spells
 
         #region Menus

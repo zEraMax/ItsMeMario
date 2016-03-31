@@ -92,7 +92,7 @@ namespace Mario_s_Lux
             
 
             DrawingsMenu.AddGroupLabel("Setting");
-            DrawingsMenu.CreateCheckBox("Draw Spell`s range only if they are ready.", "readyDraw");
+            DrawingsMenu.CreateCheckBox("Draw spell`s range only if they are ready.", "readyDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator.", "damageDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator percent.", "perDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator statistics.", "statDraw", false);
