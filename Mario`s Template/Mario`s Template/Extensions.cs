@@ -25,7 +25,7 @@ namespace Mario_s_Template
             return pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) && pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall);
         }
 
-        public static Vector3 GetBestCircularFarmPosition(this Spell.Skillshot spell, int count = 3)
+        public static Vector3 GetBestCircularFarmPosition(this Spell.Skillshot spell, int count = 3, int hitchance = 85)
         {
             var minions =
                 EntityManager.MinionsAndMonsters.GetLaneMinions()
@@ -37,8 +37,12 @@ namespace Mario_s_Template
 
             var farmLocation = Prediction.Position.PredictCircularMissileAoe(minions, spell.Range, spell.Width,
                 spell.CastDelay, spell.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
+            if (farmLocation != null && farmLocation.HitChancePercent >= hitchance && farmLocation.CollisionObjects.Length >= count)
+            {
+                return farmLocation.CastPosition;
+            }
 
-            return farmLocation?.CastPosition ?? Vector3.Zero;
+            return Vector3.Zero;
         }
 
         public static Vector3 GetBestLinearFarmPosition(this Spell.Skillshot spell, int minMinionsToHit = 3)
@@ -48,12 +52,16 @@ namespace Mario_s_Template
 
             var bestPos = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, spell.Width,
                 (int)spell.Range, Player.Instance.Position.To2D());
+            if (minions.Length > 0 && bestPos.HitNumber >= minMinionsToHit)
+            {
+                return bestPos.CastPosition;
+            }
 
-            return minions.Length != 0 ? bestPos.CastPosition : Vector3.Zero;
+            return Vector3.Zero;
 
         }
 
-        public static Vector3 GetBestCircularCastPosition(this Spell.Skillshot spell, int count = 3)
+        public static Vector3 GetBestCircularCastPosition(this Spell.Skillshot spell, int count = 3, int hitchance = 75)
         {
             var heros =
                 EntityManager.Heroes.Enemies.Where(
@@ -62,10 +70,14 @@ namespace Mario_s_Template
 
             if (heros.Length == 0 && heros != null) return Vector3.Zero;
 
-            var farmLocation = Prediction.Position.PredictCircularMissileAoe(heros, spell.Range, spell.Width,
+            var castPos = Prediction.Position.PredictCircularMissileAoe(heros, spell.Range, spell.Width,
                 spell.CastDelay, spell.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
 
-            return farmLocation?.CastPosition ?? Vector3.Zero;
+            if (castPos != null && castPos.HitChancePercent >= hitchance)
+            {
+                return castPos.CastPosition;
+            }
+            return Vector3.Zero;
         }
 
         public static BestCastPosition GetBestLinearCastPosition(IEnumerable<AIHeroClient> entities, float width, int range, Vector2? sourcePosition = null)
@@ -172,10 +184,10 @@ namespace Mario_s_Template
             return target.CanCast(spell, m) && spell.Cast();
         }
 
-        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m)
+        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m, int percent = 75)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell, m, percent) && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Targeted spell, Obj_AI_Base target, Menu m)
