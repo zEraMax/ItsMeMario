@@ -12,8 +12,8 @@ namespace Mario_s_Lux.Modes
 
             if (target == null) return;
 
-            Q.TryToCast(target, Menus.HarassMenu);
-            E.TryToCast(target, Menus.HarassMenu);
+            Q.TryToCast(target, Menus.HarassMenu, 85);
+            E.TryToCast(target, Menus.HarassMenu, 85);
         }
     }
 }

@@ -172,10 +172,10 @@ namespace Mario_s_Lux
             return target.CanCast(spell, m) && spell.Cast();
         }
 
-        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m)
+        public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m, int percent = 75)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell, m, percent) && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Targeted spell, Obj_AI_Base target, Menu m)

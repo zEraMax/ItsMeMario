@@ -8,9 +8,7 @@ namespace Mario_s_Lux.Modes
         public static void Execute()
         {
             Q.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
-            W.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
-            E.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
-            R.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            E.TryToCast(E.GetJungleMinion(), JungleClearMenu);
         }
     }
 }

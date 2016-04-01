@@ -11,7 +11,7 @@ namespace Mario_s_Lux.Modes
 
             if (E.IsReady())
             {
-                E.Cast(E.GetBestCircularFarmPosition());
+                E.Cast(E.GetBestCircularFarmPosition(4));
             }
         }
     }

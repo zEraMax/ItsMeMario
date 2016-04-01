@@ -32,7 +32,7 @@ namespace Mario_s_Lux
         private static void GameObject_OnCreate(GameObject sender, EventArgs args)
         {
             var test = sender as Obj_GeneralParticleEmitter;
-            if (test != null && test.Name.ToLower().Contains("lux_base_e_tar_aoe_" + TeamName()))
+            if (test != null && test.Name.ToLower().Contains("lux_base_e_tar_aoe_"))
             {
                 EObjets.Add(test);
             }
@@ -41,7 +41,7 @@ namespace Mario_s_Lux
         private static void GameObject_OnDelete(GameObject sender, EventArgs args)
         {
             var test = sender as Obj_GeneralParticleEmitter;
-            if (test != null && test.Name.ToLower().Contains("lux_base_e_tar_aoe_" + TeamName()))
+            if (test != null && test.Name.ToLower().Contains("lux_base_e_tar_aoe_"))
             {
                 EObjets.Remove(test);
             }
