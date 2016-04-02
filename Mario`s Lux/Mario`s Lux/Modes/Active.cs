@@ -20,7 +20,10 @@ namespace Mario_s_Lux.Modes
                     var enemy =
                         EntityManager.Heroes.Enemies.FirstOrDefault(
                             e => e.IsInRange(GetE, 320) && e.IsInAutoAttackRange(Player.Instance) && e.HasPassive());
-                    if(enemy == null) E.Cast(Player.Instance);
+                    if (enemy == null)
+                    {
+                        E.Cast(Player.Instance);
+                    }
                 }
             }
 

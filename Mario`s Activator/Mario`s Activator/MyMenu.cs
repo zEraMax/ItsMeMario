@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
 using Mario_s_Activator.Spells;
+using SharpDX;
 using static Mario_s_Activator.Spells.SummonerSpells;
 
 namespace Mario_s_Activator
@@ -179,8 +183,32 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
                 SummonerMenu.CreateCheckBox("Draw smite range.", "drawSmiteRange");
                 SummonerMenu.CreateCheckBox("Draw smite damage on jungle minions HP.", "drawSmiteDamage");
-                SummonerMenu.AddLabel("If your smite is failing for whatever reason please disable the prediction checkbox");
-                SummonerMenu.CreateCheckBox("Use predction on smite", "usePred");
+                
+                var combo = SummonerMenu.Add("comboBox", new ComboBox("Smite mode", new List<string> {"Use Prediction", " Dont use prediction"}));
+                var label = SummonerMenu.Add("comboBoxText", new Label("aaa"));
+                switch (combo.CurrentValue)
+                {
+                    case 0:
+                        label.CurrentValue = "It will try to predict the health of the jungle minion to have a fast Smite";
+                        break;
+                    case 1:
+                        label.CurrentValue = "It will only use if the jungle minion health is lower than the smite damage";
+                        break;
+                }
+                combo.OnValueChange += delegate (ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
+                {
+                    switch (sender.CurrentValue)
+                    {
+                        case 0:
+                            label.CurrentValue = "It will try to predict the health of the jungle minion to have a fast Smite";
+                            break;
+                        case 1:
+                            label.CurrentValue = "It will only use if the jungle minion health is lower than the smite damage";
+                            break;
+                    }
+                };
+                SummonerMenu.AddSeparator();
+                SummonerMenu.CreateSlider("Subtract [{0}] to the smite damage calculation", "sliderDMGSmite", 15, 0, 50);
                 SummonerMenu.AddSeparator();
                 SummonerMenu.CreateCheckBox("Use smite on champions", "smiteUseOnChampions");
                 SummonerMenu.CreateSlider("Keep how many smites", "smiteKeep", 1, 0, 2);

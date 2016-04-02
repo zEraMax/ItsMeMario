@@ -2,6 +2,7 @@
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Menu.Values;
 using Mario_s_Activator.Spells;
 using static Mario_s_Activator.Spells.SummonerSpells;
 using static Mario_s_Activator.MyMenu;
@@ -340,25 +341,32 @@ namespace Mario_s_Activator
 
             Obj_AI_Base GetJungleMinion;
 
-            if (SummonerMenu.GetCheckBoxValue("usePred"))
+            var comboBoxValue = SummonerMenu.Get<ComboBox>("comboBox").CurrentValue;
+            var sliderSafeDMG = SummonerMenu.GetSliderValue("sliderDMGSmite");
+
+            switch (comboBoxValue)
             {
-                GetJungleMinion =
-                    EntityManager.MinionsAndMonsters.GetJungleMonsters()
-                        .FirstOrDefault(
-                            m =>
-                                MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                                Prediction.Health.GetPrediction(m, Game.Ping) - 15 <= SmiteDamage() &&
-                                SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
-            }
-            else
-            {
-                GetJungleMinion =
-                    EntityManager.MinionsAndMonsters.GetJungleMonsters()
-                        .FirstOrDefault(
-                            m =>
-                                MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
-                                m.Health <= SmiteDamage() &&
-                                SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+                case 0:
+                    GetJungleMinion =
+                        EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                            .FirstOrDefault(
+                                m =>
+                                    MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
+                                    Prediction.Health.GetPrediction(m, Game.Ping) <= SmiteDamage() - sliderSafeDMG &&
+                                    SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+                    break;
+                case 1:
+                    GetJungleMinion =
+                        EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                            .FirstOrDefault(
+                                m =>
+                                    MonsterSmiteables.Contains(m.BaseSkinName) && m.IsValidTarget(Smite.Range) &&
+                                    m.Health <= SmiteDamage() - sliderSafeDMG &&
+                                    SummonerMenu.GetCheckBoxValue("monster" + m.BaseSkinName));
+                    break;
+                default:
+                    GetJungleMinion = null;
+                    break;
             }
 
 
@@ -419,8 +427,7 @@ namespace Mario_s_Activator
 
         private static void BarrierOnTick()
         {
-            if (PlayerHasBarrier && SummonerMenu.GetCheckBoxValue("check" + "barrier") &&
-                Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "barrier")))
+            if (PlayerHasBarrier && SummonerMenu.GetCheckBoxValue("check" + "barrier") && Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "barrier")))
             {
                 Barrier.Cast();
             }
@@ -434,8 +441,11 @@ namespace Mario_s_Activator
                     EntityManager.Heroes.Allies.OrderBy(a => a.Health)
                         .FirstOrDefault(
                             a => a.IsValidTarget(Heal.Range) && !a.IsMe && a.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "ally")));
-
-                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")) || ally != null)
+                if (ally != null)
+                {
+                    Heal.Cast();
+                }
+                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")))
                 {
                     Heal.Cast();
                 }
