@@ -1,6 +1,7 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK;
+using static Mario_s_Template.Menus;
 
 namespace Mario_s_Template.Modes
 {
@@ -14,6 +15,7 @@ namespace Mario_s_Template.Modes
         private static void Game_OnTick(EventArgs args)
         {
             var orbMode = Orbwalker.ActiveModesFlags;
+            var playerMana = Player.Instance.ManaPercent;
 
             Active.Execute();
 
@@ -21,28 +23,31 @@ namespace Mario_s_Template.Modes
             {
                 Combo.Execute();
             }
-
-            if (orbMode.HasFlag(Orbwalker.ActiveModes.Harass))
+            
+            if (orbMode.HasFlag(Orbwalker.ActiveModes.Harass) && playerMana > HarassMenu.GetSliderValue("manaSlider"))
             {
                 Harass.Execute();
             }
 
-            if (orbMode.HasFlag(Orbwalker.ActiveModes.LastHit))
+            if (orbMode.HasFlag(Orbwalker.ActiveModes.LastHit) && playerMana > LasthitMenu.GetSliderValue("manaSlider"))
             {
                 LastHit.Execute();
             }
 
-            if (orbMode.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (orbMode.HasFlag(Orbwalker.ActiveModes.LaneClear) && playerMana > LaneClearMenu.GetSliderValue("manaSlider"))
             {
                 LaneClear.Execute();
             }
 
-            if (orbMode.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            if (orbMode.HasFlag(Orbwalker.ActiveModes.JungleClear) && playerMana > JungleClearMenu.GetSliderValue("manaSlider"))
             {
                 JungleClear.Execute();
             }
 
-            AutoHarass.Execute();
+            if (playerMana > AutoHarassMenu.GetSliderValue("manaSlider"))
+            {
+                AutoHarass.Execute();
+            }
         }
     }
 }

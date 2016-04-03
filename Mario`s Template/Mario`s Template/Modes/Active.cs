@@ -10,7 +10,7 @@ namespace Mario_s_Template.Modes
     {
         public static void Execute()
         {
-
+            
         }
     }
 }

@@ -15,11 +15,6 @@ namespace Mario_s_Template
     public static class Extensions
     {
         #region Vector
-        /// <summary>
-        /// Checks if the position is solid
-        /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
         public static bool IsSolid(this Vector3 pos)
         {
             return pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) && pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall);
@@ -37,6 +32,7 @@ namespace Mario_s_Template
 
             var farmLocation = Prediction.Position.PredictCircularMissileAoe(minions, spell.Range, spell.Width,
                 spell.CastDelay, spell.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
+
             if (farmLocation != null && farmLocation.HitChancePercent >= hitchance && farmLocation.CollisionObjects.Length >= count)
             {
                 return farmLocation.CastPosition;
@@ -52,6 +48,7 @@ namespace Mario_s_Template
 
             var bestPos = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, spell.Width,
                 (int)spell.Range, Player.Instance.Position.To2D());
+
             if (minions.Length > 0 && bestPos.HitNumber >= minMinionsToHit)
             {
                 return bestPos.CastPosition;
@@ -77,6 +74,7 @@ namespace Mario_s_Template
             {
                 return castPos.CastPosition;
             }
+
             return Vector3.Zero;
         }
 
@@ -130,10 +128,6 @@ namespace Mario_s_Template
         public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
         {
             if (spell == null) return false;
-            if (m != ComboMenu)
-            {
-                if (Player.Instance.ManaPercent < m.GetSliderValue("manaSlider")) return false;
-            }
             return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
         }
 
@@ -248,6 +242,22 @@ namespace Mario_s_Template
             }
         }
 
+        public static void CreateComboBox(this Menu m, string displayName, string uniqueId,List<string> options , int defaultValue = 0)
+        {
+            try
+            {
+                m.Add(uniqueId, new ComboBox(displayName, options, defaultValue));
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("Error creating the combobox with the uniqueID = ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(uniqueId);
+                Console.ResetColor();
+            }
+        }
+
         #endregion Creating
 
         #region Getting
@@ -279,6 +289,23 @@ namespace Mario_s_Template
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Error getting the slider with the uniqueID = ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(uniqueId);
+                Console.ResetColor();
+            }
+            return -1;
+        }
+
+        public static int GetComboBoxValue(this Menu m, string uniqueId)
+        {
+            try
+            {
+                return m.Get<ComboBox>(uniqueId).CurrentValue;
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("Error getting the combobox with the uniqueID = ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(uniqueId);
                 Console.ResetColor();
@@ -320,5 +347,30 @@ namespace Mario_s_Template
         }
 
         #endregion GetTargetHelper
+
+        #region Damages
+        public static float OverkillDamage(this Obj_AI_Base target, int range = 700)
+        {
+            var dmg = 0f;
+            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+
+            foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInRange(target, range)))
+            {
+                dmg += a.GetAutoAttackDamage(target);
+                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady).Sum(s => a.GetSpellDamage(target, s.Slot));
+            }
+            return dmg;
+        }
+
+        public static float GetTotalDamage(this Obj_AI_Base target)
+        {
+            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+            var dmg = Player.Spells.Where(s => slots.Contains(s.Slot)).Sum(s => target.GetDamage(s.Slot));
+            dmg += Orbwalker.CanAutoAttack ? Player.Instance.GetAutoAttackDamage(target) : 0f;
+
+            return dmg;
+        }
+
+        #endregion Damages
     }
 }

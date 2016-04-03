@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using EloBuddy;
+﻿using EloBuddy;
 using EloBuddy.SDK;
 
 namespace Mario_s_Template
@@ -17,6 +16,8 @@ namespace Mario_s_Template
             W = new Spell.Active(SpellSlot.W, 200);
             E = new Spell.Active(SpellSlot.E, 300);
             R = new Spell.Targeted(SpellSlot.R, 400);
+
+            Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
         }
 
         #region Damages
@@ -60,17 +61,34 @@ namespace Mario_s_Template
             }
             return Player.Instance.CalculateDamageOnUnit(target, damageType, dmg - 10);
         }
-
-        public static float GetTotalDamage(this Obj_AI_Base target)
-        {
-            var dmg =
-                Player.Spells.Where(
-                    s => (s.Slot == SpellSlot.Q) || (s.Slot == SpellSlot.W) || (s.Slot == SpellSlot.E) || (s.Slot == SpellSlot.R) && s.IsReady)
-                    .Sum(s => target.GetDamage(s.Slot));
-
-            return dmg + Player.Instance.GetAutoAttackDamage(target);
-        }
-
         #endregion Damages
+
+        private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
+        {
+            var focusSlot = SpellSlot.Q;
+            var focusSlot2 = SpellSlot.Q;
+            var focusSlot3 = SpellSlot.Q;
+            var delay = 30;
+
+            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(SpellSlot.R))
+            {
+                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(SpellSlot.R), delay);
+            }
+
+            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(focusSlot))
+            {
+                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(focusSlot), delay);
+            }
+
+            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(focusSlot2))
+            {
+                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(focusSlot), delay);
+            }
+
+            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(focusSlot3))
+            {
+                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(focusSlot), delay);
+            }
+        }
     }
 }
