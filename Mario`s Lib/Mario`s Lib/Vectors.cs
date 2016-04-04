@@ -8,6 +8,6 @@ namespace Mario_s_Lib
 {
     public static partial class Extensions
     {
-
+        
     }
 }

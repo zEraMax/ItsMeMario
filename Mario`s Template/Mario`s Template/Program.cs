@@ -1,5 +1,6 @@
 ﻿using System;
 using EloBuddy;
+using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using Mario_s_Template.Modes;
 
@@ -21,7 +22,7 @@ namespace Mario_s_Template
             ModeManager.InitializeModes();
             DrawingsManager.InitializeDrawings();
 
-            AppDomain.CurrentDomain.GetAssemblies()
+            
         }
     }
 }
