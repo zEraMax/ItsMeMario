@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
-using System.Xml;
 using EloBuddy;
-using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using Mario_s_Template.Modes;
 
 namespace Mario_s_Template
 {
     internal class Program
     {
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
@@ -16,10 +15,10 @@ namespace Mario_s_Template
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            if (Player.Instance.ChampionName != "Teste") return;
+            if (Player.Instance.ChampionName == "Teste") return;
             SpellsManager.InitializeSpells();
             Menus.CreateMenu();
-            Modes.ModeManager.InitializeModes();
+            ModeManager.InitializeModes();
             DrawingsManager.InitializeDrawings();
         }
     }

@@ -7,6 +7,15 @@ namespace Mario_s_Template
 {
     internal class Menus
     {
+        public const string ComboMenuID = "combomenuid";
+        public const string HarassMenuID = "harassmenuid";
+        public const string AutoHarassMenuID = "autoharassmenuid";
+        public const string LaneClearMenuID = "laneclearmenuid";
+        public const string LastHitMenuID = "lasthitmenuid";
+        public const string JungleClearMenuID = "jungleclearmenuid";
+        public const string KillStealMenuID = "killstealmenuid";
+        public const string DrawingsMenuID = "drawingsmenuid";
+        public const string MiscMenuID = "miscmenuid";
         public static Menu FirstMenu;
         public static Menu ComboMenu;
         public static Menu HarassMenu;
@@ -23,16 +32,6 @@ namespace Mario_s_Template
         public static ColorSlide EColorSlide;
         public static ColorSlide RColorSlide;
         public static ColorSlide DamageIndicatorColorSlide;
-
-        public const string ComboMenuID = "combomenuid";
-        public const string HarassMenuID = "harassmenuid";
-        public const string AutoHarassMenuID = "autoharassmenuid";
-        public const string LaneClearMenuID = "laneclearmenuid";
-        public const string LastHitMenuID = "lasthitmenuid";
-        public const string JungleClearMenuID = "jungleclearmenuid";
-        public const string KillStealMenuID = "killstealmenuid";
-        public const string DrawingsMenuID = "drawingsmenuid";
-        public const string MiscMenuID = "miscmenuid";
 
         public static void CreateMenu()
         {
@@ -102,10 +101,13 @@ namespace Mario_s_Template
             KillStealMenu.CreateSlider("Mana must be lower than [{0}%] to use Killsteal spells", "manaSlider", 30);
 
             MiscMenu.AddGroupLabel("Auto Level UP");
+            MiscMenu.CreateCheckBox("Activate Auto Leveler", "activateAutoLVL", false);
+            MiscMenu.AddLabel("The auto leveler will always focus R then the rest of the spells");
             MiscMenu.CreateComboBox("1st Spell to focus", "firstFocus", new List<string> {"Q", "W", "E"});
-            MiscMenu.CreateComboBox("2nd Spell to focus", "secondFocus", new List<string> {"Q", "W", "E"});
-            MiscMenu.CreateComboBox("3rd Spell to focus", "thirdFocus", new List<string> {"Q", "W", "E"});
-            
+            MiscMenu.CreateComboBox("2nd Spell to focus", "secondFocus", new List<string> {"Q", "W", "E"}, 1);
+            MiscMenu.CreateComboBox("3rd Spell to focus", "thirdFocus", new List<string> {"Q", "W", "E"}, 2);
+            MiscMenu.CreateSlider("Delay slider", "delaySlider", 150, 50, 500);
+
             DrawingsMenu.AddGroupLabel("Setting");
             DrawingsMenu.CreateCheckBox("Draw Spell`s range only if they are ready.", "readyDraw");
             DrawingsMenu.CreateCheckBox("Draw damage indicator.", "damageDraw");

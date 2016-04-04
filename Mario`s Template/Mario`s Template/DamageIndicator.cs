@@ -4,9 +4,9 @@ using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
 using SharpDX.Direct3D9;
-using Color = System.Drawing.Color;
-
 using static Mario_s_Template.Menus;
+using Color = System.Drawing.Color;
+using Line = EloBuddy.SDK.Rendering.Line;
 
 namespace Mario_s_Template
 {
@@ -32,7 +32,7 @@ namespace Mario_s_Template
                     Height = 16,
                     Weight = FontWeight.Bold,
                     OutputPrecision = FontPrecision.TrueType,
-                    Quality = FontQuality.ClearType,
+                    Quality = FontQuality.ClearType
                 });
 
             _Font2 = new Font(
@@ -43,7 +43,7 @@ namespace Mario_s_Template
                     Height = 11,
                     Weight = FontWeight.Bold,
                     OutputPrecision = FontPrecision.TrueType,
-                    Quality = FontQuality.ClearType,
+                    Quality = FontQuality.ClearType
                 });
         }
 
@@ -58,23 +58,23 @@ namespace Mario_s_Template
                 if (DrawingsMenu.GetCheckBoxValue("damageDraw"))
                 {
                     //Drawing Line Over Enemies Helth bar
-                    var dmgPer = (enemy.TotalShieldHealth() - damage > 0 ? enemy.TotalShieldHealth() - damage : 0) /
+                    var dmgPer = (enemy.TotalShieldHealth() - damage > 0 ? enemy.TotalShieldHealth() - damage : 0)/
                                  enemy.TotalShieldMaxHealth();
-                    var currentHPPer = enemy.TotalShieldHealth() / enemy.TotalShieldMaxHealth();
-                    var initPoint = new Vector2((int)(enemy.HPBarPosition.X + XOff + dmgPer * Width),
-                        (int)enemy.HPBarPosition.Y + YOff);
-                    var endPoint = new Vector2((int)(enemy.HPBarPosition.X + XOff + currentHPPer * Width) + 1,
-                        (int)enemy.HPBarPosition.Y + YOff);
+                    var currentHPPer = enemy.TotalShieldHealth()/enemy.TotalShieldMaxHealth();
+                    var initPoint = new Vector2((int) (enemy.HPBarPosition.X + XOff + dmgPer*Width),
+                        (int) enemy.HPBarPosition.Y + YOff);
+                    var endPoint = new Vector2((int) (enemy.HPBarPosition.X + XOff + currentHPPer*Width) + 1,
+                        (int) enemy.HPBarPosition.Y + YOff);
 
                     var colour = Color.FromArgb(180, DamageIndicatorColorSlide.GetSystemColor());
-                    EloBuddy.SDK.Rendering.Line.DrawLine(colour, Thick, initPoint, endPoint);
+                    Line.DrawLine(colour, Thick, initPoint, endPoint);
                 }
 
                 if (DrawingsMenu.GetCheckBoxValue("statDraw"))
                 {
                     //Statistics
-                    var posXStat = (int)enemy.HPBarPosition[0] - 46;
-                    var posYStat = (int)enemy.HPBarPosition[1] + 12;
+                    var posXStat = (int) enemy.HPBarPosition[0] - 46;
+                    var posYStat = (int) enemy.HPBarPosition[1] + 12;
                     var mathStat = "- " + Math.Round(damage) + " / " +
                                    Math.Round(enemy.Health - damage);
                     _Font2.DrawText(null, mathStat, posXStat, posYStat, DamageIndicatorColorSlide.GetSharpColor());
@@ -83,9 +83,9 @@ namespace Mario_s_Template
                 if (DrawingsMenu.GetCheckBoxValue("perDraw"))
                 {
                     //Percent
-                    var posXPer = (int)enemy.HPBarPosition[0] - 28;
-                    var posYPer = (int)enemy.HPBarPosition[1];
-                    _Font.DrawText(null, string.Concat(Math.Ceiling((int)damage / enemy.TotalShieldHealth() * 100), "%"),
+                    var posXPer = (int) enemy.HPBarPosition[0] - 28;
+                    var posYPer = (int) enemy.HPBarPosition[1];
+                    _Font.DrawText(null, string.Concat(Math.Ceiling((int) damage/enemy.TotalShieldHealth()*100), "%"),
                         posXPer, posYPer, DamageIndicatorColorSlide.GetSharpColor());
                 }
             }

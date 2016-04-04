@@ -7,18 +7,20 @@ using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using SharpDX;
 using Color = System.Drawing.Color;
+using Rectangle = SharpDX.Rectangle;
 
 namespace Mario_s_Template
 {
     public class ColorSlide
     {
-        public Slider RedSlider { get; set; }
-        public Slider BlueSlider { get; set; }
-        public Slider GreenSlider { get; set; }
-        public Slider AlphaSlider { get; set; }
-        private ColorPickerControl ColorPicker { get; set; }
+        public enum ColorBytes
+        {
+            Red,
+            Green,
+            Blue,
+            Alpha
+        }
 
-        public string Id { get; private set; }
         private static Menu _menu;
 
         public ColorSlide(Menu menu, string id, Color color, string GropuLabelName)
@@ -27,6 +29,14 @@ namespace Mario_s_Template
             _menu = menu;
             Init(color, GropuLabelName);
         }
+
+        public Slider RedSlider { get; set; }
+        public Slider BlueSlider { get; set; }
+        public Slider GreenSlider { get; set; }
+        public Slider AlphaSlider { get; set; }
+        private ColorPickerControl ColorPicker { get; set; }
+
+        public string Id { get; }
 
         public void Init(Color color, string name)
         {
@@ -49,32 +59,37 @@ namespace Mario_s_Template
             BlueSlider.OnValueChange += OnValueChange;
             AlphaSlider.OnValueChange += OnValueChange;
 
-            ColorPicker.SetColor(Color.FromArgb(GetValue(ColorBytes.Alpha), GetValue(ColorBytes.Red), GetValue(ColorBytes.Green), GetValue(ColorBytes.Blue)));
+            ColorPicker.SetColor(Color.FromArgb(GetValue(ColorBytes.Alpha), GetValue(ColorBytes.Red), GetValue(ColorBytes.Green),
+                GetValue(ColorBytes.Blue)));
         }
 
         private void OnValueChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
         {
             if (sender.DisplayName == RedSlider.DisplayName)
             {
-                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A, sender.CurrentValue, ColorPicker.CurrentValue.G, ColorPicker.CurrentValue.B));
+                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A, sender.CurrentValue, ColorPicker.CurrentValue.G,
+                    ColorPicker.CurrentValue.B));
             }
             if (sender.DisplayName == GreenSlider.DisplayName)
             {
-                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A, ColorPicker.CurrentValue.R, sender.CurrentValue, ColorPicker.CurrentValue.B));
+                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A, ColorPicker.CurrentValue.R, sender.CurrentValue,
+                    ColorPicker.CurrentValue.B));
             }
             if (sender.DisplayName == BlueSlider.DisplayName)
             {
-                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A ,ColorPicker.CurrentValue.R, ColorPicker.CurrentValue.G, sender.CurrentValue));
+                ColorPicker.SetColor(Color.FromArgb(ColorPicker.CurrentValue.A, ColorPicker.CurrentValue.R, ColorPicker.CurrentValue.G,
+                    sender.CurrentValue));
             }
             if (sender.DisplayName == AlphaSlider.DisplayName)
             {
-                ColorPicker.SetColor(Color.FromArgb(sender.CurrentValue, ColorPicker.CurrentValue.R, ColorPicker.CurrentValue.G, ColorPicker.CurrentValue.B));
+                ColorPicker.SetColor(Color.FromArgb(sender.CurrentValue, ColorPicker.CurrentValue.R, ColorPicker.CurrentValue.G,
+                    ColorPicker.CurrentValue.B));
             }
-            
         }
 
         public ColorBGRA GetSharpColor()
-        {                  //RED,GREEN,BLUE,AA
+        {
+            //RED,GREEN,BLUE,AA
             return new ColorBGRA(GetValue(ColorBytes.Red), GetValue(ColorBytes.Green), GetValue(ColorBytes.Blue), GetValue(ColorBytes.Alpha));
         }
 
@@ -98,30 +113,39 @@ namespace Mario_s_Template
             }
             return 255;
         }
+
         private class ColorPickerControl : ValueBase<Color>
         {
-            private readonly string _name;
-            private Vector2 _offset;
-            private Color SelectedColor { get; set; }
-
             private Sprite _colorOverlaySprite;
+            private Vector2 _offset;
             private TextureLoader _textureLoader;
-
-            public override string VisibleName { get { return _name; } }
-            public override Vector2 Offset { get { return _offset; } }
 
             public ColorPickerControl(string uId, Color defaultValue) : base(uId, "", 52)
             {
-                _name = "";
+                VisibleName = "";
                 Init(defaultValue);
+            }
+
+            private Color SelectedColor { get; set; }
+
+            public override string VisibleName { get; }
+
+            public override Vector2 Offset
+            {
+                get { return _offset; }
+            }
+
+            public override Color CurrentValue
+            {
+                get { return SelectedColor; }
             }
 
             private static Bitmap ContructColorOverlaySprite()
             {
                 var bitmap = new Bitmap(30, 30);
-                for (int x = 0; x < 30; x++)
+                for (var x = 0; x < 30; x++)
                 {
-                    for (int y = 0; y < 30; y++)
+                    for (var y = 0; y < 30; y++)
                     {
                         bitmap.SetPixel(x, y, Color.White);
                     }
@@ -133,6 +157,7 @@ namespace Mario_s_Template
             {
                 SelectedColor = color;
             }
+
             private void Init(Color color)
             {
                 _offset = new Vector2(0, 10);
@@ -141,11 +166,9 @@ namespace Mario_s_Template
                 SelectedColor = color;
             }
 
-            public override Color CurrentValue { get { return SelectedColor; } }
-
             public override bool Draw()
             {
-                var rect = new SharpDX.Rectangle((int)MainMenu.Position.X + 160, (int)MainMenu.Position.Y + 95 + 50, 750, 380);
+                var rect = new Rectangle((int) MainMenu.Position.X + 160, (int) MainMenu.Position.Y + 95 + 50, 750, 380);
                 if (MainMenu.IsVisible && IsVisible && rect.IsInside(Position))
                 {
                     _colorOverlaySprite.Color = SelectedColor;
@@ -159,11 +182,6 @@ namespace Mario_s_Template
             {
                 return base.Serialize();
             }
-        }
-
-        public enum ColorBytes
-        {
-            Red, Green, Blue, Alpha
         }
     }
 }

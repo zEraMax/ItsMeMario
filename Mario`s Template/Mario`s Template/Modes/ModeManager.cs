@@ -23,7 +23,7 @@ namespace Mario_s_Template.Modes
             {
                 Combo.Execute();
             }
-            
+
             if (orbMode.HasFlag(Orbwalker.ActiveModes.Harass) && playerMana > HarassMenu.GetSliderValue("manaSlider"))
             {
                 Harass.Execute();

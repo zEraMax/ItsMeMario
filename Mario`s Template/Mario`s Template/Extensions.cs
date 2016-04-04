@@ -6,7 +6,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
-using static Mario_s_Template.Menus;
+using Color = System.Drawing.Color;
 
 // ReSharper disable CoVariantArrayConversion
 
@@ -14,7 +14,20 @@ namespace Mario_s_Template
 {
     public static class Extensions
     {
+        #region Misc
+
+        public static bool CanMove(this Obj_AI_Base target)
+        {
+            return !(target.MoveSpeed < 50) && !target.IsStunned && !target.HasBuffOfType(BuffType.Stun) && !target.HasBuffOfType(BuffType.Fear) &&
+                   !target.HasBuffOfType(BuffType.Snare) && !target.HasBuffOfType(BuffType.Knockup) && !target.HasBuff("Recall") &&
+                   !target.HasBuffOfType(BuffType.Knockback) && !target.HasBuffOfType(BuffType.Charm) && !target.HasBuffOfType(BuffType.Taunt) &&
+                   !target.HasBuffOfType(BuffType.Suppression) && (!target.Spellbook.IsChanneling || target.IsMoving);
+        }
+
+        #endregion Misc
+
         #region Vector
+
         public static bool IsSolid(this Vector3 pos)
         {
             return pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) && pos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall);
@@ -47,7 +60,7 @@ namespace Mario_s_Template
                 EntityManager.MinionsAndMonsters.GetLaneMinions().Where(m => m.IsValidTarget(spell.Range)).ToArray();
 
             var bestPos = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, spell.Width,
-                (int)spell.Range, Player.Instance.Position.To2D());
+                (int) spell.Range, Player.Instance.Position.To2D());
 
             if (minions.Length > 0 && bestPos.HitNumber >= minMinionsToHit)
             {
@@ -55,14 +68,13 @@ namespace Mario_s_Template
             }
 
             return Vector3.Zero;
-
         }
 
         public static Vector3 GetBestCircularCastPosition(this Spell.Skillshot spell, int count = 3, int hitchance = 75)
         {
             var heros =
                 EntityManager.Heroes.Enemies.Where(
-                        m => m.IsValidTarget(spell.Range))
+                    m => m.IsValidTarget(spell.Range))
                     .ToArray();
 
             if (heros.Length == 0 && heros != null) return Vector3.Zero;
@@ -78,7 +90,8 @@ namespace Mario_s_Template
             return Vector3.Zero;
         }
 
-        public static BestCastPosition GetBestLinearCastPosition(IEnumerable<AIHeroClient> entities, float width, int range, Vector2? sourcePosition = null)
+        public static BestCastPosition GetBestLinearCastPosition(IEnumerable<AIHeroClient> entities, float width, int range,
+            Vector2? sourcePosition = null)
         {
             var targets = entities.ToArray();
             switch (targets.Length)
@@ -86,13 +99,15 @@ namespace Mario_s_Template
                 case 0:
                     return new BestCastPosition();
                 case 1:
-                    return new BestCastPosition { CastPosition = targets[0].ServerPosition, HitNumber = 1 };
+                    return new BestCastPosition {CastPosition = targets[0].ServerPosition, HitNumber = 1};
             }
 
             var posiblePositions = new List<Vector2>(targets.Select(o => o.ServerPosition.To2D()));
             foreach (var target in targets)
             {
-                posiblePositions.AddRange(from t in targets where t.NetworkId != target.NetworkId select (t.ServerPosition.To2D() + target.ServerPosition.To2D()) / 2);
+                posiblePositions.AddRange(from t in targets
+                    where t.NetworkId != target.NetworkId
+                    select (t.ServerPosition.To2D() + target.ServerPosition.To2D())/2);
             }
 
             var startPos = sourcePosition ?? Player.Instance.ServerPosition.To2D();
@@ -101,8 +116,8 @@ namespace Mario_s_Template
 
             foreach (var pos in posiblePositions.Where(o => o.IsInRange(startPos, range)))
             {
-                var endPos = startPos + range * (pos - startPos).Normalized();
-                var count = targets.Count(o => o.ServerPosition.To2D().Distance(startPos, endPos, true, true) <= width * width);
+                var endPos = startPos + range*(pos - startPos).Normalized();
+                var count = targets.Count(o => o.ServerPosition.To2D().Distance(startPos, endPos, true, true) <= width*width);
 
                 if (count >= minionCount)
                 {
@@ -111,7 +126,7 @@ namespace Mario_s_Template
                 }
             }
 
-            return new BestCastPosition { CastPosition = result.To3DWorld(), HitNumber = minionCount };
+            return new BestCastPosition {CastPosition = result.To3DWorld(), HitNumber = minionCount};
         }
 
         public struct BestCastPosition
@@ -123,6 +138,7 @@ namespace Mario_s_Template
         #endregion Vector
 
         #region Spells
+
         #region CanCast
 
         public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
@@ -242,7 +258,7 @@ namespace Mario_s_Template
             }
         }
 
-        public static void CreateComboBox(this Menu m, string displayName, string uniqueId,List<string> options , int defaultValue = 0)
+        public static void CreateComboBox(this Menu m, string displayName, string uniqueId, List<string> options, int defaultValue = 0)
         {
             try
             {
@@ -346,31 +362,164 @@ namespace Mario_s_Template
                     .FirstOrDefault(m => m.IsValidTarget(spell.Range));
         }
 
+        public static int CountEnemyLaneMinions(this Obj_AI_Base target, float range = 100)
+        {
+            return EntityManager.MinionsAndMonsters.GetLaneMinions().Count(m => m.Distance(target) <= range);
+        }
+
+        public static int CountEnemyJungleMinions(this Obj_AI_Base target, float range = 100)
+        {
+            return EntityManager.MinionsAndMonsters.GetJungleMonsters().Count(m => m.Distance(target) <= range);
+        }
+
         #endregion GetTargetHelper
 
         #region Damages
-        public static float OverkillDamage(this Obj_AI_Base target, int range = 700)
+
+        public static float GetAlliesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700)
         {
             var dmg = 0f;
-            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+            var slots = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R};
 
             foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInRange(target, range)))
             {
                 dmg += a.GetAutoAttackDamage(target);
                 dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady).Sum(s => a.GetSpellDamage(target, s.Slot));
             }
-            return dmg;
+            return dmg*percent;
+        }
+
+        public static float GetEnemiesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700)
+        {
+            var dmg = 0f;
+            var slots = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R};
+
+            foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInRange(target, range)))
+            {
+                dmg += a.GetAutoAttackDamage(target);
+                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady).Sum(s => a.GetSpellDamage(target, s.Slot));
+            }
+            return dmg*percent;
         }
 
         public static float GetTotalDamage(this Obj_AI_Base target)
         {
-            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+            var slots = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R};
             var dmg = Player.Spells.Where(s => slots.Contains(s.Slot)).Sum(s => target.GetDamage(s.Slot));
             dmg += Orbwalker.CanAutoAttack ? Player.Instance.GetAutoAttackDamage(target) : 0f;
 
             return dmg;
         }
 
+        public static bool HasMinionAggro(this Obj_AI_Base minion)
+        {
+            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Minion && m.Target.NetworkId == minion.NetworkId);
+        }
+
+        public static bool HasTurretAggro(this Obj_AI_Base minion)
+        {
+            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+        }
+
+        public static int TurretAggroStartTick(this Obj_AI_Base minion)
+        {
+            var ActiveTurret = HPPrediction.ActiveAttacks.Values
+                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+            return ActiveTurret?.StartTick ?? 0;
+        }
+
+        public static Obj_AI_Base GetAggroTurret(this Obj_AI_Base minion)
+        {
+            var ActiveTurret = HPPrediction.ActiveAttacks.Values
+                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+            return ActiveTurret?.Source;
+        }
+
+        #region Items
+
+        public static float GetEchoLudenDamage(this Obj_AI_Base target)
+        {
+            var dmg = 0f;
+            var echo = new Item(ItemId.Ludens_Echo);
+
+            if (echo.IsOwned() && Player.GetBuff("itemmagicshankcharge").Count == 100)
+            {
+                dmg += Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, (float) (100 + 0.1*Player.Instance.FlatMagicDamageMod));
+            }
+            return dmg;
+        }
+
+        public static float GetSheenDamage(this Obj_AI_Base target)
+        {
+            var sheenItems = new List<Item>
+            {
+                new Item(ItemId.Lich_Bane),
+                new Item(ItemId.Trinity_Force),
+                new Item(ItemId.Iceborn_Gauntlet),
+                new Item(ItemId.Sheen)
+            };
+            var item = sheenItems.FirstOrDefault(i => i.IsReady() && i.IsOwned());
+            if (item != null)
+            {
+                var AD = Player.Instance.FlatPhysicalDamageMod;
+                var AP = Player.Instance.FlatMagicDamageMod;
+                switch (item.Id)
+                {
+                    case ItemId.Lich_Bane:
+                        return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, AD*0.75f + AP*0.5f);
+                    case ItemId.Trinity_Force:
+                        return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, AD*2f);
+                    case ItemId.Iceborn_Gauntlet:
+                        return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, AD*1.25f);
+                    case ItemId.Sheen:
+                        return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, AD*1f);
+                }
+            }
+
+            return 0f;
+        }
+
+        #endregion Items
+
         #endregion Damages
+
+        #region Drawing
+
+        public static void DrawLineRectangle(Vector3 start2, Vector3 end2, int radius, float width, Color color)
+        {
+            var start = start2.To2D();
+            var end = end2.To2D();
+            var dir = (end - start).Normalized();
+            var pDir = dir.Perpendicular();
+
+            var rightStartPos = start + pDir*radius;
+            var leftStartPos = start - pDir*radius;
+            var rightEndPos = end + pDir*radius;
+            var leftEndPos = end - pDir*radius;
+
+            var rStartPos = Drawing.WorldToScreen(new Vector3(rightStartPos.X, rightStartPos.Y, ObjectManager.Player.Position.Z));
+            var lStartPos = Drawing.WorldToScreen(new Vector3(leftStartPos.X, leftStartPos.Y, ObjectManager.Player.Position.Z));
+            var rEndPos = Drawing.WorldToScreen(new Vector3(rightEndPos.X, rightEndPos.Y, ObjectManager.Player.Position.Z));
+            var lEndPos = Drawing.WorldToScreen(new Vector3(leftEndPos.X, leftEndPos.Y, ObjectManager.Player.Position.Z));
+
+            Drawing.DrawLine(rStartPos, rEndPos, width, color);
+            Drawing.DrawLine(lStartPos, lEndPos, width, color);
+            Drawing.DrawLine(rStartPos, lStartPos, width, color);
+            Drawing.DrawLine(lEndPos, rEndPos, width, color);
+        }
+
+        public static void DrawTriangle(float radius, Vector3 position, Color color, float width = 1)
+        {
+            var positionV2 = Drawing.WorldToScreen(position);
+            var a = new Vector2(positionV2.X + radius, positionV2.Y + radius/2);
+            var b = new Vector2(positionV2.X - radius, positionV2.Y + radius/2);
+            var c = new Vector2(positionV2.X, positionV2.Y - radius);
+
+            Drawing.DrawLine(a[0], a[1], b[0], b[1], width, color);
+            Drawing.DrawLine(b[0], b[1], c[0], c[1], width, color);
+            Drawing.DrawLine(c[0], c[1], a[0], a[1], width, color);
+        }
+
+        #endregion Drawing
     }
 }
