@@ -15,11 +15,13 @@ namespace Mario_s_Template
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            if (Player.Instance.ChampionName == "Teste") return;
+            if (Player.Instance.ChampionName == "Test") return;
             SpellsManager.InitializeSpells();
             Menus.CreateMenu();
             ModeManager.InitializeModes();
             DrawingsManager.InitializeDrawings();
+
+            AppDomain.CurrentDomain.GetAssemblies()
         }
     }
 }

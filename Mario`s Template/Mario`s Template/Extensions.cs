@@ -6,7 +6,6 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
-using Color = System.Drawing.Color;
 
 // ReSharper disable CoVariantArrayConversion
 
@@ -482,44 +481,5 @@ namespace Mario_s_Template
         #endregion Items
 
         #endregion Damages
-
-        #region Drawing
-
-        public static void DrawLineRectangle(Vector3 start2, Vector3 end2, int radius, float width, Color color)
-        {
-            var start = start2.To2D();
-            var end = end2.To2D();
-            var dir = (end - start).Normalized();
-            var pDir = dir.Perpendicular();
-
-            var rightStartPos = start + pDir*radius;
-            var leftStartPos = start - pDir*radius;
-            var rightEndPos = end + pDir*radius;
-            var leftEndPos = end - pDir*radius;
-
-            var rStartPos = Drawing.WorldToScreen(new Vector3(rightStartPos.X, rightStartPos.Y, ObjectManager.Player.Position.Z));
-            var lStartPos = Drawing.WorldToScreen(new Vector3(leftStartPos.X, leftStartPos.Y, ObjectManager.Player.Position.Z));
-            var rEndPos = Drawing.WorldToScreen(new Vector3(rightEndPos.X, rightEndPos.Y, ObjectManager.Player.Position.Z));
-            var lEndPos = Drawing.WorldToScreen(new Vector3(leftEndPos.X, leftEndPos.Y, ObjectManager.Player.Position.Z));
-
-            Drawing.DrawLine(rStartPos, rEndPos, width, color);
-            Drawing.DrawLine(lStartPos, lEndPos, width, color);
-            Drawing.DrawLine(rStartPos, lStartPos, width, color);
-            Drawing.DrawLine(lEndPos, rEndPos, width, color);
-        }
-
-        public static void DrawTriangle(float radius, Vector3 position, Color color, float width = 1)
-        {
-            var positionV2 = Drawing.WorldToScreen(position);
-            var a = new Vector2(positionV2.X + radius, positionV2.Y + radius/2);
-            var b = new Vector2(positionV2.X - radius, positionV2.Y + radius/2);
-            var c = new Vector2(positionV2.X, positionV2.Y - radius);
-
-            Drawing.DrawLine(a[0], a[1], b[0], b[1], width, color);
-            Drawing.DrawLine(b[0], b[1], c[0], c[1], width, color);
-            Drawing.DrawLine(c[0], c[1], a[0], a[1], width, color);
-        }
-
-        #endregion Drawing
     }
 }

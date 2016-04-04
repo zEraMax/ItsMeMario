@@ -68,32 +68,38 @@ namespace Mario_s_Template
 
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
-            if (!MiscMenu.GetCheckBoxValue("activateAutoLVL")) return;
-
-            var delay = MiscMenu.GetSliderValue("delaySlider");
-
-            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(SpellSlot.R))
+            if (MiscMenu.GetCheckBoxValue("activateAutoLVL") && sender.IsMe)
             {
-                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(SpellSlot.R), delay);
-            }
+                var delay = MiscMenu.GetSliderValue("delaySlider");
+                Core.DelayAction(LevelUPSpells, delay);
 
-            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(GetSlotFromCombo(MiscMenu.GetComboBoxValue("firstFocus"))))
-            {
-                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(GetSlotFromCombo(MiscMenu.GetComboBoxValue("firstFocus"))), delay);
-            }
-
-            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(GetSlotFromCombo(MiscMenu.GetComboBoxValue("secondFocus"))))
-            {
-                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(GetSlotFromCombo(MiscMenu.GetComboBoxValue("secondFocus"))), delay);
-            }
-
-            if (sender.IsMe && sender.Spellbook.CanSpellBeUpgraded(GetSlotFromCombo(MiscMenu.GetComboBoxValue("thirdFocus"))))
-            {
-                Core.DelayAction(() => Player.Instance.Spellbook.LevelSpell(GetSlotFromCombo(MiscMenu.GetComboBoxValue("thirdFocus"))), delay);
             }
         }
 
-        private static SpellSlot GetSlotFromCombo(this int value)
+        private static void LevelUPSpells()
+        {
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(SpellSlot.R))
+            {
+                Player.Instance.Spellbook.LevelSpell(SpellSlot.R);
+            }
+
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus"))))
+            {
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus")));
+            }
+
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus"))))
+            {
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus")));
+            }
+
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus"))))
+            {
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus")));
+            }
+        }
+
+        private static SpellSlot GetSlotFromComboBox(this int value)
         {
             switch (value)
             {
@@ -104,6 +110,7 @@ namespace Mario_s_Template
                 case 2:
                     return SpellSlot.E;
             }
+            Chat.Print("Failed getting slot");
             return SpellSlot.Unknown;
         }
     }
