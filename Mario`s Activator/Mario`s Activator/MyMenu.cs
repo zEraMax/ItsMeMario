@@ -91,9 +91,10 @@ namespace Mario_s_Activator
             CleansersMenu.CreateSlider("Delay to use the cleanse item", "delayCleanse", 50, 0, 500);
             CleansersMenu.AddGroupLabel("What CC`s to use the items/spell ?");
             CleansersMenu.CreateCheckBox("Stun", "ccStun");
-            CleansersMenu.CreateCheckBox("Blind", "ccBlind");
+            CleansersMenu.CreateCheckBox("Blind", "ccBlind", false);
             CleansersMenu.CreateCheckBox("Slow", "ccSlow", false);
             CleansersMenu.CreateCheckBox("Snare", "ccSnare");
+            CleansersMenu.CreateCheckBox("Flee", "ccFlee");
             CleansersMenu.CreateCheckBox("Supression", "ccSupression");
             CleansersMenu.CreateCheckBox("Taunt", "ccTaunt");
             CleansersMenu.CreateCheckBox("Charm", "ccCharm");
@@ -262,6 +263,12 @@ namespace Mario_s_Activator
                 SummonerMenu.CreateCheckBox("Use ignite.", "check" + "ignite");
                 SummonerMenu.AddLabel("Advanced Options please dont modify them if you dont know what they do");
                 SummonerMenu.CreateSlider("Minimun range to cast ignite on target", "minimunRangeIgnite", 480, 0, 600);
+            }
+
+            if (PlayerHasPoroThrower)
+            {
+                SummonerMenu.AddGroupLabel("Snow Ball");
+                SummonerMenu.CreateCheckBox("Use Snow Ball.", "check" + "snowball");
             }
 
             if (PlayerHasCleanse)

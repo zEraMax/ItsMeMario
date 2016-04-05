@@ -109,6 +109,10 @@ namespace Mario_s_Activator
             {
                 return true;
             }
+            if (target.HasBuffOfType(BuffType.Flee) && MyMenu.CleansersMenu.GetCheckBoxValue("cc" + "Flee"))
+            {
+                return true;
+            }
             if (target.HasBuffOfType(BuffType.Suppression) && MyMenu.CleansersMenu.GetCheckBoxValue("cc" + "Supression"))
             {
                 return true;
