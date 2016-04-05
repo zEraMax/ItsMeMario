@@ -143,12 +143,12 @@ namespace Mario_s_Activator
                 }
             }
 
-            foreach (var item in Offensive.OffensiveItems.Where(i => i.IsReady() && i.Range > 0).Where(item => DrawingMenu.GetCheckBoxValue("draw" + item.Id)))
+            foreach (var item in Offensive.OffensiveItems.Where(i => i.IsReady() && i.Range > 0).Where(item => DrawingMenu.GetCheckBoxValue("draw" + (int)item.Id)))
             {
                 Circle.Draw(SharpDX.Color.Orange, item.Range, Player.Instance);
             }
 
-            foreach (var item in Defensive.DefensiveItems.Where(i => i.IsReady() && i.Range > 0).Where(item => DrawingMenu.GetCheckBoxValue("draw" + item.Id)))
+            foreach (var item in Defensive.DefensiveItems.Where(i => i.IsReady() && i.Range > 0).Where(item => DrawingMenu.GetCheckBoxValue("draw" + (int)item.Id)))
             {
                 Circle.Draw(SharpDX.Color.BlueViolet, item.Range, Player.Instance);
             }

@@ -49,7 +49,7 @@ namespace Mario_s_Activator
                     var internetVersion = new Version(new StreamReader(stream).ReadToEnd());
                     if (internetVersion != LocalVersion)
                     {
-                        Chat.Print("New version found of Mario`s Activator please update it.", Color.DarkCyan);
+                        Chat.Print("New version found("+internetVersion+") of Mario`s Activator please update it.", Color.DarkCyan);
                     }
                     else
                     {
