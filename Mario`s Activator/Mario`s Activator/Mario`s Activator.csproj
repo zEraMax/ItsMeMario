@@ -73,7 +73,7 @@
     <Compile Include="MyMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spells\SummonerSpells.cs" />
+    <Compile Include="SummonerSpells.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

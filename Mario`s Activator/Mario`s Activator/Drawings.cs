@@ -3,8 +3,8 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Rendering;
-
-using static Mario_s_Activator.Spells.SummonerSpells;
+using Mario_s_Lib;
+using static Mario_s_Activator.SummonerSpells;
 using static Mario_s_Activator.MyMenu;
 using Color = System.Drawing.Color;
 
@@ -137,7 +137,7 @@ namespace Mario_s_Activator
 
             if (PlayerHasSmite)
             {
-                if (Smite.IsReady() && !SummonerMenu.GetKeybindValue("smiteKeybind") && SummonerMenu.GetCheckBoxValue("drawSmiteRange"))
+                if (Smite.IsReady() && !SummonerMenu.GetKeyBindValue("smiteKeybind") && SummonerMenu.GetCheckBoxValue("drawSmiteRange"))
                 {
                     Circle.Draw(SharpDX.Color.Yellow, Smite.Range, Player.Instance);
                 }

@@ -5,11 +5,10 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using Mario_s_Activator.Spells;
 using Mario_s_Lib;
 using Mario_s_Lib.DataBases;
 using SharpDX;
-using static Mario_s_Activator.Spells.SummonerSpells;
+using static Mario_s_Activator.SummonerSpells;
 
 namespace Mario_s_Activator
 {
@@ -183,7 +182,7 @@ namespace Mario_s_Activator
             if (PlayerHasSmite)
             {
                 SummonerMenu.AddGroupLabel("Smite");
-                SummonerMenu.CreateKeybind("Disable Smite", "smiteKeybind", 'Z');
+                SummonerMenu.CreateKeyBind("Disable Smite", "smiteKeybind", 'Z', 'U');
                 SummonerMenu.CreateCheckBox("Draw smite range.", "drawSmiteRange");
                 SummonerMenu.CreateCheckBox("Draw smite damage on jungle minions HP.", "drawSmiteDamage");
                 

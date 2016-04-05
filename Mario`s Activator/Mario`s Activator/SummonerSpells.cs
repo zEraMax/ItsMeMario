@@ -2,9 +2,8 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
-using Mario_s_Lib;
 
-namespace Mario_s_Activator.Spells
+namespace Mario_s_Activator
 {
     public static class SummonerSpells
     {
@@ -22,6 +21,8 @@ namespace Mario_s_Activator.Spells
         public static bool PlayerHasBarrier;
         public static Spell.Active Heal;
         public static bool PlayerHasHeal;
+        public static Spell.Skillshot PoroThrower;
+        public static bool PlayerHasPoroThrower;
 
         public static void InitializeSummonerSpells()
         {
@@ -99,7 +100,6 @@ namespace Mario_s_Activator.Spells
                     AllowedCollisionCount = 0
                 };
                 PlayerHasPoroThrower = true;
-                Game.OnUpdate += (args) => CastPoroThrower();
                 //Chat.Print("speed : "+snowball.SData.MissileSpeed.ToString()); return 0
             }
 
@@ -114,7 +114,6 @@ namespace Mario_s_Activator.Spells
                     AllowedCollisionCount = 0
                 };
                 PlayerHasPoroThrower = true;
-                Game.OnUpdate += (args) => CastPoroThrower();
             }
         }
 
@@ -128,26 +127,6 @@ namespace Mario_s_Activator.Spells
             var damage = Player.Spells.Where(s => (s.Slot == SpellSlot.Q || s.Slot == SpellSlot.W || s.Slot == SpellSlot.E || s.Slot == SpellSlot.R) && s.IsReady).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
             return (damage + Player.Instance.GetAutoAttackDamage(target)) - 10;
         }
-
-        #region Mark 
-
-        public static Spell.Skillshot PoroThrower;
-        public static bool PlayerHasPoroThrower;
-
-        public static void CastPoroThrower()
-        {
-            if(!PoroThrower.IsReady() || !MyMenu.SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name == "snowballfollowupcast") return;
-
-            var targetPoro = TargetSelector.GetTarget(PoroThrower.Range, DamageType.True);
-            if (targetPoro != null && targetPoro.IsValid)
-            {
-                var tpp = PoroThrower.GetPrediction(targetPoro);
-                if(tpp.HitChance >= HitChance.High)
-                    PoroThrower.Cast(tpp.CastPosition);
-            }
-        }
-
-        #endregion Mark
 
         #region Smite
 

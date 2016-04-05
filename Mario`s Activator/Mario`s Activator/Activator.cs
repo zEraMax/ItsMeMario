@@ -3,9 +3,9 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
-using Mario_s_Activator.Spells;
 using Mario_s_Lib;
-using static Mario_s_Activator.Spells.SummonerSpells;
+using Mario_s_Lib.DataBases;
+using static Mario_s_Activator.SummonerSpells;
 using static Mario_s_Activator.MyMenu;
 
 namespace Mario_s_Activator
@@ -322,7 +322,7 @@ namespace Mario_s_Activator
 
         private static void SmiteOnTick()
         {
-            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || SummonerMenu.GetKeybindValue("smiteKeybind")) return;
+            if (!PlayerHasSmite || !Smite.IsReady() || Smite == null || SummonerMenu.GetKeyBindValue("smiteKeybind")) return;
 
             Obj_AI_Base GetJungleMinion;
 
@@ -434,6 +434,19 @@ namespace Mario_s_Activator
                 {
                     Heal.Cast();
                 }
+            }
+        }
+
+        public static void CastPoroThrower()
+        {
+            if (!PoroThrower.IsReady() || !SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name == "snowballfollowupcast") return;
+
+            var targetPoro = TargetSelector.GetTarget(PoroThrower.Range, DamageType.True);
+            if (targetPoro != null && targetPoro.IsValid)
+            {
+                var tpp = PoroThrower.GetPrediction(targetPoro);
+                if (tpp.HitChancePercent >= 85)
+                    PoroThrower.Cast(tpp.CastPosition);
             }
         }
 
