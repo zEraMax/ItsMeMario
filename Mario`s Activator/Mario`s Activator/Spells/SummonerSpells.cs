@@ -33,10 +33,10 @@ namespace Mario_s_Activator.Spells
             }
 
             //Cleanase
-            var cleanse = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonercleanse"));
-            if (cleanse != null)
+            var cleanse = Player.Instance.GetSpellSlotFromName("summonerboost");
+            if (cleanse != SpellSlot.Unknown)
             {
-                Cleanse = new Spell.Active(cleanse.Slot);
+                Cleanse = new Spell.Active(cleanse);
                 PlayerHasCleanse = true;
             }
             
@@ -87,16 +87,33 @@ namespace Mario_s_Activator.Spells
                 PlayerHasHeal = true;
             }
 
-            //Poro Mark
-            var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersnowball"));
-            if (poro != null)
+            //Snow Ball
+            var snowball = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonersnowball"));
+            if (snowball != null)
             {
-                PoroThrower = new Spell.Skillshot(poro.Slot, 000, SkillShotType.Linear, 250,
-                    (int) poro.SData.MissileSpeed, (int) poro.SData.LineWidth)
+                PoroThrower = new Spell.Skillshot(snowball.Slot, (uint)snowball.SData.CastRange-50, SkillShotType.Linear, 0,
+                    1500, (int)snowball.SData.LineWidth)
                 {
-                    MinimumHitChance = HitChance.High
+                    MinimumHitChance = HitChance.High,
+                    AllowedCollisionCount = 0
                 };
                 PlayerHasPoroThrower = true;
+                Game.OnUpdate += (args) => CastPoroThrower();
+                //Chat.Print("speed : "+snowball.SData.MissileSpeed.ToString()); return 0
+            }
+
+            //Poro Mark(Event mode)
+            var poro = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("summonerporothrow"));
+            if (poro != null)
+            {
+                PoroThrower = new Spell.Skillshot(poro.Slot, (uint)poro.SData.CastRange-50, SkillShotType.Linear, 0,
+                    1500, (int)poro.SData.LineWidth)
+                {
+                    MinimumHitChance = HitChance.High,
+                    AllowedCollisionCount = 0
+                };
+                PlayerHasPoroThrower = true;
+                Game.OnUpdate += (args) => CastPoroThrower();
             }
         }
 
@@ -118,12 +135,14 @@ namespace Mario_s_Activator.Spells
 
         public static void CastPoroThrower()
         {
-            if(!PlayerHasPoroThrower || !MyMenu.SummonerMenu.GetCheckBoxValue("")) return;
+            if(!PoroThrower.IsReady() || !MyMenu.SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name == "snowballfollowupcast") return;
 
-            var targetPoro = TargetSelector.GetTarget(PoroThrower.Range, DamageType.Mixed);
+            var targetPoro = TargetSelector.GetTarget(PoroThrower.Range, DamageType.True);
             if (targetPoro != null && targetPoro.IsValid)
             {
-                PoroThrower.Cast(targetPoro);
+                var tpp = PoroThrower.GetPrediction(targetPoro);
+                if(tpp.HitChance >= HitChance.High)
+                    PoroThrower.Cast(tpp.CastPosition);
             }
         }
 
