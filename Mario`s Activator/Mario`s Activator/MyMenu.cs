@@ -6,6 +6,8 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using Mario_s_Activator.Spells;
+using Mario_s_Lib;
+using Mario_s_Lib.DataBases;
 using SharpDX;
 using static Mario_s_Activator.Spells.SummonerSpells;
 

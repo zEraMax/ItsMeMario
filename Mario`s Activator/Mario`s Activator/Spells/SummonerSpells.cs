@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
+using Mario_s_Lib;
 
 namespace Mario_s_Activator.Spells
 {

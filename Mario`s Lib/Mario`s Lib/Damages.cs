@@ -33,8 +33,6 @@ namespace Mario_s_Lib
             return dmg * percent;
         }
 
-
-
         public static bool HasMinionAggro(this Obj_AI_Base minion)
         {
             return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Minion && m.Target.NetworkId == minion.NetworkId);
@@ -99,6 +97,14 @@ namespace Mario_s_Lib
             }
 
             return 0f;
+        }
+
+        public static float GetTotalDamageEBDB(this Obj_AI_Base target)
+        {
+            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+            var dmg = Player.Instance.Spellbook.Spells.Where(s => s.IsReady && slots.Contains(s.Slot)).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
+            var aaDmg = Orbwalker.CanAutoAttack ? Player.Instance.GetAutoAttackDamage(target) : 0f;
+            return dmg + aaDmg;
         }
     }
 }

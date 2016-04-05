@@ -6,6 +6,7 @@ using System.Reflection;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using Mario_s_Lib;
 using Version = System.Version;
 
 namespace Mario_s_Activator

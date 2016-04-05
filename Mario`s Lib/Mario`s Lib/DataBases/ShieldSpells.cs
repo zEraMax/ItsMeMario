@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using EloBuddy;
 
-namespace Mario_s_Activator.Spells
+namespace Mario_s_Lib.DataBases
 {
-
-public class ShieldSpell
+    public class ShieldSpell
     {
         public Champion Champ;
         public SpellSlot Slot;

@@ -4,11 +4,11 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
-using Mario_s_Activator.Spells;
+using EloBuddy.SDK.Menu;
+using Mario_s_Lib.DataBases;
 using SharpDX;
-using static Mario_s_Activator.MyMenu;
 
-namespace Mario_s_Activator
+namespace Mario_s_Lib
 {
     public class TargetSpell
     {
@@ -140,12 +140,12 @@ namespace Mario_s_Activator
             }
         }
 
-        public static bool IsInDanger(this AIHeroClient target, int percent)
+        public static bool IsInDanger(this AIHeroClient target, Menu settingsMenu, int percent)
         {
             if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
 
-            var sliderPercent = SettingsMenu.GetSliderValue("dangerSlider");
-            var boundingRadius = target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+            var sliderPercent = settingsMenu.GetSliderValue("dangerSlider");
+            var boundingRadius = target.BoundingRadius + settingsMenu.GetSliderValue("saferange");
 
             if (TargettedSpells.Any())
             {
@@ -199,7 +199,7 @@ namespace Mario_s_Activator
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
                                 missile.Distance(target) <= boundingRadius + 250 &&
-                                SettingsMenu.GetCheckBoxValue("dangSpell" + ds.Hero.ToString() + ds.Slot.ToString()));
+                                settingsMenu.GetCheckBoxValue("dangSpell" + ds.Hero.ToString() + ds.Slot.ToString()));
 
                     if (DangSpell != null && target.HealthPercent <= percent + sliderPercent)
                     {
@@ -212,36 +212,37 @@ namespace Mario_s_Activator
 
 
                 /*
-                if (NotMissiles.Any())
-                {
-                    var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
-
-                    if (hueSPell != null)
+                    if (NotMissiles.Any())
                     {
-                        var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
-                        if (!projection.IsOnSegment) return false;
+                        var hueSPell = NotMissiles.FirstOrDefault(s => s.End.Distance(target.Position) <= 2200);
 
-                        //If there`s a missile with the same name as the skillshot that it got from obj process cast
-                        var missileSameName = Missiles.FirstOrDefault(m => m.SData.Name.ToLower().Contains(hueSPell.SName.ToLower()));
-                        if (missileSameName != null) return false;
-                        //
-                        var spellInfo = SpellDatabase.GetSpellInfoList(hueSPell.Caster).FirstOrDefault(s => s.Slot == hueSPell.Slot);
-                        if (spellInfo != null)
+                        if (hueSPell != null)
                         {
-                            var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
-                                                spellInfo.Radius + target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+                            var projection = target.Position.To2D().ProjectOn(hueSPell.Start.To2D(), hueSPell.End.To2D());
+                            if (!projection.IsOnSegment) return false;
 
-                            if (segementPoint)
+                            //If there`s a missile with the same name as the skillshot that it got from obj process cast
+                            var missileSameName = Missiles.FirstOrDefault(m => m.SData.Name.ToLower().Contains(hueSPell.SName.ToLower()));
+                            if (missileSameName != null) return false;
+                            //
+                            var spellInfo = SpellDatabase.GetSpellInfoList(hueSPell.Caster).FirstOrDefault(s => s.Slot == hueSPell.Slot);
+                            if (spellInfo != null)
                             {
-                                return true;
+                                var segementPoint = projection.SegmentPoint.Distance(target.Position) <=
+                                                    spellInfo.Radius + target.BoundingRadius + SettingsMenu.GetSliderValue("saferange");
+
+                                if (segementPoint)
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }
-                }
 
-                */
+                    */
             }
             return false;
         }
     }
 }
+
