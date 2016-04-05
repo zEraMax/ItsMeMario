@@ -293,6 +293,20 @@ namespace Mario_s_Activator
             DrawingMenu.AddGroupLabel("All drawings settings");
             DrawingMenu.CreateCheckBox("Disable all drawings", "disableDrawings", false);
 
+            DrawingMenu.AddGroupLabel("Offensive Items");
+            DrawingMenu.CreateCheckBox("Bilgewater Cutlass", "draw" + (int)ItemId.Bilgewater_Cutlass);
+            DrawingMenu.CreateCheckBox("Blade of the ruined king", "draw" + (int)ItemId.Blade_of_the_Ruined_King);
+            DrawingMenu.CreateCheckBox("Tiamat", "draw" + (int)ItemId.Tiamat);
+            DrawingMenu.CreateCheckBox("Ravenous Hydra", "draw" + (int)ItemId.Ravenous_Hydra);
+            DrawingMenu.CreateCheckBox("Youmuus GhostBlade", "draw" + (int)ItemId.Youmuus_Ghostblade);
+            DrawingMenu.CreateCheckBox("Hextech GunBlade", "draw" + (int)ItemId.Hextech_Gunblade);
+
+            DrawingMenu.AddGroupLabel("Defensive Items");
+            DrawingMenu.CreateCheckBox("Face of the mountain", "draw" + (int)ItemId.Face_of_the_Mountain);
+            DrawingMenu.CreateCheckBox("Locket Of the Iron Solari", "draw" + (int)ItemId.Locket_of_the_Iron_Solari);
+            DrawingMenu.CreateCheckBox("Randuins", "draw" + (int)ItemId.Randuins_Omen);
+            DrawingMenu.CreateCheckBox("Ohmwrecker", "draw" + (int)ItemId.Ohmwrecker);
+
             #endregion Drawings
 
             #region Settings
