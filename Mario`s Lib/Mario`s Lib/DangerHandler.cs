@@ -12,10 +12,10 @@ namespace Mario_s_Lib
 {
     public class TargetSpell
     {
-        public Obj_AI_Base Target;
         public Obj_AI_Base Caster;
         public Champion Champ;
         public SpellSlot Slot;
+        public Obj_AI_Base Target;
 
         public TargetSpell(Obj_AI_Base target, Obj_AI_Base caster, Champion champ, SpellSlot slot)
         {
@@ -38,12 +38,12 @@ namespace Mario_s_Lib
 
     public class NotMissile
     {
-        public Vector3 Start;
-        public Vector3 End;
         public Obj_AI_Base Caster;
         public Champion Champ;
+        public Vector3 End;
         public SpellSlot Slot;
         public string SName;
+        public Vector3 Start;
 
         public NotMissile(Vector3 start, Vector3 end, Obj_AI_Base caster, Champion champ, SpellSlot slot, string sname)
         {
@@ -245,4 +245,3 @@ namespace Mario_s_Lib
         }
     }
 }
-

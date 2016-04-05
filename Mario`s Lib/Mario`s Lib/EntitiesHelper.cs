@@ -28,5 +28,29 @@ namespace Mario_s_Lib
         {
             return EntityManager.MinionsAndMonsters.GetJungleMonsters().Count(m => m.Distance(target) <= range);
         }
+
+        /// <summary>
+        ///     Get nearest ally
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static AIHeroClient GetNearestAlly(float range = 700)
+        {
+            return EntityManager.Heroes.Allies.OrderBy(a => a.Distance(Player.Instance))
+                .FirstOrDefault(ally => ally.IsInRange(Player.Instance, range));
+        }
+
+        /// <summary>
+        ///     Get the nearest and lowest health ally
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public static AIHeroClient GetNearestLowestAlly(float range = 700)
+        {
+            return
+                EntityManager.Heroes.Allies.OrderBy(a => a.Distance(Player.Instance))
+                    .ThenBy(a => a.Health)
+                    .FirstOrDefault(ally => ally.IsInRange(Player.Instance, range));
+        }
     }
 }

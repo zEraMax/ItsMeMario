@@ -26,7 +26,7 @@ namespace Mario_s_Lib.DataBases
             new ShieldSpell(Champion.TahmKench, SpellSlot.E),
             new ShieldSpell(Champion.Urgot, SpellSlot.W),
             new ShieldSpell(Champion.Yasuo, SpellSlot.W),
-            new ShieldSpell(Champion.Braum, SpellSlot.E),
+            new ShieldSpell(Champion.Braum, SpellSlot.E)
         };
     }
 }

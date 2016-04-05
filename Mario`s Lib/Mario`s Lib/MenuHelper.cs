@@ -55,7 +55,8 @@ namespace Mario_s_Lib
             }
         }
 
-        public static void CreateKeyBind(this Menu m, string displayName, string uniqueId,uint defaultKey1, uint defaultKey2, KeyBind.BindTypes bindtype = KeyBind.BindTypes.PressToggle, bool defaultValue = true)
+        public static void CreateKeyBind(this Menu m, string displayName, string uniqueId, uint defaultKey1, uint defaultKey2,
+            KeyBind.BindTypes bindtype = KeyBind.BindTypes.PressToggle, bool defaultValue = true)
         {
             try
             {

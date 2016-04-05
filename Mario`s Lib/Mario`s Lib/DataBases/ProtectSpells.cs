@@ -37,7 +37,7 @@ namespace Mario_s_Lib.DataBases
             new ProtectSpell(Champion.Taric, SpellSlot.Q),
             new ProtectSpell(Champion.Thresh, SpellSlot.W),
             new ProtectSpell(Champion.Zilean, SpellSlot.E),
-            new ProtectSpell(Champion.Shen, SpellSlot.R),
+            new ProtectSpell(Champion.Shen, SpellSlot.R)
         };
     }
 }

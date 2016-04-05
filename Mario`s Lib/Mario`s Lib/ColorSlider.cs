@@ -168,7 +168,7 @@ namespace Mario_s_Lib
 
             public override bool Draw()
             {
-                var rect = new Rectangle((int)MainMenu.Position.X + 160, (int)MainMenu.Position.Y + 95 + 50, 750, 380);
+                var rect = new Rectangle((int) MainMenu.Position.X + 160, (int) MainMenu.Position.Y + 95 + 50, 750, 380);
                 if (MainMenu.IsVisible && IsVisible && rect.IsInside(Position))
                 {
                     _colorOverlaySprite.Color = SelectedColor;
