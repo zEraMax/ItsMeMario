@@ -296,7 +296,8 @@ namespace Mario_s_Activator
             #endregion Drawings
 
             #region Settings
-
+            SettingsMenu.AddGroupLabel("Danger Options");
+            SettingsMenu.AddLabel("Please go to the Mario`s Lib menu and configure the danger settings there");
             SettingsMenu.AddGroupLabel("Offensive items options");
             SettingsMenu.CreateCheckBox("Use offensive items only in combo", "comboUseItems");
             SettingsMenu.AddSeparator();

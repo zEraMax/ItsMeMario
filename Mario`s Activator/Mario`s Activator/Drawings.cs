@@ -160,7 +160,7 @@ namespace Mario_s_Activator
                     Circle.Draw(SharpDX.Color.Purple, 20f, 5f, m);
                 }
 
-                Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + SettingsMenu.GetSliderValue("saferange"), Player.Instance);
+                Circle.Draw(SharpDX.Color.Blue, Player.Instance.BoundingRadius + Initializer.SettingsMenu.GetSliderValue("saferange"), Player.Instance);
             }
         }
     }
