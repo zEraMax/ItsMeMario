@@ -39,6 +39,9 @@
     <Reference Include="EloBuddy.SDK">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
     </Reference>
+    <Reference Include="Mario`s Lib">
+      <HintPath>..\..\Mario`s Lib\Mario`s Lib\bin\Debug\Mario`s Lib.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.dll</HintPath>
     </Reference>
@@ -54,7 +57,6 @@
     <Compile Include="DamageIndicator.cs" />
     <Compile Include="DrawingsManager.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="HPPrediction.cs" />
     <Compile Include="Menus.cs" />
     <Compile Include="Modes\Active.cs" />
     <Compile Include="Modes\AutoHarass.cs" />

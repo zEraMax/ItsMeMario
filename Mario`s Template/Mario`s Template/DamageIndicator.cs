@@ -2,6 +2,7 @@
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using Mario_s_Lib;
 using SharpDX;
 using SharpDX.Direct3D9;
 using static Mario_s_Template.Menus;

@@ -1,6 +1,7 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK.Rendering;
+using Mario_s_Lib;
 using static Mario_s_Template.SpellsManager;
 using static Mario_s_Template.Menus;
 

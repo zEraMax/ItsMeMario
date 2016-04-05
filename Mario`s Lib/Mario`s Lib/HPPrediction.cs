@@ -5,9 +5,9 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
 
-namespace Mario_s_Template
+namespace Mario_s_Lib
 {
-    public static class HPPrediction
+    internal class HPPrediction
     {
         public static readonly Dictionary<int, PredictedDamage> ActiveAttacks = new Dictionary<int, PredictedDamage>();
 

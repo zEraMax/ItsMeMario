@@ -2,6 +2,7 @@
 using System.Drawing;
 using EloBuddy;
 using EloBuddy.SDK.Menu;
+using Mario_s_Lib;
 
 namespace Mario_s_Template
 {
