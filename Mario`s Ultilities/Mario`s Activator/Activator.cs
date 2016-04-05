@@ -82,7 +82,7 @@ namespace Mario_s_Activator
 
             if (SettingsMenu.GetCheckBoxValue("dev"))
             {
-                foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInDanger(80)))
+                foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInDanger(SettingsMenu, 80)))
                 {
                     Chat.Print(a.ChampionName + " On danger");
                 }
@@ -258,7 +258,7 @@ namespace Mario_s_Activator
                         EntityManager.Heroes.Allies.FirstOrDefault(
                             a =>
                                 a.IsValidTarget(_protectSpell.Range) && ProtectMenu.GetCheckBoxValue("canUseSpellOn" + a.ChampionName) &&
-                                a.IsInDanger(ProtectMenu.GetSliderValue("protectallyhealth")));
+                                a.IsInDanger(SettingsMenu, ProtectMenu.GetSliderValue("protectallyhealth")));
 
                     if (ally != null)
                     {
@@ -298,20 +298,20 @@ namespace Mario_s_Activator
                             EntityManager.Heroes.Allies.OrderBy(a => a.Health)
                                 .FirstOrDefault(
                                     a =>
-                                        a.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id + "ally")) &&
+                                        a.IsInDanger(SettingsMenu, DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id + "ally")) &&
                                         a.IsValidTarget(defItem.Range));
                         if (ally != null)
                         {
                             defItem.Cast(ally);
                         }
 
-                        if (Player.Instance.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int)defItem.Id)))
+                        if (Player.Instance.IsInDanger(SettingsMenu, DefensiveMenu.GetSliderValue("slider" + (int)defItem.Id)))
                         {
                             defItem.Cast(Player.Instance);
                         }
                         return;
                 }
-                if (Player.Instance.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
+                if (Player.Instance.IsInDanger(SettingsMenu, DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
                 {
                     defItem.Cast();
                 }
@@ -412,7 +412,7 @@ namespace Mario_s_Activator
 
         private static void BarrierOnTick()
         {
-            if (PlayerHasBarrier && SummonerMenu.GetCheckBoxValue("check" + "barrier") && Player.Instance.IsInDanger( SummonerMenu.GetSliderValue("slider" + "barrier")))
+            if (PlayerHasBarrier && SummonerMenu.GetCheckBoxValue("check" + "barrier") && Player.Instance.IsInDanger(SettingsMenu, SummonerMenu.GetSliderValue("slider" + "barrier")))
             {
                 Barrier.Cast();
             }
@@ -425,12 +425,12 @@ namespace Mario_s_Activator
                 var ally =
                     EntityManager.Heroes.Allies.OrderBy(a => a.Health)
                         .FirstOrDefault(
-                            a => a.IsValidTarget(Heal.Range) && !a.IsMe && a.IsInDanger( SummonerMenu.GetSliderValue("slider" + "heal" + "ally")));
+                            a => a.IsValidTarget(Heal.Range) && !a.IsMe && a.IsInDanger(SettingsMenu, SummonerMenu.GetSliderValue("slider" + "heal" + "ally")));
                 if (ally != null)
                 {
                     Heal.Cast();
                 }
-                if (Player.Instance.IsInDanger(SummonerMenu.GetSliderValue("slider" + "heal" + "me")))
+                if (Player.Instance.IsInDanger(SettingsMenu, SummonerMenu.GetSliderValue("slider" + "heal" + "me")))
                 {
                     Heal.Cast();
                 }

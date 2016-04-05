@@ -92,7 +92,7 @@ namespace Mario_s_Activator
             {
                 if (!ActivatorLoaded)
                 {
-                    Initializer.InitiliazeDangerHandler();
+                    DangerHandler.Init();
                     Activator.Init();
                     ActivatorLoaded = true;
                 }

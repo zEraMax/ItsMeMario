@@ -4,7 +4,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
-using EloBuddy.SDK.Menu;
 using Mario_s_Lib.DataBases;
 using SharpDX;
 
@@ -140,12 +139,12 @@ namespace Mario_s_Lib
             }
         }
 
-        public static bool IsInDanger(this AIHeroClient target, Menu settingsMenu, int percent)
+        public static bool IsInDanger(this AIHeroClient target, int percent)
         {
             if (target == null || target.IsDead || !target.IsValid || target.IsInShopRange()) return false;
 
-            var sliderPercent = settingsMenu.GetSliderValue("dangerSlider");
-            var boundingRadius = target.BoundingRadius + settingsMenu.GetSliderValue("saferange");
+            var sliderPercent = Initializer.SettingsMenu.GetSliderValue("dangerSlider");
+            var boundingRadius = target.BoundingRadius + Initializer.SettingsMenu.GetSliderValue("saferange");
 
             if (TargettedSpells.Any())
             {
@@ -199,7 +198,7 @@ namespace Mario_s_Lib
                             ds =>
                                 ds.Slot == slot && champion.Hero == ds.Hero &&
                                 missile.Distance(target) <= boundingRadius + 250 &&
-                                settingsMenu.GetCheckBoxValue("dangSpell" + ds.Hero.ToString() + ds.Slot.ToString()));
+                                Initializer.SettingsMenu.GetCheckBoxValue("dangSpell" + ds.Hero.ToString() + ds.Slot.ToString()));
 
                     if (DangSpell != null && target.HealthPercent <= percent + sliderPercent)
                     {
