@@ -49,7 +49,7 @@ namespace Mario_s_Activator
                     var internetVersion = new Version(new StreamReader(stream).ReadToEnd());
                     if (internetVersion != LocalVersion)
                     {
-                        Chat.Print("New version found("+internetVersion+") of Mario`s Activator please update it.(If you want yo load it anyway type load)", Color.DarkCyan);
+                        Chat.Print("New version found("+internetVersion+") of Mario`s Activator please update it.(Load it anyway type /load)", Color.DarkCyan);
                     }
                     else
                     {
@@ -74,13 +74,14 @@ namespace Mario_s_Activator
             ActivatorLoaded = false;
             CheckVersion();
             Game.OnTick += Game_OnTick;
-            Chat.OnMessage += Chat_OnMessage;
+            Chat.OnInput += Chat_OnInput;
         }
 
-        private static void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
+        private static void Chat_OnInput(ChatInputEventArgs args)
         {
-            if (args.Message.Contains("load") && sender.IsMe)
+            if (args.Input.Contains("/load"))
             {
+                args.Process = false;
                 Core.DelayAction(() => Chat.Print("Loading now", Color.BlueViolet), 200);
                 Core.DelayAction(() => VersionChecked = true, 400);
             }
