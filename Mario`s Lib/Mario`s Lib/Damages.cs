@@ -33,28 +33,12 @@ namespace Mario_s_Lib
             return dmg * percent;
         }
 
-        public static bool HasMinionAggro(this Obj_AI_Base minion)
+        public static float GetTotalDamageEBDB(this Obj_AI_Base target)
         {
-            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Minion && m.Target.NetworkId == minion.NetworkId);
-        }
-
-        public static bool HasTurretAggro(this Obj_AI_Base minion)
-        {
-            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-        }
-
-        public static int TurretAggroStartTick(this Obj_AI_Base minion)
-        {
-            var ActiveTurret = HPPrediction.ActiveAttacks.Values
-                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-            return ActiveTurret?.StartTick ?? 0;
-        }
-
-        public static Obj_AI_Base GetAggroTurret(this Obj_AI_Base minion)
-        {
-            var ActiveTurret = HPPrediction.ActiveAttacks.Values
-                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-            return ActiveTurret?.Source;
+            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
+            var dmg = Player.Instance.Spellbook.Spells.Where(s => s.IsReady && slots.Contains(s.Slot)).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
+            var aaDmg = Orbwalker.CanAutoAttack ? Player.Instance.GetAutoAttackDamage(target) : 0f;
+            return dmg + aaDmg;
         }
 
         public static float GetEchoLudenDamage(this Obj_AI_Base target)
@@ -99,12 +83,28 @@ namespace Mario_s_Lib
             return 0f;
         }
 
-        public static float GetTotalDamageEBDB(this Obj_AI_Base target)
+        public static bool HasMinionAggro(this Obj_AI_Base minion)
         {
-            var slots = new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R };
-            var dmg = Player.Instance.Spellbook.Spells.Where(s => s.IsReady && slots.Contains(s.Slot)).Sum(s => Player.Instance.GetSpellDamage(target, s.Slot));
-            var aaDmg = Orbwalker.CanAutoAttack ? Player.Instance.GetAutoAttackDamage(target) : 0f;
-            return dmg + aaDmg;
+            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Minion && m.Target.NetworkId == minion.NetworkId);
+        }
+
+        public static bool HasTurretAggro(this Obj_AI_Base minion)
+        {
+            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+        }
+
+        public static int TurretAggroStartTick(this Obj_AI_Base minion)
+        {
+            var ActiveTurret = HPPrediction.ActiveAttacks.Values
+                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+            return ActiveTurret?.StartTick ?? 0;
+        }
+
+        public static Obj_AI_Base GetAggroTurret(this Obj_AI_Base minion)
+        {
+            var ActiveTurret = HPPrediction.ActiveAttacks.Values
+                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
+            return ActiveTurret?.Source;
         }
     }
 }

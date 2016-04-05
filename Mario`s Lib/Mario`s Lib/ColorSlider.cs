@@ -9,7 +9,7 @@ using SharpDX;
 using Color = System.Drawing.Color;
 using Rectangle = SharpDX.Rectangle;
 
-namespace Mario_s_Template
+namespace Mario_s_Lib
 {
     public class ColorSlide
     {
@@ -168,7 +168,7 @@ namespace Mario_s_Template
 
             public override bool Draw()
             {
-                var rect = new Rectangle((int) MainMenu.Position.X + 160, (int) MainMenu.Position.Y + 95 + 50, 750, 380);
+                var rect = new Rectangle((int)MainMenu.Position.X + 160, (int)MainMenu.Position.Y + 95 + 50, 750, 380);
                 if (MainMenu.IsVisible && IsVisible && rect.IsInside(Position))
                 {
                     _colorOverlaySprite.Color = SelectedColor;
