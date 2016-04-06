@@ -70,6 +70,7 @@ namespace Mario_s_Template
             AutoHarassMenu.CreateCheckBox(" - Use E", "eUse");
             AutoHarassMenu.CreateCheckBox(" - Use R", "rUse");
             AutoHarassMenu.AddGroupLabel("Settings");
+            AutoHarassMenu.CreateKeyBind("Enable/Disable AutoHrass", "autoHarassKey", 'Z', 'U');
             AutoHarassMenu.CreateSlider("Mana must be lower than [{0}%] to use AutoHarass spells", "manaSlider", 30);
 
             LaneClearMenu.AddGroupLabel("Spells");

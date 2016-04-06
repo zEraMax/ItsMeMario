@@ -7,6 +7,7 @@ namespace Mario_s_Lib.DataBases
     {
         public Champion Champ;
         public List<string> Skins;
+
         public Skin(Champion champ, List<string> skins)
         {
             Champ = champ;
@@ -19,8 +20,9 @@ namespace Mario_s_Lib.DataBases
         public static List<Skin> SkinsDB = new List<Skin>
         {
             new Skin(Champion.Aatrox, new List<string> {"Basic Skin", "Justicar Aatrox", "Mecha Aatrox", "Sea Hunter Aatrox"}),
-            new Skin(Champion.Ahri, new List<string> {"Basic Skin","Dynasty Ahri", "Midnight Ahri", "Foxfire Ahri", "Popstar Ahri", "Challenger Ahri", "Academy Ahri"}),
-            new Skin(Champion.Akali, new List<string> {"Basic Skin","Stinger Akali", "Crimson Akali", }),
+            new Skin(Champion.Ahri,
+                new List<string> {"Basic Skin", "Dynasty Ahri", "Midnight Ahri", "Foxfire Ahri", "Popstar Ahri", "Challenger Ahri", "Academy Ahri"}),
+            new Skin(Champion.Akali, new List<string> {"Basic Skin", "Stinger Akali", "Crimson Akali",}),
             new Skin(Champion.Alistar, new List<string> {"Basic Skin",}),
             new Skin(Champion.Amumu, new List<string> {"Basic Skin",}),
             new Skin(Champion.Anivia, new List<string> {"Basic Skin",}),
@@ -147,7 +149,7 @@ namespace Mario_s_Lib.DataBases
             new Skin(Champion.Zed, new List<string> {"Basic Skin",}),
             new Skin(Champion.Ziggs, new List<string> {"Basic Skin",}),
             new Skin(Champion.Zilean, new List<string> {"Basic Skin",}),
-            new Skin(Champion.Zyra, new List<string> {"Basic Skin",}),
+            new Skin(Champion.Zyra, new List<string> {"Basic Skin", "WildFire Zyra", "Haunted Zyra", "SKT T1 Zyra"}),
         };
     }
 }
