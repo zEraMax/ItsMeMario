@@ -122,7 +122,7 @@ namespace Mario_s_Template
             MiscMenu.CreateComboBox("1st Spell to focus", "firstFocus", new List<string> {"Q", "W", "E"});
             MiscMenu.CreateComboBox("2nd Spell to focus", "secondFocus", new List<string> {"Q", "W", "E"}, 1);
             MiscMenu.CreateComboBox("3rd Spell to focus", "thirdFocus", new List<string> {"Q", "W", "E"}, 2);
-            MiscMenu.CreateSlider("Delay slider", "delaySlider", 150, 100, 500);
+            MiscMenu.CreateSlider("Delay slider", "delaySlider", 200, 150, 500);
 
             DrawingsMenu.AddGroupLabel("Setting");
             DrawingsMenu.CreateCheckBox(" - Draw Spell`s range only if they are ready.", "readyDraw");
