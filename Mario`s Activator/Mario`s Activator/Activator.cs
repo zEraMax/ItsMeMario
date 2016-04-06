@@ -78,6 +78,7 @@ namespace Mario_s_Activator
             OffensiveOnTick();
             ConsumablesOnTick();
             IgniteOnTick();
+            CastPoroThrower();
             Revealer.OnTick();
 
             if (SettingsMenu.GetCheckBoxValue("dev"))
@@ -451,7 +452,7 @@ namespace Mario_s_Activator
             }
         }
 
-        public static void CastPoroThrower()
+        private static void CastPoroThrower()
         {
             if (!PoroThrower.IsReady() || !SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name == "snowballfollowupcast") return;
 

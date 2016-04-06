@@ -100,7 +100,6 @@ namespace Mario_s_Activator
                     AllowedCollisionCount = 0
                 };
                 PlayerHasPoroThrower = true;
-                //Chat.Print("speed : "+snowball.SData.MissileSpeed.ToString()); return 0
             }
 
             //Poro Mark(Event mode)
