@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
 using Mario_s_Lib;
 
 namespace Mario_s_Template
@@ -101,6 +103,18 @@ namespace Mario_s_Template
             KillStealMenu.CreateCheckBox(" - Use R", "rUse");
             KillStealMenu.AddGroupLabel("Settings");
             KillStealMenu.CreateSlider("Mana must be lower than [{0}%] to use Killsteal spells", "manaSlider", 30);
+
+            MiscMenu.AddGroupLabel("Skin Changer");
+            
+            var skinList = Mario_s_Lib.DataBases.Skins.SkinsDB.FirstOrDefault(list => list.Champ == Player.Instance.Hero);
+            if (skinList != null)
+            {
+                MiscMenu.CreateComboBox("Choose the skin", "skinComboBox", skinList.Skins);
+                MiscMenu.Get<ComboBox>("skinComboBox").OnValueChange += delegate(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
+                {
+                    Player.Instance.SetSkinId(sender.CurrentValue);
+                };
+            }
 
             MiscMenu.AddGroupLabel("Auto Level UP");
             MiscMenu.CreateCheckBox("Activate Auto Leveler", "activateAutoLVL", false);
