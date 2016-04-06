@@ -314,6 +314,9 @@ namespace Mario_s_Activator
             SettingsMenu.AddLabel("Please go to the Mario`s Lib menu and configure the danger settings there");
             SettingsMenu.AddGroupLabel("Offensive items options");
             SettingsMenu.CreateCheckBox("Use offensive items only in combo", "comboUseItems");
+            SettingsMenu.AddGroupLabel("Improve FPS");
+            SettingsMenu.AddLabel("The higher the slider below is, the more fps you will get and the slower the tick will be");
+            SettingsMenu.CreateSlider("Tick Limiter", "tickLimiter", 100, 50, 1000);
             SettingsMenu.AddSeparator();
             SettingsMenu.AddGroupLabel("Debug Settings");
             SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);

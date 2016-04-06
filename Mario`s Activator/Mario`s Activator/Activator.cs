@@ -73,8 +73,11 @@ namespace Mario_s_Activator
             }
         }
 
+        private static int TickCount;
         private static void Game_OnTick(EventArgs args)
         {
+            if(TickCount > Environment.TickCount) return;
+
             OffensiveOnTick();
             ConsumablesOnTick();
             IgniteOnTick();
@@ -88,6 +91,8 @@ namespace Mario_s_Activator
                     Chat.Print(a.ChampionName + " On danger");
                 }
             }
+
+            TickCount = Environment.TickCount + SettingsMenu.GetSliderValue("tickLimiter");
         }
 
         private static void Game_OnUpdate(EventArgs args)
@@ -454,7 +459,7 @@ namespace Mario_s_Activator
 
         private static void CastPoroThrower()
         {
-            if (!PoroThrower.IsReady() || !SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name == "snowballfollowupcast") return;
+            if (!PoroThrower.IsReady() || !SummonerMenu.GetCheckBoxValue("check" + "snowball") || PoroThrower.Name.ToLower().Contains("snowballfollowupcast")) return;
 
             var targetPoro = TargetSelector.GetTarget(PoroThrower.Range, DamageType.True);
             if (targetPoro != null && targetPoro.IsValid)
