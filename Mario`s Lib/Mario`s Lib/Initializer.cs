@@ -9,9 +9,9 @@ namespace Mario_s_Lib
     {
         private static readonly Menu FirstMenu = MainMenu.AddMenu("Mario`s Lib Options", "marioalibb");
         public static Menu SettingsMenu = FirstMenu.AddSubMenu("• Danger Settings", "dangersettings");
+
         public static void InitiliazeDangerHandler()
         {
-
             DangerHandler.Init();
 
             SettingsMenu.AddGroupLabel("Danger Options");

@@ -111,12 +111,6 @@ namespace Mario_s_Lib
             return new BestCastPosition {CastPosition = result.To3DWorld(), HitNumber = minionCount};
         }
 
-        public struct BestCastPosition
-        {
-            public int HitNumber;
-            public Vector3 CastPosition;
-        }
-
         public static Vector3 GetTargetDirection(this Obj_AI_Base target)
         {
             return target.Direction.To2D().Perpendicular().To3D();
@@ -140,6 +134,12 @@ namespace Mario_s_Lib
         public static Vector3 Left(this Obj_AI_Base target, int extendedRange = 100)
         {
             return target.Position.Extend(target.GetTargetDirection(), extendedRange).RotateAroundPoint(Player.Instance.Position.To2D(), 270f).To3D();
+        }
+
+        public struct BestCastPosition
+        {
+            public int HitNumber;
+            public Vector3 CastPosition;
         }
     }
 }
