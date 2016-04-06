@@ -132,13 +132,27 @@ namespace Mario_s_Activator
                     ? Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
                     : offItem.IsReady())
                 {
-
                     if (offItem.Id == ItemId.Titanic_Hydra && CanPost)
                     {
+                        var killMinionT =
+                            EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
+                                m => m.IsValidTarget(offItem.Range) && m.Health <= 40 + Player.Instance.MaxHealth*0.1f);
+
+                        var countMinionT = EntityManager.MinionsAndMonsters.EnemyMinions.Count(m => m.IsValidTarget(offItem.Range));
+
                         var targetTitanic = TargetSelector.GetTarget(offItem.Range, DamageType.Physical);
-                        if (targetTitanic != null)
+
+
+                        if (targetTitanic != null && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                         {
                             offItem.Cast();
+                            return;
+                        }
+
+                        if ((killMinionT != null || countMinionT >= 3) && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+                        {
+                            offItem.Cast();
+                            return;
                         }
                         return;
                     }
