@@ -45,8 +45,8 @@ namespace Mario_s_Activator
             OffensiveMenu.CreateCheckBox("Use hydra.", "check3074");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3074", 90);
             OffensiveMenu.AddGroupLabel("Titanic Hydra");
-            OffensiveMenu.CreateCheckBox("Use titanic hydra.", "check3053");
-            OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3053", 90);
+            OffensiveMenu.CreateCheckBox("Use titanic hydra.", "check"+ (int)ItemId.Titanic_Hydra);
+            OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider" + (int)ItemId.Titanic_Hydra, 90);
             OffensiveMenu.AddGroupLabel("Youmuus");
             OffensiveMenu.CreateCheckBox("Use youmuus.", "check3142");
             OffensiveMenu.CreateSlider("Use it if the ENEMY health is lower than ({0}%).", "slider3142", 70);
@@ -298,6 +298,7 @@ namespace Mario_s_Activator
             DrawingMenu.CreateCheckBox("Blade of the ruined king", "draw" + (int)ItemId.Blade_of_the_Ruined_King);
             DrawingMenu.CreateCheckBox("Tiamat", "draw" + (int)ItemId.Tiamat);
             DrawingMenu.CreateCheckBox("Ravenous Hydra", "draw" + (int)ItemId.Ravenous_Hydra);
+            DrawingMenu.CreateCheckBox("Titanic Hydra", "draw" + (int)ItemId.Titanic_Hydra);
             DrawingMenu.CreateCheckBox("Youmuus GhostBlade", "draw" + (int)ItemId.Youmuus_Ghostblade);
             DrawingMenu.CreateCheckBox("Hextech GunBlade", "draw" + (int)ItemId.Hextech_Gunblade);
 
@@ -316,7 +317,7 @@ namespace Mario_s_Activator
             SettingsMenu.CreateCheckBox("Use offensive items only in combo", "comboUseItems");
             SettingsMenu.AddGroupLabel("Improve FPS");
             SettingsMenu.AddLabel("The higher the slider below is, the more fps you will get and the slower the tick will be");
-            SettingsMenu.CreateSlider("Tick Limiter", "tickLimiter", 100, 50, 1000);
+            SettingsMenu.CreateSlider("Tick Limiter", "tickLimiter", 0, 0, 1000);
             SettingsMenu.AddSeparator();
             SettingsMenu.AddGroupLabel("Debug Settings");
             SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);
