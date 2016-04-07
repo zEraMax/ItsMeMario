@@ -64,7 +64,6 @@
     <Compile Include="DataBases\ShieldSpells.cs" />
     <Compile Include="DataBases\Skins.cs" />
     <Compile Include="EntitiesHelper.cs" />
-    <Compile Include="HPPrediction.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="MenuHelper.cs" />
     <Compile Include="Misc.cs" />

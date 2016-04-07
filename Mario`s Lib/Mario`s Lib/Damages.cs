@@ -84,29 +84,5 @@ namespace Mario_s_Lib
 
             return 0f;
         }
-
-        public static bool HasMinionAggro(this Obj_AI_Base minion)
-        {
-            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Minion && m.Target.NetworkId == minion.NetworkId);
-        }
-
-        public static bool HasTurretAggro(this Obj_AI_Base minion)
-        {
-            return HPPrediction.ActiveAttacks.Values.Any(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-        }
-
-        public static int TurretAggroStartTick(this Obj_AI_Base minion)
-        {
-            var ActiveTurret = HPPrediction.ActiveAttacks.Values
-                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-            return ActiveTurret?.StartTick ?? 0;
-        }
-
-        public static Obj_AI_Base GetAggroTurret(this Obj_AI_Base minion)
-        {
-            var ActiveTurret = HPPrediction.ActiveAttacks.Values
-                .FirstOrDefault(m => m.Source is Obj_AI_Turret && m.Target.NetworkId == minion.NetworkId);
-            return ActiveTurret?.Source;
-        }
     }
 }
