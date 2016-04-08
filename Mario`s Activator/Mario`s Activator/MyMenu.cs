@@ -324,7 +324,7 @@ namespace Mario_s_Activator
 
             #endregion Settings
 
-            MyMenu.FirstMenu.InitiliazeDangerHandler();
+            FirstMenu.InitiliazeDangerHandler();
         }
     }
 }
