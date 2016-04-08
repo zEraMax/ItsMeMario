@@ -323,6 +323,8 @@ namespace Mario_s_Activator
             SettingsMenu.CreateCheckBox("Enable developer debugging.", "dev", false);
 
             #endregion Settings
+
+            MyMenu.FirstMenu.InitiliazeDangerHandler();
         }
     }
 }
