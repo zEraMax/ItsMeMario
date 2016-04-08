@@ -1,6 +1,10 @@
-﻿using EloBuddy;
+﻿using System;
+using System.Linq;
+using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Spells;
 
 namespace Mario_s_Lib
 {
@@ -77,6 +81,19 @@ namespace Mario_s_Lib
         {
             if (target == null) return false;
             return target.CanCast(spell, m) && spell.Cast(target);
+        }
+
+        public static Spell.Skillshot GetSkillShotData(SpellSlot slot, SkillShotType skillType)
+        {
+            var spellData = SpellDatabase.GetSpellInfoList(Player.Instance).FirstOrDefault(s => s.Slot == slot);
+            if (spellData != null)
+            {
+                return new Spell.Skillshot(slot, (uint)spellData.Range, skillType, (int)spellData.Delay, (int)spellData.MissileSpeed, (int)spellData.Radius)
+                {
+                    AllowedCollisionCount = spellData.Collisions.Length
+                };
+            }
+            return null;
         }
     }
 }

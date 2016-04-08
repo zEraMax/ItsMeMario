@@ -1,5 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using Mario_s_Lib;
 using static Mario_s_Template.Menus;
 
@@ -19,7 +20,7 @@ namespace Mario_s_Template
         public static Spell.Targeted Q;
         public static Spell.Active W;
         public static Spell.Active E;
-        public static Spell.Targeted R;
+        public static Spell.Skillshot R;
 
         /// <summary>
         /// It sets the values to the spells
@@ -29,7 +30,7 @@ namespace Mario_s_Template
             Q = new Spell.Targeted(SpellSlot.Q, 350);
             W = new Spell.Active(SpellSlot.W, 200);
             E = new Spell.Active(SpellSlot.E, 300);
-            R = new Spell.Targeted(SpellSlot.R, 400);
+            R = Spells.GetSkillShotData(SpellSlot.R, SkillShotType.Linear);
 
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
         }

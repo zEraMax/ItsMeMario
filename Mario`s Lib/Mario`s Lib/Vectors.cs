@@ -28,9 +28,13 @@ namespace Mario_s_Lib
             var farmLocation = Prediction.Position.PredictCircularMissileAoe(minions, spell.Range, spell.Width,
                 spell.CastDelay, spell.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
 
-            if (farmLocation != null && farmLocation.HitChancePercent >= hitchance && farmLocation.CollisionObjects.Length >= count)
+            if (farmLocation != null && farmLocation.HitChancePercent >= hitchance)
             {
-                return farmLocation.CastPosition;
+                var predictedMinion = farmLocation.GetCollisionObjects<Obj_AI_Minion>();
+                if (predictedMinion.Length >= count)
+                {
+                    return farmLocation.CastPosition;
+                }
             }
 
             return Vector3.Zero;
@@ -66,7 +70,11 @@ namespace Mario_s_Lib
 
             if (castPos != null && castPos.HitChancePercent >= hitchance)
             {
-                return castPos.CastPosition;
+                var herosPredicted = castPos.GetCollisionObjects<AIHeroClient>();
+                if (herosPredicted.Length >= count)
+                {
+                    return castPos.CastPosition;
+                }
             }
 
             return Vector3.Zero;

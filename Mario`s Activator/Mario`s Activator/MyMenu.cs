@@ -13,7 +13,7 @@ namespace Mario_s_Activator
 {
     internal class MyMenu
     {
-        private static readonly Menu FirstMenu = MainMenu.AddMenu("Mario`s Activator", "marioactivatorr");
+        public static readonly Menu FirstMenu = MainMenu.AddMenu("Mario`s Activator", "marioactivatorr");
         public static Menu OffensiveMenu = FirstMenu.AddSubMenu("• Offensive Items", "activatorOffensive");
         public static Menu DefensiveMenu = FirstMenu.AddSubMenu("• Defensive Items", "activatordefensive");
         public static Menu CleansersMenu = FirstMenu.AddSubMenu("• Cleansers", "activatorcleansers");
