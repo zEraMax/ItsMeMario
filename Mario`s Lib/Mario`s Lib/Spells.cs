@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
@@ -88,12 +87,18 @@ namespace Mario_s_Lib
             var spellData = SpellDatabase.GetSpellInfoList(Player.Instance).FirstOrDefault(s => s.Slot == slot);
             if (spellData != null)
             {
-                return new Spell.Skillshot(slot, (uint)spellData.Range, skillType, (int)spellData.Delay, (int)spellData.MissileSpeed, (int)spellData.Radius)
+                return new Spell.Skillshot(slot, (uint)spellData.Range, skillType, (int)(1000 * spellData.Delay), (int)spellData.MissileSpeed, (int)spellData.Radius)
                 {
-                    AllowedCollisionCount = spellData.Collisions.Length
+                    AllowedCollisionCount = slot.GetCollisionCount()
                 };
             }
             return null;
+        }
+
+        private static int GetCollisionCount(this SpellSlot slot)
+        {
+            var getDBValue = DataBases.CollisionCount.CollisionCountDB.FirstOrDefault(v => v.Slot == slot && v.Champion == Player.Instance.Hero);
+            return getDBValue?.Count ?? 0;
         }
     }
 }

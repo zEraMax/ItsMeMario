@@ -294,46 +294,47 @@ namespace Mario_s_Activator
         {
             var defItem =
                 Defensive.DefensiveItems.FirstOrDefault(
-                    i => i.IsReady() && i.IsOwned() && DefensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
-
+                    i => i.IsReady() && DefensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
             if (defItem != null)
             {
-                switch (defItem.Id)
+                Chat.Print("Teste 2");
+                if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
                 {
-                    case ItemId.Randuins_Omen:
-                        if (Player.Instance.CountEnemiesInRange(defItem.Range) >=
-                            DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
-                        {
-                            defItem.Cast();
-                        }
-                        return;
-                    case ItemId.Ohmwrecker:
-                        var towerAAingAlly = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValid && a.ReceivingTurretAttack());
-                        if (towerAAingAlly != null)
-                        {
-                            defItem.Cast();
-                        }
-                        return;
+                    switch (defItem.Id)
+                    {
+                        case ItemId.Randuins_Omen:
+                            if (Player.Instance.CountEnemiesInRange(defItem.Range) >=
+                                DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id))
+                            {
+                                defItem.Cast();
+                            }
+                            return;
+                        case ItemId.Ohmwrecker:
+                            var towerAAingAlly = EntityManager.Heroes.Allies.FirstOrDefault(a => a.IsValid && a.ReceivingTurretAttack());
+                            if (towerAAingAlly != null)
+                            {
+                                defItem.Cast();
+                            }
+                            return;
                         case ItemId.Face_of_the_Mountain:
-                        var ally =
-                            EntityManager.Heroes.Allies.OrderBy(a => a.Health)
-                                .FirstOrDefault(
-                                    a =>
-                                        a.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id + "ally")) &&
-                                        a.IsValidTarget(defItem.Range));
-                        if (ally != null)
-                        {
-                            defItem.Cast(ally);
-                        }
+                            var ally =
+                                EntityManager.Heroes.Allies.OrderBy(a => a.Health)
+                                    .FirstOrDefault(
+                                        a =>
+                                            a.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id + "ally")) &&
+                                            a.IsValidTarget(defItem.Range));
+                            if (ally != null)
+                            {
+                                defItem.Cast(ally);
+                            }
 
-                        if (Player.Instance.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int)defItem.Id)))
-                        {
-                            defItem.Cast(Player.Instance);
-                        }
-                        return;
-                }
-                if (Player.Instance.IsInDanger( DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
-                {
+                            if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
+                            {
+                                defItem.Cast(Player.Instance);
+                            }
+                            return;
+                    }
+
                     defItem.Cast();
                 }
             }
