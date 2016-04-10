@@ -25,7 +25,7 @@ namespace URF_Spell_Spammer
 
         private static void OnUpdate(EventArgs args)
         {
-            var target = TargetSelector.GetTarget(GetTheHighestRange(), DamageType.Mixed);
+            var target = TargetSelector.GetTarget(2000, DamageType.Mixed);
             if (target != null)
             {
                 //Q
