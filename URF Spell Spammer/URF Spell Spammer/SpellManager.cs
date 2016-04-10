@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -15,6 +15,8 @@ namespace URF_Spell_Spammer
         public static Spell.SpellBase E { get; private set; }
         public static Spell.SpellBase R { get; private set; }
 
+        public static List<Spell.SpellBase> Skillshots = new List<Spell.SpellBase>(); 
+
         public static void Init()
         {
             var spellDB = SpellDatabase.GetSpellInfoList(Player.Instance);
@@ -29,15 +31,19 @@ namespace URF_Spell_Spammer
                         {
                             case SpellSlot.Q:
                                 Q = GetSkillShotData(SpellSlot.Q, GetType(spellInfo));
+                                Skillshots.Add(Q);
                                 break;
                             case SpellSlot.W:
-                                W = GetSkillShotData(SpellSlot.Q, GetType(spellInfo));
+                                W = GetSkillShotData(SpellSlot.W, GetType(spellInfo));
+                                Skillshots.Add(Q);
                                 break;
                             case SpellSlot.E:
-                                E = GetSkillShotData(SpellSlot.Q, GetType(spellInfo));
+                                E = GetSkillShotData(SpellSlot.E, GetType(spellInfo));
+                                Skillshots.Add(E);
                                 break;
                             case SpellSlot.R:
-                                R = GetSkillShotData(SpellSlot.Q, GetType(spellInfo));
+                                R = GetSkillShotData(SpellSlot.R, GetType(spellInfo));
+                                Skillshots.Add(R);
                                 break;
                         }
                     }

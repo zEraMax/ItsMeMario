@@ -17,25 +17,74 @@ namespace URF_Spell_Spammer
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            Game.OnTick += Game_OnTick;
+            SpellManager.Init();
+            Menus.Init();
+            
+            Game.OnUpdate += OnUpdate;
         }
 
-        private static void Game_OnTick(EventArgs args)
+        private static void OnUpdate(EventArgs args)
         {
             var target = TargetSelector.GetTarget(GetTheHighestRange(), DamageType.Mixed);
             if (target != null)
             {
-                Q.TryToCast(target, FirstMenu);
-                W.TryToCast(target, FirstMenu);
-                E.TryToCast(target, FirstMenu);
-                R.TryToCast(target, FirstMenu);
+                //Q
+                if (Skillshots.Contains(Q))
+                {
+                    var qSS = Q as Spell.Skillshot;
+                    qSS.TryToCast(target, FirstMenu, FirstMenu.GetSliderValue("qHitChance"));
+                }
+                else
+                {
+                    Q.TryToCast(target, FirstMenu);
+                }
+                //W
+                if (Skillshots.Contains(W))
+                {
+                    var wSS = W as Spell.Skillshot;
+                    wSS.TryToCast(target, FirstMenu, FirstMenu.GetSliderValue("wHitChance"));
+                }
+                else
+                {
+                    W.TryToCast(target, FirstMenu);
+                }
+                //E
+                if (Skillshots.Contains(E))
+                {
+                    var eSS = E as Spell.Skillshot;
+                    eSS.TryToCast(target, FirstMenu, FirstMenu.GetSliderValue("eHitChance"));
+                }
+                else
+                {
+                    E.TryToCast(target, FirstMenu);
+                }
+                //R
+                if (Skillshots.Contains(R))
+                {
+                    var rSS = R as Spell.Skillshot;
+                    rSS.TryToCast(target, FirstMenu, FirstMenu.GetSliderValue("rHitChance"));
+                }
+                else
+                {
+                    R.TryToCast(target, FirstMenu);
+                }
             }
             else
             {
-                Q.Cast(Game.CursorPos);
-                W.Cast(Game.CursorPos);
-                E.Cast(Game.CursorPos);
-                R.Cast(Game.CursorPos);
+                try
+                {
+                    if (FirstMenu.GetCheckBoxValue("qUse") && Q.IsReady()) Q.Cast(Game.CursorPos);
+                    if (FirstMenu.GetCheckBoxValue("wUse") && W.IsReady()) W.Cast(Game.CursorPos);
+                    if (FirstMenu.GetCheckBoxValue("eUse") && E.IsReady()) E.Cast(Game.CursorPos);
+                    if (FirstMenu.GetCheckBoxValue("rUse") && R.IsReady()) R.Cast(Game.CursorPos);
+                }
+                catch (Exception)
+                {
+                    if (FirstMenu.GetCheckBoxValue("qUse") && Q.IsReady()) Q.Cast();
+                    if (FirstMenu.GetCheckBoxValue("wUse") && W.IsReady()) W.Cast();
+                    if (FirstMenu.GetCheckBoxValue("eUse") && E.IsReady()) E.Cast();
+                    if (FirstMenu.GetCheckBoxValue("rUse") && R.IsReady()) R.Cast();
+                }
             }
         }
     }
