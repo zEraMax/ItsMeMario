@@ -36,7 +36,15 @@ namespace URF_Spell_Spammer
                 }
                 else
                 {
-                    Q.TryToCast(target, FirstMenu);
+                    try
+                    {
+                        Q.TryToCast(target, FirstMenu);
+                    }
+                    catch (Exception)
+                    {
+                        Q.Cast();
+                    }
+                    
                 }
                 //W
                 if (Skillshots.Contains(W))
@@ -46,7 +54,14 @@ namespace URF_Spell_Spammer
                 }
                 else
                 {
-                    W.TryToCast(target, FirstMenu);
+                    try
+                    {
+                        W.TryToCast(target, FirstMenu);
+                    }
+                    catch (Exception)
+                    {
+                        W.Cast();
+                    }
                 }
                 //E
                 if (Skillshots.Contains(E))
@@ -56,7 +71,14 @@ namespace URF_Spell_Spammer
                 }
                 else
                 {
-                    E.TryToCast(target, FirstMenu);
+                    try
+                    {
+                        E.TryToCast(target, FirstMenu);
+                    }
+                    catch (Exception)
+                    {
+                        E.Cast();
+                    }
                 }
                 //R
                 if (Skillshots.Contains(R))
@@ -66,7 +88,14 @@ namespace URF_Spell_Spammer
                 }
                 else
                 {
-                    R.TryToCast(target, FirstMenu);
+                    try
+                    {
+                        R.TryToCast(target, FirstMenu);
+                    }
+                    catch (Exception)
+                    {
+                        R.Cast();
+                    }
                 }
             }
             else
