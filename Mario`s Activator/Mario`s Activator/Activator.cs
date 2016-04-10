@@ -297,7 +297,6 @@ namespace Mario_s_Activator
                     i => i.IsReady() && DefensiveMenu.GetCheckBoxValue("check" + (int) i.Id));
             if (defItem != null)
             {
-                Chat.Print("Teste 2");
                 if (Player.Instance.IsInDanger(DefensiveMenu.GetSliderValue("slider" + (int) defItem.Id)))
                 {
                     switch (defItem.Id)

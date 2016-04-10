@@ -62,8 +62,8 @@ namespace Mario_s_Activator
             #region DefensiveMenu
 
             DefensiveMenu.AddGroupLabel("Zhonyas");
-            DefensiveMenu.CreateCheckBox("Use Zhonyas.", "check" + "3157");
-            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + (int)ItemId.Seraphs_Embrace, 20);
+            DefensiveMenu.CreateCheckBox("Use Zhonyas.", "check" + (int)ItemId.Zhonyas_Hourglass);
+            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + (int)ItemId.Zhonyas_Hourglass, 20);
             DefensiveMenu.AddGroupLabel("Seraph");
             DefensiveMenu.CreateCheckBox("Use Seraph.", "check" + "3040");
             DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3040", 20);
