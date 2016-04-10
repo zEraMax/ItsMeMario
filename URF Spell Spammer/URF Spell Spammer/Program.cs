@@ -70,20 +70,34 @@ namespace URF_Spell_Spammer
                 }
             }
             else
+            //No Target
             {
-                try
+                //Q
+                if (Skillshots.Contains(Q))
                 {
-                    if (FirstMenu.GetCheckBoxValue("qUse") && Q.IsReady()) Q.Cast(Game.CursorPos);
-                    if (FirstMenu.GetCheckBoxValue("wUse") && W.IsReady()) W.Cast(Game.CursorPos);
-                    if (FirstMenu.GetCheckBoxValue("eUse") && E.IsReady()) E.Cast(Game.CursorPos);
-                    if (FirstMenu.GetCheckBoxValue("rUse") && R.IsReady()) R.Cast(Game.CursorPos);
+                    Q.Cast(Game.CursorPos);
                 }
-                catch (Exception)
+                else
                 {
-                    if (FirstMenu.GetCheckBoxValue("qUse") && Q.IsReady()) Q.Cast();
-                    if (FirstMenu.GetCheckBoxValue("wUse") && W.IsReady()) W.Cast();
-                    if (FirstMenu.GetCheckBoxValue("eUse") && E.IsReady()) E.Cast();
-                    if (FirstMenu.GetCheckBoxValue("rUse") && R.IsReady()) R.Cast();
+                    Q.Cast();
+                }
+                //W
+                if (Skillshots.Contains(W))
+                {
+                    W.Cast(Game.CursorPos);
+                }
+                else
+                {
+                    W.Cast();
+                }
+                //E
+                if (Skillshots.Contains(W))
+                {
+                    E.Cast(Game.CursorPos);
+                }
+                else
+                {
+                    E.Cast();
                 }
             }
         }
