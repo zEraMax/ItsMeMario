@@ -4,82 +4,95 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Spells;
+using SharpDX;
 
 namespace Mario_s_Lib
 {
     public static class Spells
     {
-        public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell, Menu m)
+        public static bool CanCast(this Obj_AI_Base target, Spell.SpellBase spell)
         {
             if (spell == null || target == null) return false;
-            return target.IsValidTarget(spell.Range) && spell.IsReady() && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use");
+            return target.IsValidTarget(spell.Range) && spell.IsReady();
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Active spell, Menu m)
+        public static bool CanCast(this Vector3 target, Spell.SpellBase spell)
+        {
+            if (spell == null || target == null) return false;
+            return target.IsInRange(Player.Instance, spell.Range) && spell.IsReady();
+        }
+
+        public static bool CanCast(this Obj_AI_Base target, Spell.Active spell)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase, m);
+            return target.CanCast(asBase);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Skillshot spell, Menu m, int hitchancePercent = 75)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Skillshot spell, int hitchancePercent = 75)
         {
             var asBase = spell as Spell.SpellBase;
             var pred = spell.GetPrediction(target);
-            return target.CanCast(asBase, m) && pred.HitChancePercent >= 75;
+            return target.CanCast(asBase) && pred.HitChancePercent >= 75;
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Chargeable spell, Menu m)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Chargeable spell)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase, m);
+            return target.CanCast(asBase);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Ranged spell, Menu m)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Ranged spell)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase, m);
+            return target.CanCast(asBase);
         }
 
-        public static bool CanCast(this Obj_AI_Base target, Spell.Targeted spell, Menu m)
+        public static bool CanCast(this Obj_AI_Base target, Spell.Targeted spell)
         {
             var asBase = spell as Spell.SpellBase;
-            return target.CanCast(asBase, m);
+            return target.CanCast(asBase);
         }
 
         public static bool TryToCast(this Spell.SpellBase spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
+        }
+
+        public static bool TryToCast(this Spell.SpellBase spell, Vector3 pos, Menu m)
+        {
+            if (pos == Vector3.Zero) return false;
+            return pos.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(pos);
         }
 
         public static bool TryToCast(this Spell.Active spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast();
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m, int percent = 75)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m, percent) && spell.Cast(target);
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Targeted spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Chargeable spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
         }
 
         public static bool TryToCast(this Spell.Ranged spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCast(spell, m) && spell.Cast(target);
+            return target.CanCast(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
         }
 
         public static Spell.Skillshot GetSkillShotData(SpellSlot slot, SkillShotType skillType)

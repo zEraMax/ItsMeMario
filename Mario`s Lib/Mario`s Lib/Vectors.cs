@@ -80,10 +80,11 @@ namespace Mario_s_Lib
             return Vector3.Zero;
         }
 
-        public static BestCastPosition GetBestLinearCastPosition(IEnumerable<AIHeroClient> entities, float width, int range,
-            Vector2? sourcePosition = null)
+        public static BestCastPosition GetBestLinearCastPosition(this Spell.Skillshot spell, Vector2? sourcePosition = null)
         {
-            var targets = entities.ToArray();
+            var targets =
+                EntityManager.Heroes.Enemies.Where(m => m.IsValidTarget(spell.Range)).ToArray();
+
             switch (targets.Length)
             {
                 case 0:
@@ -104,10 +105,10 @@ namespace Mario_s_Lib
             var minionCount = 0;
             var result = Vector2.Zero;
 
-            foreach (var pos in posiblePositions.Where(o => o.IsInRange(startPos, range)))
+            foreach (var pos in posiblePositions.Where(o => o.IsInRange(startPos, spell.Range)))
             {
-                var endPos = startPos + range*(pos - startPos).Normalized();
-                var count = targets.Count(o => o.ServerPosition.To2D().Distance(startPos, endPos, true, true) <= width*width);
+                var endPos = startPos + spell.Range*(pos - startPos).Normalized();
+                var count = targets.Count(o => o.ServerPosition.To2D().Distance(startPos, endPos, true, true) <= spell.Width*spell.Width);
 
                 if (count >= minionCount)
                 {

@@ -63,10 +63,10 @@ namespace Mario_s_Activator
 
             DefensiveMenu.AddGroupLabel("Zhonyas");
             DefensiveMenu.CreateCheckBox("Use Zhonyas.", "check" + (int)ItemId.Zhonyas_Hourglass);
-            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + (int)ItemId.Zhonyas_Hourglass, 20);
+            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + (int)ItemId.Zhonyas_Hourglass, 25);
             DefensiveMenu.AddGroupLabel("Seraph");
-            DefensiveMenu.CreateCheckBox("Use Seraph.", "check" + "3040");
-            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3040", 20);
+            DefensiveMenu.CreateCheckBox("Use Seraph.", "check" + (int)ItemId.Seraphs_Embrace);
+            DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + (int)ItemId.Seraphs_Embrace, 25);
             DefensiveMenu.AddGroupLabel("Face Of The Mountain");
             DefensiveMenu.CreateCheckBox("Use Face Of The Mountain.", "check" + "3401");
             DefensiveMenu.CreateSlider("Use it if MY health is lower than ({0}%).", "slider" + "3401", 10);
