@@ -21,8 +21,8 @@ namespace Mario_s_Katarina
         //Remenber of putting the correct type of the spell here
         public static Spell.Targeted Q;
         public static Spell.Active W;
-        public static Spell.Active E;
-        public static Spell.Skillshot R;
+        public static Spell.Targeted E;
+        public static Spell.Active R;
 
         public static List<Spell.SpellBase> SpellList = new List<Spell.SpellBase>();
 
@@ -31,10 +31,10 @@ namespace Mario_s_Katarina
         /// </summary>
         public static void InitializeSpells()
         {
-            Q = new Spell.Targeted(SpellSlot.Q, 350);
-            W = new Spell.Active(SpellSlot.W, 200);
-            E = new Spell.Active(SpellSlot.E, 300);
-            R = SpellSlot.R.GetSkillShotData(SkillShotType.Linear);
+            Q = new Spell.Targeted(SpellSlot.Q, 675);
+            W = new Spell.Active(SpellSlot.W, 375);
+            E = new Spell.Targeted(SpellSlot.E, 700);
+            R = new Spell.Active(SpellSlot.R, 550);
 
             SpellList.Add(Q);
             SpellList.Add(W);
@@ -179,25 +179,27 @@ namespace Mario_s_Katarina
                     .ThenBy(e => e.FlatMagicReduction)
                     .FirstOrDefault(e => e.IsValidTarget(spells.GetSmallestRange()) && !e.HasUndyingBuff());
 
-            var dmg = spells.Where(spell => spell.IsReady()).Sum(spell => target.GetDamage(spell.Slot));
-            var delay = spells.Where(spell => spell.IsReady()).Sum(spell => spell.CastDelay);
-            var targetPredictedHealth = Prediction.Health.GetPrediction(target, delay);
-
-            if (targetPredictedHealth <= dmg)
+            if (target != null)
             {
-                foreach (var spell in spells.Where(s => target.CanCastSpell(s)))
+                var dmg = spells.Where(spell => spell.IsReady()).Sum(spell => target.GetDamage(spell.Slot));
+                var delay = spells.Sum(s => s.CastDelay);
+                var targetPredictedHealth = Prediction.Health.GetPrediction(target, delay);
+
+                if (targetPredictedHealth <= dmg)
                 {
-                    try
+                    foreach (var spell in spells.Where(s => target.CanCastSpell(s)))
                     {
-                        spell.Cast();
-                    }
-                    catch (Exception)
-                    {
-                        spell.Cast(target);
+                        try
+                        {
+                            spell.Cast();
+                        }
+                        catch (Exception)
+                        {
+                            spell.Cast(target);
+                        }
                     }
                 }
             }
-
             return false;
         }
     }

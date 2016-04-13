@@ -69,7 +69,7 @@ namespace Mario_s_Lib
         public static bool TryToCast(this Spell.Active spell, Obj_AI_Base target, Menu m)
         {
             if (target == null) return false;
-            return target.CanCastSpell(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast(target);
+            return target.CanCastSpell(spell) && m.GetCheckBoxValue(spell.Slot.ToString().ToLower() + "Use") && spell.Cast();
         }
 
         public static bool TryToCast(this Spell.Skillshot spell, Obj_AI_Base target, Menu m, int percent = 75)
