@@ -30,6 +30,7 @@ namespace Mario_s_Katarina
             Menus.CreateMenu();
             ModeManager.InitializeModes();
             DrawingsManager.InitializeDrawings();
+            RHandler.Init();
         }
     }
 }

@@ -16,9 +16,8 @@ namespace Mario_s_Katarina.Modes
         /// </summary>
         public static void Execute()
         {
-            var spellsToKS = new List<Spell.SpellBase> {Q,W,E};
+            var spellsToKS = new List<Spell.SpellBase> {Q,E,W};
             DoDynamicKillSteal(spellsToKS);
-
         }
     }
 }

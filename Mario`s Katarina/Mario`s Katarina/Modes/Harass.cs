@@ -3,6 +3,7 @@ using EloBuddy.SDK;
 using Mario_s_Lib;
 using static Mario_s_Katarina.SpellsManager;
 using static Mario_s_Katarina.Menus;
+using static Mario_s_Katarina.RHandler;
 
 namespace Mario_s_Katarina.Modes
 {
@@ -17,9 +18,11 @@ namespace Mario_s_Katarina.Modes
         public static void Execute()
         {
             var target = TargetSelector.GetTarget(SpellList.GetHighestRange(), DamageType.Mixed);
-
-            Q.TryToCast(target, HarassMenu);
-            W.TryToCast(target, HarassMenu);
+            if (!CastingR)
+            {
+                Q.TryToCast(target, HarassMenu);
+                W.TryToCast(target, HarassMenu);
+            }
         }
     }
 }

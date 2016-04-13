@@ -71,19 +71,15 @@ namespace Mario_s_Katarina
             LaneClearMenu.CreateCheckBox(" - Use Q", "qUse");
             LaneClearMenu.CreateCheckBox(" - Use W", "wUse");
             LaneClearMenu.CreateCheckBox(" - Use E", "eUse");
-            LaneClearMenu.CreateCheckBox(" - Use R", "rUse");
 
             LasthitMenu.AddGroupLabel("Spells");
             LasthitMenu.CreateCheckBox(" - Use Q", "qUse");
             LasthitMenu.CreateCheckBox(" - Use W", "wUse");
-            LasthitMenu.CreateCheckBox(" - Use E", "eUse");
-            LasthitMenu.CreateCheckBox(" - Use R", "rUse");
 
             JungleClearMenu.AddGroupLabel("Spells");
             JungleClearMenu.CreateCheckBox(" - Use Q", "qUse");
             JungleClearMenu.CreateCheckBox(" - Use W", "wUse");
             JungleClearMenu.CreateCheckBox(" - Use E", "eUse");
-            JungleClearMenu.CreateCheckBox(" - Use R", "rUse");
 
             KillStealMenu.AddGroupLabel("Spells");
             KillStealMenu.CreateCheckBox(" - Use Q", "qUse");

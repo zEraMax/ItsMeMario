@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
@@ -52,13 +53,16 @@ namespace Mario_s_Katarina
             return Player.Instance.Spellbook.IsChanneling && Player.Instance.HasBuff("katarinarsound");
         }
 
-        private static void Game_OnTick(System.EventArgs args)
+        private static int Tick;
+        private static void Game_OnTick(EventArgs args)
         {
+            if(Tick > Environment.TickCount)return;
             if (CastingR && !HasRBuff())
             {
                 OrbMovement(true);
                 CastingR = false;
             }
+            Tick = Environment.TickCount + 300;
         }
     }
 }

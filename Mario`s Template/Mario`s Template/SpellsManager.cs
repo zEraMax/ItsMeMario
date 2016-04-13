@@ -170,25 +170,27 @@ namespace Mario_s_Template
                     .ThenBy(e => e.FlatMagicReduction)
                     .FirstOrDefault(e => e.IsValidTarget(spells.GetSmallestRange()) && !e.HasUndyingBuff());
 
-            var dmg = spells.Where(spell => spell.IsReady()).Sum(spell => target.GetDamage(spell.Slot));
-            var delay = spells.Where(spell => spell.IsReady()).Sum(spell => spell.CastDelay);
-            var targetPredictedHealth = Prediction.Health.GetPrediction(target, delay);
-
-            if (targetPredictedHealth <= dmg)
+            if (target != null)
             {
-                foreach (var spell in spells.Where(s => target.CanCastSpell(s)))
+                var dmg = spells.Where(spell => spell.IsReady()).Sum(spell => target.GetDamage(spell.Slot));
+                var delay = spells.Sum(s => s.CastDelay);
+                var targetPredictedHealth = Prediction.Health.GetPrediction(target, delay);
+
+                if (targetPredictedHealth <= dmg)
                 {
-                    try
+                    foreach (var spell in spells.Where(s => target.CanCastSpell(s)))
                     {
-                        spell.Cast();
-                    }
-                    catch (Exception)
-                    {
-                        spell.Cast(target);
+                        try
+                        {
+                            spell.Cast();
+                        }
+                        catch (Exception)
+                        {
+                            spell.Cast(target);
+                        }
                     }
                 }
             }
-
             return false;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Mario_s_Lib;
 using static Mario_s_Katarina.SpellsManager;
 using static Mario_s_Katarina.Menus;
+using static Mario_s_Katarina.RHandler;
 
 namespace Mario_s_Katarina.Modes
 {
@@ -14,9 +15,12 @@ namespace Mario_s_Katarina.Modes
         /// </summary>
         public static void Execute()
         {
-            Q.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
-            W.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
-            E.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            if (!CastingR)
+            {
+                Q.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+                W.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+                E.TryToCast(Q.GetJungleMinion(), JungleClearMenu);
+            }
         }
     }
 }

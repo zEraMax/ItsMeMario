@@ -177,7 +177,7 @@ namespace Mario_s_Katarina
                     .ThenByDescending(TargetSelector.GetPriority)
                     .ThenBy(e => e.FlatArmorMod)
                     .ThenBy(e => e.FlatMagicReduction)
-                    .FirstOrDefault(e => e.IsValidTarget(spells.GetSmallestRange()) && !e.HasUndyingBuff());
+                    .FirstOrDefault(e => e.IsValidTarget(spells.GetHighestRange()) && !e.HasUndyingBuff());
 
             if (target != null)
             {
@@ -187,7 +187,7 @@ namespace Mario_s_Katarina
 
                 if (targetPredictedHealth <= dmg)
                 {
-                    foreach (var spell in spells.Where(s => target.CanCastSpell(s)))
+                    foreach (var spell in spells)
                     {
                         try
                         {
