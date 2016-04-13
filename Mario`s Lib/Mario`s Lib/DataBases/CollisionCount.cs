@@ -83,9 +83,40 @@ namespace Mario_s_Lib.DataBases
 
             new CollisionCountOBJ(Champion.Heimerdinger, SpellSlot.E, int.MaxValue),
 
-            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Illaoi, SpellSlot.Q, int.MaxValue),
 
-            new CollisionCountOBJ(Champion.Bard, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Irelia, SpellSlot.R, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.Janna, SpellSlot.Q, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.JarvanIV, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.JarvanIV, SpellSlot.E, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.Jhin, SpellSlot.W, -1),
+            new CollisionCountOBJ(Champion.Jhin, SpellSlot.E, int.MaxValue),
+            new CollisionCountOBJ(Champion.Jhin, SpellSlot.R, -1),
+
+            new CollisionCountOBJ(Champion.Jinx, SpellSlot.E, int.MaxValue),
+            new CollisionCountOBJ(Champion.Jinx, SpellSlot.R, -1),
+
+            new CollisionCountOBJ(Champion.Kalista, SpellSlot.W, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.Karthus, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Karthus, SpellSlot.W, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.Kassadin, SpellSlot.E, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.KogMaw, SpellSlot.Q, int.MaxValue),
+
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
+            new CollisionCountOBJ(Champion.Chogath, SpellSlot.Q, int.MaxValue),
 
             new CollisionCountOBJ(Champion.Lux, SpellSlot.Q, 1),
             new CollisionCountOBJ(Champion.Lux, SpellSlot.W, int.MaxValue),

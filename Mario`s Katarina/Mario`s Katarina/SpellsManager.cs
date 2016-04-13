@@ -5,9 +5,8 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using Mario_s_Lib;
-using static Mario_s_Template.Menus;
 
-namespace Mario_s_Template
+namespace Mario_s_Katarina
 {
     public static class SpellsManager
     {
@@ -28,7 +27,7 @@ namespace Mario_s_Template
         public static List<Spell.SpellBase> SpellList = new List<Spell.SpellBase>();
 
         /// <summary>
-        /// It sets the values to the spells
+        ///     It sets the values to the spells
         /// </summary>
         public static void InitializeSpells()
         {
@@ -48,7 +47,7 @@ namespace Mario_s_Template
         #region Damages
 
         /// <summary>
-        /// It will return the damage but you need to set them before getting the damage
+        ///     It will return the damage but you need to set them before getting the damage
         /// </summary>
         /// <param name="target"></param>
         /// <param name="slot"></param>
@@ -70,53 +69,63 @@ namespace Mario_s_Template
                     if (Q.IsReady())
                     {
                         //Information of Q damage
-                        dmg += new float[] {20, 45, 70, 95, 120}[sLevel] + 1f*AD;
+                        dmg += new float[] {60, 85, 110, 135, 160}[sLevel] + 0.45f*AP;
                     }
                     break;
                 case SpellSlot.W:
                     if (W.IsReady())
                     {
                         //Information of W damage
-                        dmg += new float[] {0, 0, 0, 0, 0}[sLevel] + 1f*AD;
+                        dmg += new float[] {40, 75, 110, 145, 180}[sLevel] + 0.25f*AP + 0.6f*AD;
                     }
                     break;
                 case SpellSlot.E:
                     if (E.IsReady())
                     {
                         //Information of E damage
-                        dmg += new float[] {80, 110, 140, 170, 200}[sLevel];
+                        dmg += new float[] {40, 70, 100, 130, 160}[sLevel] + 0.25f*AP;
                     }
                     break;
                 case SpellSlot.R:
                     if (R.IsReady())
                     {
                         //Information of R damage
-                        dmg += new float[] {600, 840, 1080}[sLevel]*0.6f + 1.2f*AP;
+                        dmg += new float[] {35*8, 55*8, 75*8}[sLevel] + 0.25f*AP + 0.37f*AD;
                     }
                     break;
             }
             return Player.Instance.CalculateDamageOnUnit(target, damageType, dmg - 10);
         }
 
+        public static bool HasPassive(this Obj_AI_Base target)
+        {
+            return target.HasBuff("KatarinaQMark");
+        }
+
+        public static float PassiveDamage(this Obj_AI_Base target)
+        {
+            var dmg = new float[] { 15, 30, 45, 60, 75 }[Player.GetSpell(SpellSlot.Q).Level - 1] + 0.2f * Player.Instance.FlatMagicDamageMod;
+            return target.HasPassive() ? Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, dmg) : 0f;
+        }
+
         #endregion Damages
 
         /// <summary>
-        /// This event is triggered when a unit levels up
+        ///     This event is triggered when a unit levels up
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
-            if (MiscMenu.GetCheckBoxValue("activateAutoLVL") && sender.IsMe)
+            if (Menus.MiscMenu.GetCheckBoxValue("activateAutoLVL") && sender.IsMe)
             {
-                var delay = MiscMenu.GetSliderValue("delaySlider");
+                var delay = Menus.MiscMenu.GetSliderValue("delaySlider");
                 Core.DelayAction(LevelUPSpells, delay);
-
             }
         }
 
         /// <summary>
-        /// It will level up the spell using the values of the comboboxes on the menu as a priority
+        ///     It will level up the spell using the values of the comboboxes on the menu as a priority
         /// </summary>
         private static void LevelUPSpells()
         {
@@ -125,24 +134,24 @@ namespace Mario_s_Template
                 Player.Instance.Spellbook.LevelSpell(SpellSlot.R);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus"))))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus")));
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus")));
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus"))))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus")));
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus")));
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus"))))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus")));
+                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus")));
             }
         }
 
         /// <summary>
-        /// It will transform the value of the combobox into a SpellSlot
+        ///     It will transform the value of the combobox into a SpellSlot
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

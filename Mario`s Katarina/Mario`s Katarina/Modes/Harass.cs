@@ -1,18 +1,18 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Lib;
-using static Mario_s_Template.Menus;
-using static Mario_s_Template.SpellsManager;
+using static Mario_s_Katarina.SpellsManager;
+using static Mario_s_Katarina.Menus;
 
-namespace Mario_s_Template.Modes
+namespace Mario_s_Katarina.Modes
 {
     /// <summary>
-    /// This mode will run when the key of the orbwalker is pressed
+    ///     This mode will run when the key of the orbwalker is pressed
     /// </summary>
     internal class Harass
     {
         /// <summary>
-        /// Put in here what you want to do when the mode is running
+        ///     Put in here what you want to do when the mode is running
         /// </summary>
         public static void Execute()
         {
@@ -20,8 +20,6 @@ namespace Mario_s_Template.Modes
 
             Q.TryToCast(target, HarassMenu);
             W.TryToCast(target, HarassMenu);
-            E.TryToCast(target, HarassMenu);
-            R.TryToCast(target, HarassMenu);
         }
     }
 }

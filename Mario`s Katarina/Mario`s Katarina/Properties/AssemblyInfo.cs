@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("URF Spell Spammer")]
+[assembly: AssemblyTitle("Mario`s Template")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("URF Spell Spammer")]
+[assembly: AssemblyProduct("Mario`s Template")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("3cf34cbd-a448-4a32-a125-20be769a5e50")]
-
-[assembly: AssemblyVersion("4")]
-[assembly: AssemblyFileVersion("4")]
+[assembly: Guid("ace38cee-7b1f-47ce-aa83-a71fe2949919")]
+[assembly: AssemblyVersion("1")]
+[assembly: AssemblyFileVersion("1")]
