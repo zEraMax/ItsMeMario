@@ -19,12 +19,9 @@ namespace Mario_s_Katarina.Modes
         {
             var target = TargetSelector.GetTarget(SpellList.GetHighestRange(), DamageType.Mixed);
 
-            if (!CastingR)
-            {
-                W.TryToCast(target, ComboMenu);
-                Q.TryToCast(target, ComboMenu);
-                E.TryToCast(target, ComboMenu);
-            }
+            Q.TryToCast(target, ComboMenu);
+            W.TryToCast(target, ComboMenu);
+            E.TryToCast(target, ComboMenu);
 
             R.TryToCast(target, ComboMenu);
         }

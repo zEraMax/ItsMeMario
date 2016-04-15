@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using EloBuddy;
 using EloBuddy.SDK;
-using EloBuddy.SDK.Enumerations;
 using Mario_s_Lib;
 
 namespace Mario_s_Katarina
@@ -94,7 +91,7 @@ namespace Mario_s_Katarina
                     }
                     break;
             }
-            return Player.Instance.CalculateDamageOnUnit(target, damageType, dmg - 10);
+            return Player.Instance.CalculateDamageOnUnit(target, damageType, dmg - 5);
         }
 
         public static bool HasPassive(this Obj_AI_Base target)
@@ -102,10 +99,16 @@ namespace Mario_s_Katarina
             return target.HasBuff("KatarinaQMark");
         }
 
-        public static float PassiveDamage(this Obj_AI_Base target)
+        public static float PassiveDamageWithBuff(this Obj_AI_Base target)
         {
             var dmg = new float[] { 15, 30, 45, 60, 75 }[Player.GetSpell(SpellSlot.Q).Level - 1] + 0.2f * Player.Instance.FlatMagicDamageMod;
             return target.HasPassive() ? Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, dmg) : 0f;
+        }
+
+        public static float PassiveDamage(this Obj_AI_Base target)
+        {
+            var dmg = new float[] { 15, 30, 45, 60, 75 }[Player.GetSpell(SpellSlot.Q).Level - 1] + 0.2f * Player.Instance.FlatMagicDamageMod;
+            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, dmg);
         }
 
         #endregion Damages
@@ -134,19 +137,39 @@ namespace Mario_s_Katarina
                 Player.Instance.Spellbook.LevelSpell(SpellSlot.R);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus"))))
+            var firstFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus"));
+            var secondFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus"));
+            var thirdFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus"));
+
+            var secondSpell = Player.GetSpell(secondFocusSlot);
+            var thirdSpell = Player.GetSpell(thirdFocusSlot);
+
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(firstFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus")));
+                if (!secondSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(secondFocusSlot);
+                }
+                if (!thirdSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
+                }
+                Player.Instance.Spellbook.LevelSpell(firstFocusSlot);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(secondFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus")));
+                if (!thirdSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
+                }
+                Player.Instance.Spellbook.LevelSpell(firstFocusSlot);
+                Player.Instance.Spellbook.LevelSpell(secondFocusSlot);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(thirdFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus")));
+                Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
             }
         }
 
@@ -168,39 +191,6 @@ namespace Mario_s_Katarina
             }
             Chat.Print("Failed getting slot");
             return SpellSlot.Unknown;
-        }
-
-        public static bool DoDynamicKillSteal(List<Spell.SpellBase> spells)
-        {
-            var target =
-                EntityManager.Heroes.Enemies.OrderBy(e => e.Health)
-                    .ThenByDescending(TargetSelector.GetPriority)
-                    .ThenBy(e => e.FlatArmorMod)
-                    .ThenBy(e => e.FlatMagicReduction)
-                    .FirstOrDefault(e => e.IsValidTarget(spells.GetHighestRange()) && !e.HasUndyingBuff());
-
-            if (target != null)
-            {
-                var dmg = spells.Where(spell => spell.IsReady()).Sum(spell => target.GetDamage(spell.Slot));
-                var delay = spells.Sum(s => s.CastDelay);
-                var targetPredictedHealth = Prediction.Health.GetPrediction(target, delay);
-
-                if (targetPredictedHealth <= dmg)
-                {
-                    foreach (var spell in spells)
-                    {
-                        try
-                        {
-                            spell.Cast();
-                        }
-                        catch (Exception)
-                        {
-                            spell.Cast(target);
-                        }
-                    }
-                }
-            }
-            return false;
         }
     }
 }

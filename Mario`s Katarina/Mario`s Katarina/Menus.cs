@@ -96,6 +96,7 @@ namespace Mario_s_Katarina
                 MiscMenu.CreateComboBox("Choose the skin", "skinComboBox", skinList.Skins);
                 MiscMenu.Get<ComboBox>("skinComboBox").OnValueChange +=
                     delegate(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args) { Player.Instance.SetSkinId(sender.CurrentValue); };
+                Player.Instance.SetSkinId(MiscMenu.Get<ComboBox>("skinComboBox").CurrentValue);
             }
 
             MiscMenu.AddGroupLabel("Auto Level UP");

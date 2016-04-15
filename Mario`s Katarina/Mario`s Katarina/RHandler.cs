@@ -27,7 +27,7 @@ namespace Mario_s_Katarina
 
         private static void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
         {
-            var orders = new[] {GameObjectOrder.MoveTo, GameObjectOrder.HoldPosition, GameObjectOrder.Stop, GameObjectOrder.AutoAttack};
+            var orders = new[] {GameObjectOrder.MoveTo, GameObjectOrder.HoldPosition, GameObjectOrder.Stop, GameObjectOrder.AutoAttack, GameObjectOrder.AttackUnit};
             if (sender.IsMe && CastingR && orders.Contains(args.Order))
             {
                 args.Process = false;
@@ -50,19 +50,25 @@ namespace Mario_s_Katarina
 
         public static bool HasRBuff()
         {
-            return Player.Instance.Spellbook.IsChanneling && Player.Instance.HasBuff("katarinarsound");
+            return Player.Instance.Spellbook.IsChanneling && (Player.Instance.HasBuff("katarinarsound") || Player.GetSpell(SpellSlot.R).ToggleState > 1);
         }
 
         private static int Tick;
         private static void Game_OnTick(EventArgs args)
         {
             if(Tick > Environment.TickCount)return;
+            var enemies = EntityManager.Heroes.Enemies.FirstOrDefault(e => e.IsInRange(Player.Instance, SpellsManager.R.Range));
+            if (enemies == null && CastingR && HasRBuff())
+            {
+                OrbMovement(true);
+                CastingR = false;
+            }
             if (CastingR && !HasRBuff())
             {
                 OrbMovement(true);
                 CastingR = false;
             }
-            Tick = Environment.TickCount + 300;
+            Tick = Environment.TickCount + 100;
         }
     }
 }

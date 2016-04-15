@@ -7,7 +7,7 @@ namespace Mario_s_Lib
 {
     public static class Damages
     {
-        public static float GetAlliesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700)
+        public static float GetAlliesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700, int delay = 250)
         {
             var dmg = 0f;
             var slots = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R};
@@ -15,12 +15,12 @@ namespace Mario_s_Lib
             foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInRange(target, range)))
             {
                 dmg += a.GetAutoAttackDamage(target);
-                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady).Sum(s => a.GetSpellDamage(target, s.Slot));
+                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady || s.).Sum(s => a.GetSpellDamage(target, s.Slot));
             }
             return dmg*percent;
         }
 
-        public static float GetEnemiesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700)
+        public static float GetEnemiesDamagesNear(this Obj_AI_Base target, float percent = 0.7f, int range = 700, int delay = 250)
         {
             var dmg = 0f;
             var slots = new[] {SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R};

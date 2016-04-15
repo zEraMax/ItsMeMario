@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Lib;
+using static Mario_s_Katarina.RHandler;
 
 namespace Mario_s_Katarina.Modes
 {
@@ -24,6 +25,8 @@ namespace Mario_s_Katarina.Modes
             var orbMode = Orbwalker.ActiveModesFlags;
 
             Active.Execute();
+
+            if (CastingR) return;
 
             if (orbMode.HasFlag(Orbwalker.ActiveModes.Combo))
             {

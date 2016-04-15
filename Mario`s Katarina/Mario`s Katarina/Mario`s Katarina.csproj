@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="DamageIndicator.cs" />
     <Compile Include="DrawingsManager.cs" />
+    <Compile Include="EventsManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Menus.cs" />
     <Compile Include="Modes\Active.cs" />
