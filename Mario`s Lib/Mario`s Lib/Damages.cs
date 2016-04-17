@@ -15,7 +15,7 @@ namespace Mario_s_Lib
             foreach (var a in EntityManager.Heroes.Allies.Where(a => a.IsInRange(target, range)))
             {
                 dmg += a.GetAutoAttackDamage(target);
-                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady || s.).Sum(s => a.GetSpellDamage(target, s.Slot));
+                dmg += a.Spellbook.Spells.Where(s => slots.Contains(s.Slot) && s.IsReady).Sum(s => a.GetSpellDamage(target, s.Slot));
             }
             return dmg*percent;
         }
