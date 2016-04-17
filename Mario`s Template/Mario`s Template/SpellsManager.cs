@@ -70,7 +70,7 @@ namespace Mario_s_Template
                     if (Q.IsReady())
                     {
                         //Information of Q damage
-                        dmg += new float[] {20, 45, 70, 95, 120}[sLevel] + 1f*AD;
+                        dmg += new float[] {15, 40, 65, 90, 115}[sLevel] + new [] { 0.6f, 0.65f, 0.7f, 0.75f, 0.8f }[sLevel] * AD;
                     }
                     break;
                 case SpellSlot.W:
@@ -84,14 +84,14 @@ namespace Mario_s_Template
                     if (E.IsReady())
                     {
                         //Information of E damage
-                        dmg += new float[] {80, 110, 140, 170, 200}[sLevel];
+                        dmg += new float[] {0, 0, 0, 0, 0}[sLevel];
                     }
                     break;
                 case SpellSlot.R:
                     if (R.IsReady())
                     {
                         //Information of R damage
-                        dmg += new float[] {600, 840, 1080}[sLevel]*0.6f + 1.2f*AP;
+                        dmg += new float[] {20, 60, 95, 130 ,165}[sLevel]+ 0.45f*AP;
                     }
                     break;
             }
@@ -125,19 +125,39 @@ namespace Mario_s_Template
                 Player.Instance.Spellbook.LevelSpell(SpellSlot.R);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus"))))
+            var firstFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus"));
+            var secondFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus"));
+            var thirdFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus"));
+
+            var secondSpell = Player.GetSpell(secondFocusSlot);
+            var thirdSpell = Player.GetSpell(thirdFocusSlot);
+
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(firstFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus")));
+                if (!secondSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(secondFocusSlot);
+                }
+                if (!thirdSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
+                }
+                Player.Instance.Spellbook.LevelSpell(firstFocusSlot);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(secondFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus")));
+                if (!thirdSpell.IsLearned)
+                {
+                    Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
+                }
+                Player.Instance.Spellbook.LevelSpell(firstFocusSlot);
+                Player.Instance.Spellbook.LevelSpell(secondFocusSlot);
             }
 
-            if (Player.Instance.Spellbook.CanSpellBeUpgraded(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus"))))
+            if (Player.Instance.Spellbook.CanSpellBeUpgraded(thirdFocusSlot))
             {
-                Player.Instance.Spellbook.LevelSpell(GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus")));
+                Player.Instance.Spellbook.LevelSpell(thirdFocusSlot);
             }
         }
 

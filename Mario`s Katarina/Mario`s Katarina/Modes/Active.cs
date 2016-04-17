@@ -27,16 +27,23 @@ namespace Mario_s_Katarina.Modes
 
             if (target != null)
             {
+                var heros = target as IList<AIHeroClient> ?? target.ToList();
+
                 var targetQ =
-                    target.FirstOrDefault(
+                    heros.FirstOrDefault(
                         t =>
                             t.IsValidTarget(Q.Range) &&
                             Prediction.Health.GetPrediction(t, Q.CastDelay) <=
                             t.GetDamage(SpellSlot.Q) + (W.IsReady() ? t.GetDamage(SpellSlot.W) + t.PassiveDamage() : 0f));
 
-                //var targetW =
+                var targetW =
+                    heros.FirstOrDefault(
+                        t =>
+                            t.IsValidTarget(W.Range) &&
+                            Prediction.Health.GetPrediction(t, Q.CastDelay) <=
+                            t.GetDamage(SpellSlot.Q) + (W.IsReady() ? t.GetDamage(SpellSlot.W) + t.PassiveDamage() : 0f));
 
-                    
+
             }
         }
     }

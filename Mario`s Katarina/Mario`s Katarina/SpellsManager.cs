@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using Mario_s_Lib;
+using static Mario_s_Katarina.Menus;
 
 namespace Mario_s_Katarina
 {
@@ -120,9 +121,9 @@ namespace Mario_s_Katarina
         /// <param name="args"></param>
         private static void Obj_AI_Base_OnLevelUp(Obj_AI_Base sender, Obj_AI_BaseLevelUpEventArgs args)
         {
-            if (Menus.MiscMenu.GetCheckBoxValue("activateAutoLVL") && sender.IsMe)
+            if (MiscMenu.GetCheckBoxValue("activateAutoLVL") && sender.IsMe)
             {
-                var delay = Menus.MiscMenu.GetSliderValue("delaySlider");
+                var delay = MiscMenu.GetSliderValue("delaySlider");
                 Core.DelayAction(LevelUPSpells, delay);
             }
         }
@@ -137,9 +138,9 @@ namespace Mario_s_Katarina
                 Player.Instance.Spellbook.LevelSpell(SpellSlot.R);
             }
 
-            var firstFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("firstFocus"));
-            var secondFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("secondFocus"));
-            var thirdFocusSlot = GetSlotFromComboBox(Menus.MiscMenu.GetComboBoxValue("thirdFocus"));
+            var firstFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("firstFocus"));
+            var secondFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("secondFocus"));
+            var thirdFocusSlot = GetSlotFromComboBox(MiscMenu.GetComboBoxValue("thirdFocus"));
 
             var secondSpell = Player.GetSpell(secondFocusSlot);
             var thirdSpell = Player.GetSpell(thirdFocusSlot);

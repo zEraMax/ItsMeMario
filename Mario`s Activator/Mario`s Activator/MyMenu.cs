@@ -99,11 +99,14 @@ namespace Mario_s_Activator
             CleansersMenu.CreateCheckBox("Taunt", "ccTaunt");
             CleansersMenu.CreateCheckBox("Charm", "ccCharm");
             CleansersMenu.CreateCheckBox("Polymorph", "ccPolymorph");
+            CleansersMenu.CreateCheckBox("Duskblade of Draktharr", "ccDusk");
             CleansersMenu.AddLabel("Special spells to use cleanse");
             CleansersMenu.CreateCheckBox("Zed R", "ccZedR");
             CleansersMenu.CreateCheckBox("Vladmir R", "ccVladmirR");
             CleansersMenu.CreateCheckBox("Mordekaiser R", "ccMordekaiserR");
             CleansersMenu.CreateCheckBox("Trundle R", "ccTrundleR");
+            CleansersMenu.CreateCheckBox("Fiora R", "ccFioraR");
+            CleansersMenu.CreateCheckBox("Kalista E", "ccKalistaE");
             CleansersMenu.AddGroupLabel("Items");
             CleansersMenu.CreateCheckBox("Use Dervish Blade.", "check" + "3137");
             CleansersMenu.CreateCheckBox("Use Mercurial Scimitar.", "check" + "3139");

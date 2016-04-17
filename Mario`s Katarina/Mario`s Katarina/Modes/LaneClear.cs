@@ -53,8 +53,7 @@ namespace Mario_s_Katarina.Modes
                                 .FirstOrDefault(
                                     m =>
                                         m.IsValidTarget(E.Range) && m.IsEnemy && !m.IsDead &&
-                                        Prediction.Health.GetPrediction(m, E.CastDelay) <= m.GetDamage(SpellSlot.E) &&
-                                        minionsW.Count(mW => mW.IsInRange(m, W.Range)) >= 2);
+                                        minionsW.Count(mW => mW.IsInRange(m, W.Range)) >= 3);
 
                         if (minionE != null) E.Cast(minionE);
                     }
